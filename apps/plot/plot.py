@@ -7,6 +7,7 @@ import networkx as nx
 from io import StringIO
 from django.conf import settings as djangoSettings
 import os
+import apps.plot.functions as functions
 
 
 class Plot(object):
@@ -18,7 +19,9 @@ class Plot(object):
 		self.__time = 0
 		self.__userTime = [4]
 		self.__relations = [0,0,0,0,0,0]
+		functions.ensureDir(outputPath)
 		self.ExtractData()
+
 
 	def ExtractData(self):
 		interTimes = [[],[],[],[]]
