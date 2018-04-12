@@ -4,9 +4,20 @@
 <head>
 	<meta charset="utf-8">
 	<title>{% block title %} Document {% endblock %}</title>
-	<link rel="stylesheet" href="{% static 'css/style.css'%}"
+	<link rel="stylesheet" href="{% static 'css/style.css'%}">
+	{# Load the tag library #}
+	{% load bootstrap3 %}
+
+	{# Load CSS and JavaScript #}
+	{% bootstrap_css%}
+	<script type="text/javascript" src="{{STATIC_URL }}/js/jquery.js"/>	
+	{% bootstrap_javascript %}
+
+	{# Display django.contrib.messages as Bootstrap alerts #}
+	{% bootstrap_messages %}
 </head>
 <body>
+	{% include "base\navbar.html" %}
 	{% block header %}
 	<h1>Hola</h1>
 	{% endblock %}

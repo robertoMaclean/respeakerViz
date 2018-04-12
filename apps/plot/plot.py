@@ -12,7 +12,7 @@ import apps.plot.functions as functions
 
 class Plot(object):
 
-	def __init__(self, file, outputPath='images/'):
+	def __init__(self, file, outputPath='media/plot/'):
 		self.__file = StringIO(file)
 		self.__outputPath = os.path.abspath(outputPath)
 		self.__activity = [[],[],[],[]]
@@ -21,7 +21,6 @@ class Plot(object):
 		self.__relations = [0,0,0,0,0,0]
 		functions.ensureDir(outputPath)
 		self.ExtractData()
-
 
 	def ExtractData(self):
 		interTimes = [[],[],[],[]]
