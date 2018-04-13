@@ -4,15 +4,14 @@
 <head>
 	<meta charset="utf-8">
 	<title>{% block title %} Document {% endblock %}</title>
-	<link rel="stylesheet" href="{% static 'css/style.css'%}">
 	{# Load the tag library #}
 	{% load bootstrap3 %}
 
 	{# Load CSS and JavaScript #}
 	{% bootstrap_css%}
-	<script type="text/javascript" src="{{STATIC_URL }}/js/jquery.js"/>	
+	<script type="text/javascript" src="{{STATIC_URL }}/js/jquery-3.3.1.min.js"/>
+	<script type="text/javascript" src="{{STATIC_URL }}/js/jquery.min.js"/>	
 	{% bootstrap_javascript %}
-
 	{# Display django.contrib.messages as Bootstrap alerts #}
 	{% bootstrap_messages %}
 </head>
