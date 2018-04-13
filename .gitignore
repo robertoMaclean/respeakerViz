@@ -103,4 +103,5 @@ ENV/
 
 # local files
 images/*
+media/plot/*
 

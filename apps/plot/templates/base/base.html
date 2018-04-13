@@ -1,7 +1,7 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
+	{% load static %}
 	<meta charset="utf-8">
 	<title>{% block title %} Document {% endblock %}</title>
 	{# Load the tag library #}
@@ -9,10 +9,9 @@
 
 	{# Load CSS and JavaScript #}
 	{% bootstrap_css%}
-	<script type="text/javascript" src="{% static '/js/jquery-3.3.1.min.js' %}"/>	
-	<script type="text/javascript" src="{% static '/js/fileinput.min.js' %}"/>
-	<script type="text/javascript" src="{% static '/js/javascript.js' %}"/>
-
+	<link rel="stylesheet" href="{% static '/css/style.css' %}"/>
+	<script type="text/javascript" src="{% static '/js/jquery-3.3.1.min.js' %}"></script>	
+	<script type="text/javascript" src="{% static '/js/javascript.js' %}"></script>
 	{% bootstrap_javascript %}
 	{# Display django.contrib.messages as Bootstrap alerts #}
 	{% bootstrap_messages %}
@@ -20,14 +19,12 @@
 <body>
 	{% include "base\navbar.html" %}
 	{% block header %}
-	<h1>Hola</h1>
 	{% endblock %}
 
 	{% block content %}
 	{% endblock %}
 
 	{% block footer %}
-	<h2>HELOOOOOO</h2>
 	{% endblock %}
 </body>
 </html>
