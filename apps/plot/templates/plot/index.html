@@ -1,15 +1,25 @@
 {% extends 'base/base.html' %}
 
 {% load static %}
-<h1>asdsad</h1>
 {% block header %}
-<h2>En index</h2>
 {% endblock %}
 {% block content %}
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <input type="file" name="csv_file">
-    <button type="submit">Upload</button>
+    <div class="row">
+    	<div class="col-md-6 col-md-offset-2">
+	    	<div class="panel panel-primary">
+				<div class="panel-heading">Suba el archivo CSV para generar las visualizaciones</div>
+		  		<div class="panel-body"> 
+		  			<input type="file" name="csv_file">
+	    		</div>
+	    		<div class="panel-footer">
+	    			<button type="submit" class="btn btn-success">Generar</button>
+	    		</div>
+			</div>
+		</div>
+    </div>
+    
   </form>
 
   {% if uploaded_file_url %}

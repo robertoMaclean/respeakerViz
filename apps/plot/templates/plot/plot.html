@@ -2,8 +2,30 @@
 
 {% load static %}
 {% block header%}
-<h1>En plot</h1>
 {% endblock %}
 {% block content %}
-<img src="../media/plot/users_interaction.png" />
+<div class="row">
+	<div class="col-sm-2">
+		<div class='span2 sidebar margin-left-20'>
+		    <h3>Visualizaciones</h3>
+		    <ul class="nav nav-tabs nav-stacked">
+		      <li><a class='btn' id="users_interaction">Interacción</a></li>
+		      <li><a class='btn' id="users_speak">Tiempo habla</a></li>
+		      <li><a class='btn' id=""></a></li>
+		    </ul>
+	  	</div>
+	</div>
+	<div class="col-sm-9">
+		<div class="panel panel-primary">
+				<div class="panel-heading">Interacción entre los participantes</div>
+		  		<div class="panel-body"> 
+					<img class="img-responsive" id="plot_img" src="../media/plot/users_interaction.png" />	
+	    		</div>
+	    		<!-- <div class="panel-footer">
+	    			<button type="submit" class="btn btn-success">Generar</button>
+	    		</div> -->
+			</div>
+	</div>	
+</div>
+    
 {% endblock %}

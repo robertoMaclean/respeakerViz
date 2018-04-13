@@ -24,6 +24,7 @@ def index(request):
 		file_data = csv_file.read().decode("utf-8")
 		plt = ploter.Plot(file_data)
 		plt.UsersInteraction()
+		plt.UsersSpeak()
 		return redirect('/plot/')
 		#return render(request, 'plot/plot.html')
 	return render(request, 'plot/index.html')
