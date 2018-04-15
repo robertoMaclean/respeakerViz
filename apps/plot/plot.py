@@ -20,9 +20,26 @@ class Plot(object):
 		self.__activityContinuos = [[],[],[],[]]
 		self.__time = 0
 		self.__userTime = [4]
+		self.__speakTime = 0
 		self.__relations = [0,0,0,0,0,0]
+		self.__usersInterv = [4]
 		functions.ensureDir(outputPath)
 		self.ExtractData()
+		self.UsersSpeak()
+		self.UsersInteraction()
+		self.SpeakTime()
+
+	def GetTime(self):
+		return self.__time
+
+	def GetUserTime(self):
+		return self.__userTime
+
+	def GetSpeakTime(self):
+		return self.__speakTime
+
+	def GetUsersInterv(self):
+		return self.__usersInterv
 
 	def ExtractData(self):
 		interTimes = [[],[],[],[]]
@@ -49,6 +66,8 @@ class Plot(object):
 			
 			self.__activityContinuos[lastPosition].append(float(row['seconds']))
 			self.__time = row['seconds']
+		for x in interTimes:
+			self.__usersInterv.append(x)
 
 	def UsersSpeak(self):
 		#figure = plt.gcf() # get current figure
@@ -66,7 +85,7 @@ class Plot(object):
 		plt.xlabel("tiempo (segundos)") 
 		plt.title("Activación de voz con silencios")
 		plt.subplot(2,1,2)
-		plt.xticks(np.arange(0, float(self.__time)+1, 10))
+		plt.xticks(np.arange(0, float(self.__time)+1, int(float(self.__time)/div)))
 		plt.yticks([1],["Voz activa"])
 		plt.vlines(self.__activityContinuos[0], 0, 1, linewidth=linewidth, label='Usuario 1', color='red')
 		plt.vlines(self.__activityContinuos[1], 0, 1, linewidth=linewidth, label='Usuario 2', color='blue')
@@ -121,8 +140,9 @@ class Plot(object):
 
 	def SpeakTime(self):
 		suma = len(self.__activity[0])+len(self.__activity[1])+len(self.__activity[2])+len(self.__activity[3])
-		print(suma*0.02)
-		print(len(self.__activity[0])*0.02)
-		print(len(self.__activity[1])*0.02)
-		print(len(self.__activity[2])*0.02)
-		print(len(self.__activity[3])*0.02)
+		self.__speakTime = suma*0.02
+		self.__userTime.append(len(self.__activity[0])*0.02) 
+		self.__userTime.append(len(self.__activity[1])*0.02) 
+		self.__userTime.append(len(self.__activity[2])*0.02) 
+		self.__userTime.append(len(self.__activity[3])*0.02) 
+		

@@ -1,6 +1,12 @@
 {% extends 'base/base.html' %}
 
 {% load static %}
+{% block head %}
+<script type="text/javascript" src="{% static '/js/button.js' %}"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+{% endblock %}
 {% block header%}
 {% endblock %}
 {% block content %}
@@ -9,9 +15,9 @@
 		<div class='span2 sidebar margin-left-20'>
 		    <h3>Visualizaciones</h3>
 		    <ul class="nav nav-tabs nav-stacked">
-		      <li><a class='btn' id="users_interaction">Interacción</a></li>
-		      <li><a class='btn' id="users_speak">Tiempo habla</a></li>
-		      <li><a class='btn' id=""></a></li>
+		      <li><a class='btn lateral clicked' id="users_interaction" active>Interacciónes</a></li>
+		      <li><a class='btn lateral' id="users_speak">Intervenciones</a></li>
+		      <li><a class='btn lateral' id="">Duración Intervenciones</a></li>
 		    </ul>
 	  	</div>
 	</div>
@@ -21,11 +27,13 @@
 		  		<div class="panel-body"> 
 					<img class="img-responsive" id="plot_img" src="../media/plot/users_interaction.png" />	
 	    		</div>
+	    		<div id="graph" style="height: 250px;"></div>
 	    		<!-- <div class="panel-footer">
 	    			<button type="submit" class="btn btn-success">Generar</button>
 	    		</div> -->
 			</div>
 	</div>	
 </div>
+<script type="text/javascript" src="{% static '/js/morris.js' %}"></script>
     
-{% endblock %}
+{% endblock %} 

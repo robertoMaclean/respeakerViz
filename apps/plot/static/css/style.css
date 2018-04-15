@@ -5,3 +5,12 @@
 .img-responsive {
     margin: 0 auto;
 }
+
+.clicked, .btn.lateral:hover {
+    text-decoration: none;
+    background-color: #337ab7;
+    color: white;
+}
+.btn.lateral {
+
+}

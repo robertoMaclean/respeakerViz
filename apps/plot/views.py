@@ -23,9 +23,15 @@ def index(request):
 		#print(csv_file.read())
 		file_data = csv_file.read().decode("utf-8")
 		plt = ploter.Plot(file_data)
-		plt.UsersInteraction()
-		plt.UsersSpeak()
-		return redirect('/plot/')
+		print('tiempo total '+plt.GetTime())
+		print(plt.GetUserTime())
+		print(plt.GetSpeakTime())
+		print(len(plt.GetUserInterv()))
+		data = {
+			'hola':'chao'
+		}
+
+		return render(request, 'plot/plot.html', {'data': data})
 		#return render(request, 'plot/plot.html')
 	return render(request, 'plot/index.html')
 
