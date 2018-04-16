@@ -1,4 +1,4 @@
-Morris.Bar({
+var morris = Morris.Bar({
   element: 'graph',
   data: [
     {x: '2011 Q1', y: 3},
@@ -8,7 +8,5 @@ Morris.Bar({
   ],
   xkey: 'x',
   ykeys: ['y'],
-  labels: ['Y']
-}).on('click', function(i, row){
-  //console.log(i, row);
+  labels: ['Duración']
 });

@@ -21,6 +21,7 @@ function click_buttons(){
     $('#interv_time').on('click', function(){
     	$('#plot_img').hide()
     	$('#graph').show()
+    	morris.setData(data.users)
+    	console.log(data.users)
     });
-    console.log(data.nada)
 }

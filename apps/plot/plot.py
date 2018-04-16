@@ -142,8 +142,8 @@ class Plot(object):
 	def SpeakTime(self):
 		suma = len(self.__activity[0])+len(self.__activity[1])+len(self.__activity[2])+len(self.__activity[3])
 		self.__speakTime = suma*0.02
-		self.__userTime.append(len(self.__activity[0])*0.02) 
-		self.__userTime.append(len(self.__activity[1])*0.02) 
-		self.__userTime.append(len(self.__activity[2])*0.02) 
-		self.__userTime.append(len(self.__activity[3])*0.02) 
+		self.__userTime.append("{0:.2f}".format(len(self.__activity[0])*0.02)) 
+		self.__userTime.append("{0:.2f}".format(len(self.__activity[1])*0.02))
+		self.__userTime.append("{0:.2f}".format(len(self.__activity[2])*0.02))
+		self.__userTime.append("{0:.2f}".format(len(self.__activity[3])*0.02)) 
 		
