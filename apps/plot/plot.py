@@ -19,10 +19,10 @@ class Plot(object):
 		self.__activity = [[],[],[],[]]
 		self.__activityContinuos = [[],[],[],[]]
 		self.__time = 0
-		self.__userTime = [4]
+		self.__userTime = []
 		self.__speakTime = 0
 		self.__relations = [0,0,0,0,0,0]
-		self.__usersInterv = [4]
+		self.__usersInterv = []
 		functions.ensureDir(outputPath)
 		self.ExtractData()
 		self.UsersSpeak()
@@ -59,6 +59,7 @@ class Plot(object):
 						self.FindUsersInteraction(lastPosition+1, int(row['direction'])+1)
 				timeActivity.append(float(row['seconds']))
 				lastPosition = int(row['direction'])
+				print(lastPosition)
 				self.__activity[lastPosition].append(float(row['seconds']))
 				silence = 0
 			else:

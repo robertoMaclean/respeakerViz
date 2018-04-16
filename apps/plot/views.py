@@ -4,6 +4,7 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 import csv
 import apps.plot.plot as ploter
+import json 
 
 # Create your views here.
 
@@ -26,17 +27,20 @@ def index(request):
 		print('tiempo total '+plt.GetTime())
 		print(plt.GetUserTime())
 		print(plt.GetSpeakTime())
-		print(len(plt.GetUserInterv()))
+		print(plt.GetUsersInterv()[0][0])
 		data = {
-			'hola':'chao'
+			'nada':'chao',
+			'nose':'nose',
 		}
-
-		return render(request, 'plot/plot.html', {'data': data})
+		data = json.dumps(data)	
+		request.session['data'] = data
+		return redirect('plot/')
 		#return render(request, 'plot/plot.html')
 	return render(request, 'plot/index.html')
 
 def plot(request):	
-	return render(request, 'plot/plot.html')
+	print(request.session.get['data'])
+	return render(request, 'plot/plot.html',{"data":data})
 
 def simple_upload(request):
 	if request.method == 'POST' and request.FILES['csv_file']:

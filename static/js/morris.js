@@ -10,5 +10,5 @@ Morris.Bar({
   ykeys: ['y'],
   labels: ['Y']
 }).on('click', function(i, row){
-  //console.log(i, row);
+  console.log(i, row);
 });
