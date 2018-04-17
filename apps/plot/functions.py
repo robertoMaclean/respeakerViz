@@ -12,10 +12,13 @@ def FillJson(obj):
 		'usersTime':[],
 		'usersIntDur':[[],[],[],[]],
 		'usersInterv':[],
+		'usersSpeakTimePercent':[],
 	}
 	user_num = 1
+	speak_time_users = usersTime[0] + usersTime[1] + usersTime[2] + usersTime[3]
 	for users in usersTime:
 		data['usersTime'].append({'x':'Usuario '+str(user_num),'y':users})
+		data['usersSpeakTimePercent'].append({'x':'Usuario '+str(user_num),'y':users})
 		user_num += 1
 	user_num = 0
 	#print(usersInt)
