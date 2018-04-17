@@ -10,24 +10,28 @@
 <div class="row">
 	<div class="col-sm-2">
 		<div class='span2 sidebar margin-left-20'>
-		    <h3>Visualizaciones{{data.nada}}</h3>
+		    <h3>Visualizaciones</h3>
 		    <ul class="nav nav-tabs nav-stacked">
 		      <li><a class='btn lateral clicked' id="users_interaction" active>Interacciónes</a></li>
 		      <li><a class='btn lateral' id="users_speak">Intervenciones</a></li>
-		      <li><a class='btn lateral' id="interv_time">Duración Intervenciones</a></li>
+		      <li><a class='btn lateral' id="users_total_time">Tiempo habla</a></li>
+		      <li><a class='btn lateral' id="users_interv_time">Duración Intervenciones</a></li>
 		    </ul>
 	  	</div>
 	</div>
 	<div class="col-sm-9">
 		<div class="panel panel-primary">
-			<div class="panel-heading">{{data.nada}}Interacción entre los participantes</div>
+			<div class="panel-heading">Interacción entre los participantes</div>
 	  		<div class="panel-body"> 
 				<img class="img-responsive" id="plot_img" src="../media/plot/users_interaction.png" />	
     		</div>
     		<div id="graph" style="height: 250px;"></div>
-    		<!-- <div class="panel-footer">
-    			<button type="submit" class="btn btn-success">Generar</button>
-    		</div> -->
+    		<div class="panel-footer" id="users-footer">
+    			<button type="submit" id="user1" class="btn btn-danger">Usuario 1</button>
+    			<button type="submit" id="user2" class="btn btn-primary">Usuario 2</button>
+    			<button type="submit" id="user3" class="btn btn-success">Usuario 3</button>
+    			<button type="submit" id="user4" class="btn btn-warning">Usuario 4</button>
+    		</div>
 			</div>
 	</div>	
 </div>

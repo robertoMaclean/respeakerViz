@@ -59,7 +59,6 @@ class Plot(object):
 						self.FindUsersInteraction(lastPosition+1, int(row['direction'])+1)
 				timeActivity.append(float(row['seconds']))
 				lastPosition = int(row['direction'])
-				print(lastPosition)
 				self.__activity[lastPosition].append(float(row['seconds']))
 				silence = 0
 			else:
@@ -125,12 +124,10 @@ class Plot(object):
 		func_max = []
 		func_min = []
 		maximo = max([len(self.__activity[0]),len(self.__activity[1]),len(self.__activity[2]),len(self.__activity[3])])
-		print(maximo)
 		for i in range(0, len(self.__activity)):
 			print(len(self.__activity[i]))
 			node_speak.append(len(self.__activity[i]))
 			func_max.append(int((float(len(self.__activity[i]))/maximo)*(pix_max-pix_min)+10))
-		print(func_max)
 		edgelist = [(1,2),(1,3),(1,4),(2,3),(2,4),(3,4)]
 		G=nx.Graph(edgelist)
 		pos=nx.circular_layout(G)

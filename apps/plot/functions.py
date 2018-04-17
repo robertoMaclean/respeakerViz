@@ -10,19 +10,22 @@ def FillJson(obj):
 	usersInt = obj.GetUsersInterv()
 	data = {
 		'usersTime':[],
-		'usersIntDur':[[],[],[],[]]
+		'usersIntDur':[[],[],[],[]],
+		'usersInterv':[],
 	}
 	user_num = 1
 	for users in usersTime:
 		data['usersTime'].append({'x':'Usuario '+str(user_num),'y':users})
 		user_num += 1
 	user_num = 0
+	#print(usersInt)
 	for users in usersInt:
 		usuario = 'user'+str(user_num)
 		data['usersIntDur'][user_num] = []
 		for interv in range(0,len(users)-1):
-			data['usersIntDur'][user_num].append({'x':str(interv+1),'y':users[interv][-1]-users[interv][0]})
+			#print(users[interv])
+			data['usersIntDur'][user_num].append({'x':str(interv+1),'y':"{0:.2f}".format(users[interv][-1]-users[interv][0])})
 		user_num += 1
-	print(data['usersIntDur'][3])
+	return data
 
 

@@ -38,10 +38,9 @@ def index(request):
 		for users in usersTime:
 			data['users'].append({'x':'Usuario '+str(user_num),'y':users})
 			user_num += 1
-		functions.FillJson(plt)
 		data = json.dumps(data)	
 		global data_plot
-		data_plot = data
+		data_plot = json.dumps(functions.FillJson(plt))
 		return redirect('plot/')
 		#return render(request, 'plot/plot.html')
 	return render(request, 'plot/index.html')

@@ -1,6 +1,6 @@
 $(document).ready(function() {
-	$('.btn').click(function() {
-		$('.btn').removeClass('clicked')
+	$('.lateral').click(function() {
+		$('.lateral').removeClass('clicked')
     	$(this).toggleClass('clicked');
 
 	});
