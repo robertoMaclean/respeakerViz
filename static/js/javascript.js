@@ -1,6 +1,8 @@
 $( document ).ready(function() {
     $('#graph').hide()
-	$('#users-footer').hide()    
+	$('#users-footer').hide() 
+    $('#dount').hide()   
+    alert("asasd")
     click_buttons()
 });
 
