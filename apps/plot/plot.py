@@ -23,6 +23,7 @@ class Plot(object):
 		self.__speakTime = 0
 		self.__relations = [0,0,0,0,0,0]
 		self.__usersInterv = []
+		self.__userStartInt = [[],[]]
 		functions.ensureDir(outputPath)
 		self.ExtractData()
 		self.UsersSpeak()
@@ -41,22 +42,28 @@ class Plot(object):
 	def GetUsersInterv(self):
 		return self.__usersInterv
 
+	def GetUserStratInt(self):
+		return self.__userStartInt
+
 	def ExtractData(self):
 		interTimes = [[],[],[],[]]
 		timeActivity = []
 		lastPosition = -1
 		silence = 0
+		firstTime = True
 		print(self.__outputPath)
 		reader = csv.DictReader(self.__file, delimiter=";")
 		for row in reader:
 			if int(row['speak']):
 				if int(row['direction']) != lastPosition:
 					if lastPosition != -1:
+						self.__userStartInt[0].append(int(row['direction'])+1)
+						self.__userStartInt[1].append(float(row['seconds']))
 						for i in range(silence):
 							self.__activityContinuos[lastPosition].pop()
 						interTimes[lastPosition].append(timeActivity)
 						timeActivity = []
-						self.FindUsersInteraction(lastPosition+1, int(row['direction'])+1)
+						self.FindUsersInteraction(lastPosition+1, int(row['direction'])+1)				
 				timeActivity.append(float(row['seconds']))
 				lastPosition = int(row['direction'])
 				self.__activity[lastPosition].append(float(row['seconds']))

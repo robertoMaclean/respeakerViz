@@ -30,15 +30,7 @@ def index(request):
 		print(plt.GetUserTime())
 		print(plt.GetSpeakTime())
 		print(plt.GetUsersInterv()[3])
-		usersTime = plt.GetUserTime()
-		data = {
-				'users':[]
-				}
-		user_num = 1
-		for users in usersTime:
-			data['users'].append({'x':'Usuario '+str(user_num),'y':users})
-			user_num += 1
-		data = json.dumps(data)	
+		
 		global data_plot
 		data_plot = json.dumps(functions.FillJson(plt))
 		return redirect('plot/')
@@ -48,7 +40,46 @@ def index(request):
 def plot(request):	
 	#print(request.session.get['data'])
 	global data_plot
+	print(request)
 	return render(request, 'plot/plot.html',{"data":data_plot})
+
+def interactions(request):
+	html = '<img class="img-responsive" id="plot_img" src="../media/plot/users_interaction.png" />'
+	return HttpResponse(html)
+
+def interv(request):
+	html = '<img class="img-responsive" id="plot_img" src="../media/plot/users_speak.png" />'
+	return HttpResponse(html)
+
+def bar_graph(request):
+	html = '<div id="graph" class="graph"></div>'
+	global data_plot
+	return HttpResponse(json.dumps({
+		"data": data_plot,
+		"html": html
+		}),
+		content_type="aplication/json"
+	)
+
+def line_graph(request):
+	html = '<div id="line" class="graph"></div>'
+	return HttpResponse(json.dumps({
+		"data": data_plot,
+		"html": html
+		}),
+		content_type="aplication/json"
+	)
+
+def donut_graph(request):
+	html = '<div id="donut" class="graph"></div>'
+	global data_plot
+	return HttpResponse(json.dumps({
+		"data": data_plot,
+		"html": html
+		}),
+		content_type="aplication/json"
+	)
+
 
 def simple_upload(request):
 	if request.method == 'POST' and request.FILES['csv_file']:

@@ -9,6 +9,7 @@ def FillJson(obj):
 	usersTime = obj.GetUserTime()
 	usersInt = obj.GetUsersInterv()
 	time = obj.GetTime()
+	userStartInt = obj.GetUserStratInt()
 	data = {
 		'usersTime':[],
 		'usersIntDur':[[],[],[],[]],
@@ -27,23 +28,23 @@ def FillJson(obj):
 	#print(usersInt)
 
 	for users in usersInt:
-		usuario = 'user'+str(user_num)
 		data['usersIntDur'][user_num] = []
-		a = b = c = d = 0
-		for interv in range(0,len(users)-1):
-			res = users[interv][0]
-			if user_num == 0:
-				a += 1
-			elif user_num == 1:
-				b += 1
-			elif user_num == 2:
-				c += 1
-			elif user_num == 3:
-				d += 1
-			
+		for interv in range(0,len(users)-1):		
 			data['usersIntDur'][user_num].append({'x':str(interv+1),'y':"{0:.2f}".format(users[interv][-1]-users[interv][0])})
-			data['userIntInTime'].append({'y':res,'a':a, 'b':b, 'c':c, 'd':d})
+			
 		user_num += 1
+	a=b=c=d=0
+	for pos in range(0, len(userStartInt[0])):
+		if userStartInt[0][pos] == 1:
+			a += 1
+		elif userStartInt[0][pos] == 2:
+			b += 1
+		elif userStartInt[0][pos] == 3:
+			c += 1
+		elif userStartInt[0][pos] == 4:
+			d += 1
+
+		data['userIntInTime'].append({'y':userStartInt[1][pos],'a':a, 'b':b, 'c':c, 'd':d})
 	return data
 
 

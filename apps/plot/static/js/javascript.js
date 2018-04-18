@@ -1,45 +1,83 @@
 $( document ).ready(function() {
-    hideGraphs()
 	$('#users-footer').hide()    
     click_buttons()
 });
 
 function click_buttons(){
 	$('#users_interaction').on('click', function(){
-		$('#plot_img').show()
-        hideGraphs()
-        $('#plot_img').attr('src','../media/plot/users_interaction.png');
-        $('.panel-heading').text('Interacción entre los participantes');
+        $('#users-footer').hide() 
+        $.ajax({
+            type: "GET",
+            url: '/plot/interactions',
+            success: function(data) {
+            	$('.panel-body').html(data)
+            	$('.panel-heading').html('Interacción entre participantes')
+            	console.log('success')
+            },
+            error: function(data) {
+                console.log('error')
+            },
+        });
     });
 
     $('#users_speak').on('click', function(){
-    	$('#plot_img').show()
-        hideGraphs()
-    	$('#users-footer').hide()
-        $('#plot_img').attr('src','../media/plot/users_speak.png');
-        $('.panel-heading').text('Intervenciones de los participante');
+        $('#users-footer').hide() 
+        $.ajax({
+            type: "GET",
+            url: '/plot/interv',
+            success: function(data) {
+            	//$('.panel-body').load(data)
+            	$('.panel-body').html(data)
+            	$('.panel-heading').html('Intervenciones en el tiempo')
+                console.log('success')
+            },
+            error: function(data) {
+                console.log('error')
+            },
+        });
     });
 
     $('#users_total_time').on('click', function(){
-    	$('#plot_img').hide()
-    	$('#graph').show()
-        $('#donut').hide()
-        $('#line').hide()
-		$('#users-footer').hide()    
-    	morris.setData(data.usersTime)
-    	$('.panel-heading').text('Tiempo total de habla por participante');
-    	console.log(data)
+		$('#users-footer').hide() 
+    	$.ajax({
+            type: "GET",
+            url: '/plot/barGraph',
+            success: function(data) {
+            	console.log(data.html)
+            	$('.panel-body').html(data.html)
+            	$('.panel-heading').html('Tiempo total de habla por participante')
+    			//morris.setData(data.usersTime)
+    			var json = JSON.parse(data.data)
+    			console.log(json)
+    			barGraph(json.usersTime)
+                console.log('success')
+            },
+            error: function(data) {
+                console.log('error')
+            },
+        });
     });
 
     $('#users_interv_time').on('click', function(){
-    	$('#plot_img').hide()
-        $('#donut').hide()
-    	$('#graph').show()
-        $('#line').hide()
-    	$('#users-footer').show()
-    	$('.panel-heading').text('Duración intervenciones');
-    	morris.setData(data.usersIntDur[0])
+    	$.ajax({
+            type: "GET",
+            url: '/plot/barGraph',
+            success: function(data) {
+            	//$('.panel-body').load(data)
+            	$('.panel-body').html(data.html)
+            	$('.panel-heading').html('Duración intervenciones')
+            	$('#users-footer').show()
+            	var json = JSON.parse(data.data)
+    			console.log(json)
+    			barGraph(json.usersIntDur[0])
+                console.log('success')
+            },
+            error: function(data) {
+                console.log('error')
+            },
+        });
     });
+
     $('#user1').on('click', function(){
     	morris.setData(data.usersIntDur[0])
     });
@@ -54,29 +92,45 @@ function click_buttons(){
     });
 
     $('#users_time_percent').on('click', function(){
-        $('#plot_img').hide()
-        $('#donut').show()
-        $('#graph').hide()
-        $('#line').hide()
-        $('#users-footer').hide()
-        $('.panel-heading').text('Porcentaje de habla por usuario');
-        morrisDonut.setData(data.usersSpeakTimePercent)
+        $('#users-footer').hide() 
+        $.ajax({
+            type: "GET",
+            url: '/plot/donutGraph',
+            success: function(data) {
+            	//$('.panel-body').load(data)
+            	$('.panel-body').html(data.html)
+            	$('.panel-heading').html('Porcentaje tiempo de habla por participante')
+            	var json = JSON.parse(data.data)
+    			console.log(json)
+    			donutGraph(json.usersSpeakTimePercent)
+                console.log('success')
+            },
+            error: function(data) {
+                console.log('error')
+            },
+        });
+        
     });
 
     $('#users_int_in_time').on('click', function(){
-        $('#plot_img').hide()
-        $('#donut').hide()
-        $('#graph').hide()
-        $('#line').show()
-        $('#users-footer').hide()
-        $('.panel-heading').text('Porcentaje de habla por usuario');
-        morrisLine.setData(data.userIntInTime)
+    	$('#users-footer').hide() 
+        $.ajax({
+            type: "GET",
+            url: '/plot/lineGraph',
+            success: function(data) {
+            	//$('.panel-body').load(data)
+            	$('.panel-body').html(data.html)
+            	$('.panel-heading').html('Intervenciones a traves del tiempo')
+                var json = JSON.parse(data.data)
+    			console.log(json)
+    			lineGraph(json.userIntInTime)
+                console.log('success')
+            },
+            error: function(data) {
+                console.log('error')
+            },
+        });
     });
 }
 
-function hideGraphs(){
-    $('#graph').hide()
-    $('#donut').hide()
-    $('#line').hide()
-}
     
