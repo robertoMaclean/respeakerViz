@@ -1,17 +1,16 @@
 $( document ).ready(function() {
-	$('#users-footer').hide()    
     click_buttons()
 });
 
 function click_buttons(){
 	$('#users_interaction').on('click', function(){
-        $('#users-footer').hide() 
         $.ajax({
             type: "GET",
             url: '/plot/interactions',
             success: function(data) {
             	$('.panel-body').html(data)
             	$('.panel-heading').html('Interacción entre participantes')
+            	$('.panel-footer').html('')
             	console.log('success')
             },
             error: function(data) {
@@ -21,14 +20,13 @@ function click_buttons(){
     });
 
     $('#users_speak').on('click', function(){
-        $('#users-footer').hide() 
         $.ajax({
             type: "GET",
             url: '/plot/interv',
             success: function(data) {
-            	//$('.panel-body').load(data)
             	$('.panel-body').html(data)
             	$('.panel-heading').html('Intervenciones en el tiempo')
+            	$('.panel-footer').html('')
                 console.log('success')
             },
             error: function(data) {
@@ -38,7 +36,6 @@ function click_buttons(){
     });
 
     $('#users_total_time').on('click', function(){
-		$('#users-footer').hide() 
     	$.ajax({
             type: "GET",
             url: '/plot/barGraph',
@@ -46,7 +43,7 @@ function click_buttons(){
             	console.log(data.html)
             	$('.panel-body').html(data.html)
             	$('.panel-heading').html('Tiempo total de habla por participante')
-    			//morris.setData(data.usersTime)
+            	$('.panel-footer').html('')
     			var json = JSON.parse(data.data)
     			console.log(json)
     			barGraph(json.usersTime)
@@ -58,7 +55,12 @@ function click_buttons(){
         });
     });
 
-    $('#users_interv_time').on('click', function(){
+    $('#users_interv_time').on('click', function(){ 	
+    	footer = '<button type="submit" id="user1" class="btn btn-danger">Usuario 1</button>'
+    	footer += '<button type="submit" id="user2" class="btn btn-primary">Usuario 2</button>'
+    	footer += '<button type="submit" id="user3" class="btn btn-success">Usuario 3</button>'
+    	footer += '<button type="submit" id="user4" class="btn btn-warning">Usuario 4</button>'
+
     	$.ajax({
             type: "GET",
             url: '/plot/barGraph',
@@ -66,8 +68,9 @@ function click_buttons(){
             	//$('.panel-body').load(data)
             	$('.panel-body').html(data.html)
             	$('.panel-heading').html('Duración intervenciones')
-            	$('#users-footer').show()
+            	$('.panel-footer').html(footer)
             	var json = JSON.parse(data.data)
+            	click_buttons_interv_time()
     			console.log(json)
     			barGraph(json.usersIntDur[0])
                 console.log('success')
@@ -78,21 +81,7 @@ function click_buttons(){
         });
     });
 
-    $('#user1').on('click', function(){
-    	morris.setData(data.usersIntDur[0])
-    });
-    $('#user2').on('click', function(){
-    	morris.setData(data.usersIntDur[1])
-    });
-    $('#user3').on('click', function(){
-    	morris.setData(data.usersIntDur[2])
-    });
-    $('#user4').on('click', function(){
-    	morris.setData(data.usersIntDur[3])
-    });
-
     $('#users_time_percent').on('click', function(){
-        $('#users-footer').hide() 
         $.ajax({
             type: "GET",
             url: '/plot/donutGraph',
@@ -100,6 +89,7 @@ function click_buttons(){
             	//$('.panel-body').load(data)
             	$('.panel-body').html(data.html)
             	$('.panel-heading').html('Porcentaje tiempo de habla por participante')
+            	$('.panel-footer').html('')
             	var json = JSON.parse(data.data)
     			console.log(json)
     			donutGraph(json.usersSpeakTimePercent)
@@ -113,14 +103,13 @@ function click_buttons(){
     });
 
     $('#users_int_in_time').on('click', function(){
-    	$('#users-footer').hide() 
         $.ajax({
             type: "GET",
             url: '/plot/lineGraph',
             success: function(data) {
-            	//$('.panel-body').load(data)
             	$('.panel-body').html(data.html)
             	$('.panel-heading').html('Intervenciones a traves del tiempo')
+            	$('.panel-footer').html('')
                 var json = JSON.parse(data.data)
     			console.log(json)
     			lineGraph(json.userIntInTime)
@@ -131,6 +120,22 @@ function click_buttons(){
             },
         });
     });
+
+    function click_buttons_interv_time(){
+    	$('#user1').on('click', function(){
+    	morris.setData(data.usersIntDur[0])
+    	console.log("hola")
+	    });
+	    $('#user2').on('click', function(){
+	    	morris.setData(data.usersIntDur[1])
+	    });
+	    $('#user3').on('click', function(){
+	    	morris.setData(data.usersIntDur[2])
+	    });
+	    $('#user4').on('click', function(){
+	    	morris.setData(data.usersIntDur[3])
+	    });
+    }
 }
 
     
