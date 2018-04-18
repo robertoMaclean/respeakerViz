@@ -17,6 +17,20 @@ var morrisDonut = Morris.Donut({
     {label: "Download Sales", value: 12},
     {label: "In-Store Sales", value: 30},
     {label: "Mail-Order Sales", value: 20}
-  ]
+  ],
+  colors: ['red', 'blue','green','yellow']
+});
+
+var morrisLine = Morris.Line({
+  element: 'line',
+  parseTime: false,
+  data: [
+  ],
+  xkey: 'y',
+  ykeys: ['a','b','c','d'],
+  labels: ['Usuario 1', 'Usuario 2', 'Usuario 3', 'Usuario 4'],
+  resize: true,
+  redraw: true,
+  xLabels: 'seconds'
 });
 
