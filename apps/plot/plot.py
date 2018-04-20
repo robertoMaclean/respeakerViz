@@ -24,6 +24,7 @@ class Plot(object):
 		self.__relations = [0,0,0,0,0,0]
 		self.__usersInterv = []
 		self.__userStartInt = [[],[]]
+		self.__volPromInterv = [[],[],[],[]]
 		functions.ensureDir(outputPath)
 		self.ExtractData()
 		self.UsersSpeak()
@@ -42,37 +43,43 @@ class Plot(object):
 	def GetUsersInterv(self):
 		return self.__usersInterv
 
-	def GetUserStratInt(self):
+	def GetUserStartInt(self):
 		return self.__userStartInt
 
 	def ExtractData(self):
 		interTimes = [[],[],[],[]]
 		timeActivity = []
+		volProm = []
 		lastPosition = -1
 		silence = 0
-		firstTime = True
 		print(self.__outputPath)
 		reader = csv.DictReader(self.__file, delimiter=";")
 		for row in reader:
 			if int(row['speak']):
 				if int(row['direction']) != lastPosition:
+					self.__userStartInt[0].append(int(row['direction'])+1)
+					self.__userStartInt[1].append(float(row['seconds']))
 					if lastPosition != -1:
-						self.__userStartInt[0].append(int(row['direction'])+1)
-						self.__userStartInt[1].append(float(row['seconds']))
 						for i in range(silence):
 							self.__activityContinuos[lastPosition].pop()
 						interTimes[lastPosition].append(timeActivity)
+						self.__volPromInterv[lastPosition].append("{0:.2f}".format(sum(volProm)/len(volProm)))
 						timeActivity = []
-						self.FindUsersInteraction(lastPosition+1, int(row['direction'])+1)				
+						self.FindUsersInteraction(lastPosition+1, int(row['direction'])+1)
+					lastSecond = row['seconds']
+					lastPosition = int(row['direction'])
+				volProm.append(float(row['amplitude']))							
+				self.__activity[int(row['direction'])].append(float(row['seconds']))
 				timeActivity.append(float(row['seconds']))
-				lastPosition = int(row['direction'])
-				self.__activity[lastPosition].append(float(row['seconds']))
 				silence = 0
 			else:
 				silence += 1
-			
 			self.__activityContinuos[lastPosition].append(float(row['seconds']))
 			self.__time = row['seconds']
+
+		interTimes[lastPosition].append(timeActivity)
+		for i in range(silence):
+			self.__activityContinuos[lastPosition].pop()
 		for x in interTimes:
 			self.__usersInterv.append(x)
 
