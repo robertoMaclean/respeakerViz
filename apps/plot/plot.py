@@ -56,26 +56,31 @@ class Plot(object):
 		reader = csv.DictReader(self.__file, delimiter=";")
 		for row in reader:
 			if int(row['speak']):
+				print("direccion:", row['direction'])
 				if int(row['direction']) != lastPosition:
 					self.__userStartInt[0].append(int(row['direction'])+1)
 					self.__userStartInt[1].append(float(row['seconds']))
 					if lastPosition != -1:
+						interTimes[lastPosition].append(timeActivity)
+						self.FindUsersInteraction(lastPosition+1, int(row['direction'])+1)
 						for i in range(silence):
 							self.__activityContinuos[lastPosition].pop()
-						interTimes[lastPosition].append(timeActivity)
-						self.__volPromInterv[lastPosition].append("{0:.2f}".format(sum(volProm)/len(volProm)))
-						timeActivity = []
-						self.FindUsersInteraction(lastPosition+1, int(row['direction'])+1)
-					lastSecond = row['seconds']
-					lastPosition = int(row['direction'])
-				volProm.append(float(row['amplitude']))							
+					else:
+						for i in range(silence):
+							print(lastPosition)
+							self.__activityContinuos[0].pop()
+					#self.__volPromInterv[lastPosition].append("{0:.2f}".format(sum(volProm)/len(volProm)))			
+					timeActivity = []														
 				self.__activity[int(row['direction'])].append(float(row['seconds']))
+				volProm.append(float(row['amplitude']))							
 				timeActivity.append(float(row['seconds']))
+				lastPosition = int(row['direction'])
 				silence = 0
 			else:
 				silence += 1
-			self.__activityContinuos[lastPosition].append(float(row['seconds']))
+			self.__activityContinuos[int(row['direction'])].append(float(row['seconds']))	
 			self.__time = row['seconds']
+
 
 		interTimes[lastPosition].append(timeActivity)
 		for i in range(silence):
@@ -91,7 +96,7 @@ class Plot(object):
 		div = float(self.__time)*0.12
 		plt.xticks(np.arange(0, float(self.__time)+1, int(float(self.__time)/div)))
 		plt.yticks([1],["Voz activa"])
-		linewidth = float(self.__time)/300
+		linewidth = 10/float(self.__time)
 		plt.vlines(self.__activity[0], 0, 1, linewidth=linewidth, label='Usuario 1', color='red')
 		plt.vlines(self.__activity[1], 0, 1, linewidth=linewidth, label='Usuario 2', color='blue')
 		plt.vlines(self.__activity[2], 0, 1, linewidth=linewidth, label='Usuario 3', color='green')
@@ -122,7 +127,7 @@ class Plot(object):
 			self.__relations[0] += 1
 		elif pos1+pos2 == 4:
 			self.__relations[1] += 1
-		elif (pos1 or pos2) == 1:
+		elif pos1 == 1 or pos2 == 1:
 			self.__relations[2] += 1
 		elif pos1 + pos2 == 5:
 			self.__relations[3] += 1
@@ -133,7 +138,7 @@ class Plot(object):
 
 	def UsersInteraction(self):
 		node_speak = []
-		pix_max = 2000
+		pix_max = 1500
 		pix_min = 500
 		func_max = []
 		func_min = []
@@ -141,7 +146,7 @@ class Plot(object):
 		for i in range(0, len(self.__activity)):
 			print(len(self.__activity[i]))
 			node_speak.append(len(self.__activity[i]))
-			func_max.append(int((float(len(self.__activity[i]))/maximo)*(pix_max-pix_min)+10))
+			func_max.append(int((float(len(self.__activity[i]))/maximo)*(pix_max-pix_min)+pix_min))
 		edgelist = [(1,2),(1,3),(1,4),(2,3),(2,4),(3,4)]
 		G=nx.Graph(edgelist)
 		pos=nx.circular_layout(G)

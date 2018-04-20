@@ -13,7 +13,6 @@ def FillJson(obj):
 	data = {
 		'usersTime':[],
 		'usersIntDur':[[],[],[],[]],
-		'usersInterv':[],
 		'usersSpeakTimePercent':[],
 		'userIntInTime': []
 	}
