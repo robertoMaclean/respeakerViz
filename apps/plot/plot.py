@@ -25,6 +25,7 @@ class Plot(object):
 		self.__usersInterv = []
 		self.__userStartInt = [[],[]]
 		self.__volPromInterv = [[],[],[],[]]
+		self.__usersVol = []
 		functions.ensureDir(outputPath)
 		self.ExtractData()
 		self.UsersSpeak()
@@ -46,15 +47,19 @@ class Plot(object):
 	def GetUserStartInt(self):
 		return self.__userStartInt
 
+	def GetUsersVol(self):
+		return self.__usersVol
+
 	def ExtractData(self):
 		interTimes = [[],[],[],[]]
 		timeActivity = []
 		volProm = []
 		lastPosition = -1
 		silence = 0
-		print(self.__outputPath)
 		reader = csv.DictReader(self.__file, delimiter=";")
 		for row in reader:
+			self.__usersVol.append((float(row['amplitude']), int(row['direction'])+1,float(row['seconds'])))
+			
 			if int(row['speak']):
 				print("direccion:", row['direction'])
 				if int(row['direction']) != lastPosition:
@@ -67,7 +72,6 @@ class Plot(object):
 							self.__activityContinuos[lastPosition].pop()
 					else:
 						for i in range(silence):
-							print(lastPosition)
 							self.__activityContinuos[0].pop()
 					#self.__volPromInterv[lastPosition].append("{0:.2f}".format(sum(volProm)/len(volProm)))			
 					timeActivity = []														
@@ -93,33 +97,33 @@ class Plot(object):
 		#figure.set_size_inches(12, 5, forward=True)
 		plt.figure(figsize=(12, 4))
 		plt.subplot(2,1,1)
-		div = float(self.__time)*0.12
-		plt.xticks(np.arange(0, float(self.__time)+1, int(float(self.__time)/div)))
+		if(float(self.__time)<10):
+			sep = 1
+		else:
+			sep = int(float(self.__time)/12)
+		plt.xticks(np.arange(0, float(self.__time)+1, sep))
 		plt.yticks([1],["Voz activa"])
-		linewidth = 10/float(self.__time)
-		plt.vlines(self.__activity[0], 0, 1, linewidth=linewidth, label='Usuario 1', color='red')
-		plt.vlines(self.__activity[1], 0, 1, linewidth=linewidth, label='Usuario 2', color='blue')
-		plt.vlines(self.__activity[2], 0, 1, linewidth=linewidth, label='Usuario 3', color='green')
-		plt.vlines(self.__activity[3], 0, 1, linewidth=linewidth, label='Usuario 4', color='orange')
+		plt.vlines(self.__activity[0], 0, 1, label='Usuario 1', color='red')
+		plt.vlines(self.__activity[1], 0, 1, label='Usuario 2', color='blue')
+		plt.vlines(self.__activity[2], 0, 1, label='Usuario 3', color='green')
+		plt.vlines(self.__activity[3], 0, 1, label='Usuario 4', color='orange')
 		plt.xlabel("tiempo (segundos)") 
 		plt.title("Activación de voz con silencios")
 		plt.subplot(2,1,2)
-		plt.xticks(np.arange(0, float(self.__time)+1, int(float(self.__time)/div)))
+		plt.xticks(np.arange(0, float(self.__time)+1, sep))
 		plt.yticks([1],["Voz activa"])
-		plt.vlines(self.__activityContinuos[0], 0, 1, linewidth=linewidth, label='Usuario 1', color='red')
-		plt.vlines(self.__activityContinuos[1], 0, 1, linewidth=linewidth, label='Usuario 2', color='blue')
-		plt.vlines(self.__activityContinuos[2], 0, 1, linewidth=linewidth, label='Usuario 3', color='green')
-		plt.vlines(self.__activityContinuos[3], 0, 1, linewidth=linewidth, label='Usuario 4', color='orange')
+		plt.vlines(self.__activityContinuos[0], 0, 1, label='Usuario 1', color='red')
+		plt.vlines(self.__activityContinuos[1], 0, 1, label='Usuario 2', color='blue')
+		plt.vlines(self.__activityContinuos[2], 0, 1, label='Usuario 3', color='green')
+		plt.vlines(self.__activityContinuos[3], 0, 1, label='Usuario 4', color='orange')
 		plt.xlabel("tiempo (segundos)") 
 		plt.title("Activación de voz sin silencios")		
-		#plt.legend(frameon=True, framealpha=0.6)
 		leg = plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.5), fancybox=False, shadow=False, 
 				ncol=5)
 		for line in leg.get_lines():
 			line.set_linewidth(4.0)
 		plt.tight_layout()
 		plt.savefig(self.__outputPath+'/users_speak.png')
-		#plt.show()
 		plt.close()
 
 	def FindUsersInteraction(self, pos1, pos2):
@@ -144,7 +148,6 @@ class Plot(object):
 		func_min = []
 		maximo = max([len(self.__activity[0]),len(self.__activity[1]),len(self.__activity[2]),len(self.__activity[3])])
 		for i in range(0, len(self.__activity)):
-			print(len(self.__activity[i]))
 			node_speak.append(len(self.__activity[i]))
 			func_max.append(int((float(len(self.__activity[i]))/maximo)*(pix_max-pix_min)+pix_min))
 		edgelist = [(1,2),(1,3),(1,4),(2,3),(2,4),(3,4)]

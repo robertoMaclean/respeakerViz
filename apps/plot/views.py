@@ -6,6 +6,8 @@ import csv
 import apps.plot.plot as ploter
 import json 
 import apps.plot.functions as functions
+from django.contrib import messages
+from django.urls import reverse
 
 # Create your views here.
 data_plot = ''
@@ -15,21 +17,21 @@ def index(request):
 		csv_file = request.FILES["csv_file"]
 		if not csv_file.name.endswith('.csv'):
 			messages.error(request,'File is not CSV type')
-			return HttpResponseRedirect(reverse("myapp:upload_csv"))
+			return redirect(reverse("upload_file"))
 		#if file is too large, return
 		if csv_file.multiple_chunks():
 			messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000),))
-			return HttpResponseRedirect(reverse("myapp:upload_csv"))
+			return redirect(reverse("upload_file"))
 		# fs = FileSystemStorage()
 		# filename = fs.save(csv_file.name, csv_file)
 		# uploaded_file_url = fs.url(filename)
 		#print(csv_file.read())
 		file_data = csv_file.read().decode("utf-8")
 		plt = ploter.Plot(file_data)
-		print('tiempo total '+plt.GetTime())
-		print(plt.GetUserTime())
-		print(plt.GetSpeakTime())
-		print(plt.GetUsersInterv()[3])
+		#print('tiempo total '+plt.GetTime())
+		#print(plt.GetUserTime())
+		#print(plt.GetSpeakTime())
+		#print(plt.GetUsersInterv()[3])
 		
 		global data_plot
 		data_plot = json.dumps(functions.FillJson(plt))
@@ -40,7 +42,6 @@ def index(request):
 def plot(request):	
 	#print(request.session.get['data'])
 	global data_plot
-	print(request)
 	return render(request, 'plot/plot.html',{"data":data_plot})
 
 def interactions(request):

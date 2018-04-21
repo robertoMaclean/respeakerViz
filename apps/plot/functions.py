@@ -10,11 +10,13 @@ def FillJson(obj):
 	usersInt = obj.GetUsersInterv()
 	time = obj.GetTime()
 	userStartInt = obj.GetUserStartInt()
+	usersVol = obj.GetUsersVol()
 	data = {
 		'usersTime':[],
 		'usersIntDur':[[],[],[],[]],
 		'usersSpeakTimePercent':[],
-		'userIntInTime': []
+		'userIntInTime': [],
+		'usersVol': [[],[],[],[]],
 	}
 	user_num = 1
 	speak_time_users = float(usersTime[0]) + float(usersTime[1]) + float(usersTime[2]) + float(usersTime[3])
@@ -24,9 +26,9 @@ def FillJson(obj):
 		user_num += 1
 	user_num = 0
 	#print(usersInt)
-	print(usersInt)
+	#print(usersInt)
 	for users in usersInt:
-		print('users', users)
+		#print('users', users)
 		for interv in range(0,len(users)):		
 			data['usersIntDur'][user_num].append({'x':str(interv+1),'y':"{0:.2f}".format(users[interv][-1]-users[interv][0])})		
 		user_num += 1
@@ -42,7 +44,25 @@ def FillJson(obj):
 		elif userStartInt[0][pos] == 4:
 			d += 1
 		data['userIntInTime'].append({'y':userStartInt[1][pos],'a':a, 'b':b, 'c':c, 'd':d})
-		
+	pos = 1
+	coef = int()
+	for vol, user, time in usersVol:
+		if pos == 4:
+			a=b=c=d=0
+			if user == 1:
+				a = vol
+			elif user == 2:
+				b = vol
+			elif user == 3:
+				c = vol
+			else:
+				d = vol
+			data['usersVol'][0].append({'y':time,'a':a})
+			data['usersVol'][1].append({'y':time,'b':b})
+			data['usersVol'][2].append({'y':time,'c':c})
+			data['usersVol'][3].append({'y':time,'d':d})
+			pos = 0
+		pos += 1
 	return data
 
 

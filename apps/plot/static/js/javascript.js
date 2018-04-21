@@ -121,10 +121,28 @@ function click_buttons(){
         });
     });
 
+    $('#users_vol').on('click', function(){
+        $.ajax({
+            type: "GET",
+            url: '/plot/lineGraph',
+            success: function(data) {
+                $('.panel-body').html(data.html)
+                $('.panel-heading').html('Volumen de la voz de los participante')
+                $('.panel-footer').html('')
+                var json = JSON.parse(data.data)
+                console.log(json)
+                lineGraph(json.usersVol)
+                console.log('success')
+            },
+            error: function(data) {
+                console.log('error')
+            },
+        });
+    });
+
     function click_buttons_interv_time(){
     	$('#user1').on('click', function(){
-    	morris.setData(data.usersIntDur[0])
-    	console.log("hola")
+    	   morris.setData(data.usersIntDur[0])
 	    });
 	    $('#user2').on('click', function(){
 	    	morris.setData(data.usersIntDur[1])
