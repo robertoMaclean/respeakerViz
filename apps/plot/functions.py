@@ -17,6 +17,10 @@ def FillJson(obj):
 		'usersSpeakTimePercent':[],
 		'userIntInTime': [],
 		'usersVol': [[],[],[],[]],
+		'd3': {
+			"name":"flare",
+			"children": []
+		},
 	}
 	user_num = 1
 	speak_time_users = float(usersTime[0]) + float(usersTime[1]) + float(usersTime[2]) + float(usersTime[3])
@@ -63,6 +67,11 @@ def FillJson(obj):
 			data['usersVol'][3].append({'y':time,'d':d})
 			pos = 0
 		pos += 1
+
+	data['d3']['children'].append({"name": "AgglomerativeCluster", "size": 3938})
+	data['d3']['children'].append({"name": "AgglomerativeCluster", "size": 3938})
+	data['d3']['children'].append({"name": "AgglomerativeCluster", "size": 3938})
+	data['d3']['children'].append({"name": "AgglomerativeCluster", "size": 3938})
 	return data
 
 

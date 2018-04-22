@@ -11,6 +11,7 @@ urlpatterns = [
     path('plot/barGraph', views.bar_graph, name='bar_graph'),
     path('plot/lineGraph', views.line_graph, name='line_graph'),
     path('plot/donutGraph', views.donut_graph, name='donut_graph'),
+    path('plot/flare.json', views.flare_json, name=''),
 
 ]
 

@@ -140,6 +140,28 @@ function click_buttons(){
         });
     });
 
+    $('#d3').on('click', function(data){      
+        $.ajax({
+            type: "GET",
+            url: '/plot/flare.json',
+            success: function(data) {
+                html = '<svg width="960" height="960"></svg>'
+                console.log(data)
+                $('.panel-body').html(html)
+                $('.panel-heading').html('d3')
+                $('.panel-footer').html('')
+                var json = JSON.parse(data)
+                buble()
+                console.log(json)
+                console.log('success')
+            },
+            error: function(data) {
+                console.log('error')
+            },
+        });
+        
+    });
+
     function click_buttons_interv_time(){
     	$('#user1').on('click', function(){
     	   morris.setData(data.usersIntDur[0])
