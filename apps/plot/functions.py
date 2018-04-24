@@ -18,7 +18,7 @@ def FillJson(obj):
 		'userIntInTime': [],
 		'usersVol': [[],[],[],[]],
 		'd3': {
-			"name":"flare",
+			"name":"Intervenciones",
 			"children": []
 		},
 	}
@@ -33,8 +33,12 @@ def FillJson(obj):
 	#print(usersInt)
 	for users in usersInt:
 		#print('users', users)
-		for interv in range(0,len(users)):		
-			data['usersIntDur'][user_num].append({'x':str(interv+1),'y':"{0:.2f}".format(users[interv][-1]-users[interv][0])})		
+		data['d3']['children'].append({"name": "Usuario"+str(user_num+1), "children": []})
+		for interv in range(0,len(users)):
+			time = "{0:.2f}".format(users[interv][-1]-users[interv][0])	
+			start = "{0:.2f}".format(users[interv][0])	
+			data['usersIntDur'][user_num].append({'x':str(interv+1),'y':time})
+			data['d3']['children'][user_num]['children'].append({"name": "Inicio "+str(time), "size":time })
 		user_num += 1
 	a=b=c=d=0
 	data['userIntInTime'].append({'y':0,'a':a, 'b':b, 'c':c, 'd':d})	
@@ -68,10 +72,19 @@ def FillJson(obj):
 			pos = 0
 		pos += 1
 
-	data['d3']['children'].append({"name": "AgglomerativeCluster", "size": 3938})
-	data['d3']['children'].append({"name": "AgglomerativeCluster", "size": 3938})
-	data['d3']['children'].append({"name": "AgglomerativeCluster", "size": 3938})
-	data['d3']['children'].append({"name": "AgglomerativeCluster", "size": 3938})
 	return data
 
-
+def createChildrens(pos):
+	data['d3']['children'].append({"name": "Usuario"+str(pos+1), "children": []})
+	# data['d3']['children'].append({"name": "Usuario 2", "children": []})
+	# data['d3']['children'].append({"name": "Usuario 3", "children": []})
+	# data['d3']['children'].append({"name": "Usuario 4", "children": []})
+	#data['d3']['children'][0]['children'].append({"name": "Usuario 1", "size":0.5 })
+	# data['d3']['children'][0]['children'].append({"name": "asd", "size":1 })
+	# data['d3']['children'][0]['children'].append({"name": "asdasd 1", "size":2 })
+	# data['d3']['children'][0]['children'].append({"name": "asdsao 1", "size":4 })
+	# data['d3']['children'][1]['children'].append({"name": "Usuario 2", "size":1 })
+	# data['d3']['children'][2]['children'].append({"name": "Usuario 3", "size": 2})
+	# data['d3']['children'][3]['children'].append({"name": "Usuario 4", "size": 15})
+def fillChildrens(pos, time, size):
+	data['d3']['children'][pos]['children'].append({"name": "Inicio "+str(time), "size":size })

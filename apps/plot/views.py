@@ -140,6 +140,6 @@ def flare_json(request):
 	# }
 	global data_plot
 	data = json.loads(data_plot)
-	print("data plot",data)
+	#print("data plot",data)
 	data = json.dumps(data['d3'])
 	return HttpResponse(data)
