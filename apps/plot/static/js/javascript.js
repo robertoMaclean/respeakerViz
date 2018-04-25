@@ -122,16 +122,21 @@ function click_buttons(){
     });
 
     $('#users_vol').on('click', function(){
+        footer = '<button type="submit" id="user1" class="btn btn-danger">Usuario 1</button>'
+        footer += '<button type="submit" id="user2" class="btn btn-primary">Usuario 2</button>'
+        footer += '<button type="submit" id="user3" class="btn btn-success">Usuario 3</button>'
+        footer += '<button type="submit" id="user4" class="btn btn-warning">Usuario 4</button>'
         $.ajax({
             type: "GET",
-            url: '/plot/lineGraph',
+            url: '/plot/barGraph',
             success: function(data) {
                 $('.panel-body').html(data.html)
                 $('.panel-heading').html('Volumen de la voz de los participante')
-                $('.panel-footer').html('')
+                $('.panel-footer').html(footer)
                 var json = JSON.parse(data.data)
                 console.log(json)
-                lineGraph(json.usersVol)
+                click_buttons_users_vol()
+                barGraph(json.usersVol[0])
                 console.log('success')
             },
             error: function(data) {
@@ -140,7 +145,7 @@ function click_buttons(){
         });
     });
 
-    $('#d3').on('click', function(data){      
+    $('#users_interv_buble').on('click', function(data){      
         $.ajax({
             type: "GET",
             url: '/plot/flare.json',
@@ -148,7 +153,7 @@ function click_buttons(){
                 html = '<svg width="960" height="960"></svg>'
                 console.log(data)
                 $('.panel-body').html(html)
-                $('.panel-heading').html('d3')
+                $('.panel-heading').html('Duración intervenciones')
                 $('.panel-footer').html('')
                 var json = JSON.parse(data)
                 buble()
@@ -175,6 +180,21 @@ function click_buttons(){
 	    $('#user4').on('click', function(){
 	    	morris.setData(data.usersIntDur[3])
 	    });
+    }
+
+        function click_buttons_users_vol(){
+        $('#user1').on('click', function(){
+           morris.setData(data.usersVol[0])
+        });
+        $('#user2').on('click', function(){
+            morris.setData(data.usersVol[1])
+        });
+        $('#user3').on('click', function(){
+            morris.setData(data.usersVol[2])
+        });
+        $('#user4').on('click', function(){
+            morris.setData(data.usersVol[3])
+        });
     }
 }
 

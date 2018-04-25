@@ -50,6 +50,9 @@ class Plot(object):
 	def GetUsersVol(self):
 		return self.__usersVol
 
+	def GetUsersVolPromInterv(self):
+		return self.__volPromInterv
+
 	def ExtractData(self):
 		interTimes = [[],[],[],[]]
 		timeActivity = []
@@ -59,13 +62,16 @@ class Plot(object):
 		reader = csv.DictReader(self.__file, delimiter=";")
 		for row in reader:
 			self.__usersVol.append((float(row['amplitude']), int(row['direction'])+1,float(row['seconds'])))
-			
+
 			if int(row['speak']):
-				print("direccion:", row['direction'])
+				print("direccion:", str(row['direction']))
 				if int(row['direction']) != lastPosition:
 					self.__userStartInt[0].append(int(row['direction'])+1)
 					self.__userStartInt[1].append(float(row['seconds']))
 					if lastPosition != -1:
+						prom = sum(volProm)/len(volProm)
+						self.__volPromInterv[int(row['direction'])].append(prom)
+						volProm = []
 						interTimes[lastPosition].append(timeActivity)
 						self.FindUsersInteraction(lastPosition+1, int(row['direction'])+1)
 						for i in range(silence):

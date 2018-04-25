@@ -11,6 +11,7 @@ def FillJson(obj):
 	time = obj.GetTime()
 	userStartInt = obj.GetUserStartInt()
 	usersVol = obj.GetUsersVol()
+	usersVolInterv = obj.GetUsersVolPromInterv()
 	data = {
 		'usersTime':[],
 		'usersIntDur':[[],[],[],[]],
@@ -53,38 +54,29 @@ def FillJson(obj):
 			d += 1
 		data['userIntInTime'].append({'y':userStartInt[1][pos],'a':a, 'b':b, 'c':c, 'd':d})
 	pos = 1
-	coef = int()
-	for vol, user, time in usersVol:
-		if pos == 4:
-			a=b=c=d=0
-			if user == 1:
-				a = vol
-			elif user == 2:
-				b = vol
-			elif user == 3:
-				c = vol
-			else:
-				d = vol
-			data['usersVol'][0].append({'y':time,'a':a})
-			data['usersVol'][1].append({'y':time,'b':b})
-			data['usersVol'][2].append({'y':time,'c':c})
-			data['usersVol'][3].append({'y':time,'d':d})
-			pos = 0
-		pos += 1
-
+	# for vol, user, time in usersVol:
+	# 	if pos == 4:
+	# 		a=b=c=d=0
+	# 		if user == 1:
+	# 			a = vol
+	# 		elif user == 2:
+	# 			b = vol
+	# 		elif user == 3:
+	# 			c = vol
+	# 		else:
+	# 			d = vol
+	# 		data['usersVol'][0].append({'y':time,'a':a})
+	# 		data['usersVol'][1].append({'y':time,'b':b})
+	# 		data['usersVol'][2].append({'y':time,'c':c})
+	# 		data['usersVol'][3].append({'y':time,'d':d})
+	# 		pos = 0
+	# 	pos += 1
+	user_num = 0
+	for user in usersVolInterv:
+		interv = 1
+		for vol in user:
+			data['usersVol'][user_num].append({'x':str(interv),'y':'{0:.2f}'.format(vol)})
+			interv += 1
+		user_num+= 1
 	return data
 
-def createChildrens(pos):
-	data['d3']['children'].append({"name": "Usuario"+str(pos+1), "children": []})
-	# data['d3']['children'].append({"name": "Usuario 2", "children": []})
-	# data['d3']['children'].append({"name": "Usuario 3", "children": []})
-	# data['d3']['children'].append({"name": "Usuario 4", "children": []})
-	#data['d3']['children'][0]['children'].append({"name": "Usuario 1", "size":0.5 })
-	# data['d3']['children'][0]['children'].append({"name": "asd", "size":1 })
-	# data['d3']['children'][0]['children'].append({"name": "asdasd 1", "size":2 })
-	# data['d3']['children'][0]['children'].append({"name": "asdsao 1", "size":4 })
-	# data['d3']['children'][1]['children'].append({"name": "Usuario 2", "size":1 })
-	# data['d3']['children'][2]['children'].append({"name": "Usuario 3", "size": 2})
-	# data['d3']['children'][3]['children'].append({"name": "Usuario 4", "size": 15})
-def fillChildrens(pos, time, size):
-	data['d3']['children'][pos]['children'].append({"name": "Inicio "+str(time), "size":size })
