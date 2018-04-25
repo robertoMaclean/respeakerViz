@@ -6,16 +6,14 @@
 	<title>{% block title %} Document {% endblock %}</title>
 	{# Load the tag library #}
 	{% load bootstrap3 %}
-
-	{# Load CSS and JavaScript #}
+	{# Load CSS #}
 	{% bootstrap_css%}
 	<script type="text/javascript" src="{% static '/js/jquery.js' %}"/>	
 	<link rel="stylesheet" href="{% static '/css/style.css' %}"/>
-	<script type="text/javascript" src="{% static '/js/jquery-3.3.1.min.js' %}"></script>	
-	<script type="text/javascript" src="{% static '/js/javascript.js' %}"></script>
-	{% bootstrap_javascript %}
 	{# Display django.contrib.messages as Bootstrap alerts #}
 	{% bootstrap_messages %}
+	{% block head %}
+	{% endblock %}
 </head>
 <body>
 	{% include "base\navbar.html" %}
@@ -26,6 +24,11 @@
 	{% endblock %}
 
 	{% block footer %}
+	{% endblock %}
+	<script type="text/javascript" src="{% static '/js/jquery-3.3.1.min.js' %}"></script>	
+	<script type="text/javascript" src="{% static '/js/javascript.js' %}"></script>
+	{% bootstrap_javascript %}
+	{% block javascript %}
 	{% endblock %}
 </body>
 </html>
