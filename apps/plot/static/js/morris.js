@@ -18,6 +18,7 @@ function lineGraph(data){
     xkey: 'y',
     ykeys: ['a','b','c','d'],
     labels: ['Usuario 1', 'Usuario 2', 'Usuario 3', 'Usuario 4'],
+    lineColors: ['red', 'blue','green','yellow'],
     resize: true,
     redraw: true,
     xLabels: 'seconds'
