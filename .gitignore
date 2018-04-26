@@ -22,9 +22,12 @@ sdist/
 var/
 django/
 wheels/
+media/*
 *.egg-info/
 .installed.cfg
 *.egg
+static/admin
+static/*
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
