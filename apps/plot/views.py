@@ -103,43 +103,15 @@ def simple_upload(request):
 	return render(request, 'plot.html')
 
 def flare_json(request):
-	# data = {
-	#  "name": "flare",
-	#  "children": [
-	#   {
-	#    "name": "analytics",
-	#    "children": [
-	#     {
-	#      "name": "cluster",
-	#      "children": [
-	#       {"name": "AgglomerativeCluster", "size": 3938},
-	#       {"name": "CommunityStructure", "size": 3812},
-	#       {"name": "HierarchicalCluster", "size": 6714},
-	#       {"name": "MergeEdge", "size": 743}
-	#      ]
-	#     },
-	#     {
-	#      "name": "graph",
-	#      "children": [
-	#       {"name": "BetweennessCentrality", "size": 3534},
-	#       {"name": "LinkDistance", "size": 5731},
-	#       {"name": "MaxFlowMinCut", "size": 7840},
-	#       {"name": "ShortestPaths", "size": 5914},
-	#       {"name": "SpanningTree", "size": 3416}
-	#      ]
-	#     },
-	#     {
-	#      "name": "optimization",
-	#      "children": [
-	#       {"name": "AspectRatioBanker", "size": 7074}
-	#      ]
-	#     }
-	#    ]
-	#   }
-	#  ]
-	# }
 	global data_plot
 	data = json.loads(data_plot)
 	#print("data plot",data)
 	data = json.dumps(data['d3'])
+	return HttpResponse(data)
+
+def relations(request):
+	global data_plot
+	data = json.loads(data_plot)
+	#print("data plot",data)
+	data = json.dumps(data['usersRelation'])
 	return HttpResponse(data)

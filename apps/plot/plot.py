@@ -15,17 +15,18 @@ class Plot(object):
 
 	def __init__(self, file, outputPath='media/plot/'):
 		self.__file = StringIO(file)
+		print(outputPath)
 		self.__outputPath = os.path.abspath(outputPath)
-		self.__activity = [[],[],[],[]]
-		self.__activityContinuos = [[],[],[],[]]
-		self.__time = 0
-		self.__userTime = []
-		self.__speakTime = 0
-		self.__relations = [0,0,0,0,0,0]
-		self.__usersInterv = []
-		self.__userStartInt = [[],[]]
-		self.__volPromInterv = [[],[],[],[]]
-		self.__usersVol = []
+		self.__activity = [[],[],[],[]] 			#Each user activity (without silence)
+		self.__activityContinuos = [[],[],[],[]]  	#Each user activity (include silence)
+		self.__time = 0                        		#Activity time
+		self.__userTime = []						#Users speak time
+		self.__speakTime = 0						#Speak time of activity
+		self.__relations = [0,0,0,0,0,0]			#Relations between users
+		self.__usersInterv = []						#Each user intervention
+		self.__userStartInt = [[],[]]				#User intervention start
+		self.__volPromInterv = [[],[],[],[]]		#User volume AVG per intervention
+		self.__usersVol = []						#User total volume AVG
 		functions.ensureDir(outputPath)
 		self.ExtractData()
 		self.UsersSpeak()
@@ -64,7 +65,7 @@ class Plot(object):
 			self.__usersVol.append((float(row['amplitude']), int(row['direction'])+1,float(row['seconds'])))
 
 			if int(row['speak']):
-				print("direccion:", str(row['direction']))
+				#print("direccion:", str(row['direction']))
 				if int(row['direction']) != lastPosition:
 					self.__userStartInt[0].append(int(row['direction'])+1)
 					self.__userStartInt[1].append(float(row['seconds']))

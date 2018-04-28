@@ -8,15 +8,15 @@
 	{% load bootstrap3 %}
 	{# Load CSS #}
 	{% bootstrap_css%}
-	<script type="text/javascript" src="{% static '/js/jquery.js' %}"/>	
 	<link rel="stylesheet" href="{% static '/css/style.css' %}"/>
 	{# Display django.contrib.messages as Bootstrap alerts #}
 	{% bootstrap_messages %}
+	<script type="text/javascript" src="{% static '/js/jquery-3.3.1.min.js' %}"></script>
 	{% block head %}
 	{% endblock %}
 </head>
 <body>
-	{% include "base\navbar.html" %}
+	{% include "base/navbar.html" %}
 	{% block header %}
 	{% endblock %}
 
@@ -24,8 +24,7 @@
 	{% endblock %}
 
 	{% block footer %}
-	{% endblock %}
-	<script type="text/javascript" src="{% static '/js/jquery-3.3.1.min.js' %}"></script>	
+	{% endblock %}	
 	<script type="text/javascript" src="{% static '/js/javascript.js' %}"></script>
 	{% bootstrap_javascript %}
 	{% block javascript %}

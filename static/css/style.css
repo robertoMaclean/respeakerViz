@@ -34,3 +34,24 @@ text {
   font: 10px sans-serif;
   text-anchor: middle;
 }
+
+.link {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .50;
+}
+
+.node {
+  fill: #fff;
+  stroke: steelblue;
+
+}
+
+.axis path,
+.axis line {
+  display: none;
+}
+
+.panel-body {
+  overflow-y: auto;
+}

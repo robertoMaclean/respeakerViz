@@ -18,6 +18,10 @@ def FillJson(obj):
 		'usersSpeakTimePercent':[],
 		'userIntInTime': [],
 		'usersVol': [[],[],[],[]],
+		'usersRelation': {
+			"nodes": [],
+			"links": []
+		},
 		'd3': {
 			"name":"Intervenciones",
 			"children": []
@@ -52,25 +56,12 @@ def FillJson(obj):
 			c += 1
 		elif userStartInt[0][pos] == 4:
 			d += 1
+		
+		data['usersRelation']['nodes'].append({'gender': pos+1, "group": "Usuario "+str(userStartInt[0][pos])})
+		if(pos < len(userStartInt[0])-1):
+			data['usersRelation']['links'].append({'source': pos, "target": pos+1})
 		data['userIntInTime'].append({'y':userStartInt[1][pos],'a':a, 'b':b, 'c':c, 'd':d})
 	pos = 1
-	# for vol, user, time in usersVol:
-	# 	if pos == 4:
-	# 		a=b=c=d=0
-	# 		if user == 1:
-	# 			a = vol
-	# 		elif user == 2:
-	# 			b = vol
-	# 		elif user == 3:
-	# 			c = vol
-	# 		else:
-	# 			d = vol
-	# 		data['usersVol'][0].append({'y':time,'a':a})
-	# 		data['usersVol'][1].append({'y':time,'b':b})
-	# 		data['usersVol'][2].append({'y':time,'c':c})
-	# 		data['usersVol'][3].append({'y':time,'d':d})
-	# 		pos = 0
-	# 	pos += 1
 	user_num = 0
 	for user in usersVolInterv:
 		interv = 1
