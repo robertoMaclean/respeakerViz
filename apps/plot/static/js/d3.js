@@ -1,17 +1,17 @@
 function buble(){ 
 
-  var svg = d3.select("svg"),
+  var svg = d4.select("svg"),
       diameter = +svg.attr("width"),
       g = svg.append("g").attr("transform", "translate(2,2)"),
-      format = d3.format(",d");
+      format = d4.format(",d");
 
-  var pack = d3.pack()
+  var pack = d4.pack()
       .size([diameter - 4, diameter - 4]);
 
-  d3.json('flare.json', function(error, root) {
+  d4.json('flare.json', function(error, root) {
     if (error) throw error;
 
-    root = d3.hierarchy(root)
+    root = d4.hierarchy(root)
         .sum(function(d) { return d.size; })
         .sort(function(a, b) { return b.value - a.value; });
 
@@ -22,7 +22,7 @@ function buble(){
         .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 
     node.append("title")
-        .text(function(d) { return d.data.name + "\n" + format(d.value); });
+        .text(function(d) { return d.data.name + "\n"; });
 
     node.append("circle")
         .attr("r", function(d) { return d.r; });
@@ -58,7 +58,7 @@ function relations(){
   var rollup = d3.rollup()
       .x(function(d) { return x(fx(d)); })
       .y(function(d) { return y(fy(d)); });
-  console.log("hola")
+  
   var svg = d3.select("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)

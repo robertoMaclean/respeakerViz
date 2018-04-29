@@ -46,7 +46,7 @@ function click_buttons(){
             	$('.panel-footer').html('')
     			var json = JSON.parse(data.data)
     			console.log(json)
-    			barGraphMultiColor(json.usersTime)
+    			barGraphMultiColor(json.usersTime, ['Segundos'])
                 donutGraph(json.usersSpeakTimePercent)
                 console.log('success')
             },
@@ -75,7 +75,7 @@ function click_buttons(){
             	var json = JSON.parse(data.data)
             	click_buttons_interv_time()
     			console.log(json)
-    			barGraph(json.usersIntDur[0], "#c9302c")
+    			barGraph(json.usersIntDur[0], '#c9302c', ['Segundos'])
                 console.log('success')
             },
             error: function(data) {
@@ -142,7 +142,7 @@ function click_buttons(){
                 var json = JSON.parse(data.data)
                 console.log(json)
                 click_buttons_users_vol()
-                barGraph(json.usersVol[0], "#c9302c")
+                barGraph(json.usersVol[0], '#c9302c', ['Volumen'])
                 console.log('success')
             },
             error: function(data) {
@@ -158,7 +158,7 @@ function click_buttons(){
             success: function(data) {
                 html = '<svg width="960" height="960"></svg>'
                 $('.panel-body').html(html)
-                $('.panel-heading').html('Duración intervenciones')
+                $('.panel-heading').html('Agrupación de intervenciones por usuario')
                 $('.panel-footer').html('')
                 var json = JSON.parse(data)
                 buble()
@@ -179,7 +179,7 @@ function click_buttons(){
             success: function(data) {
                 html = '<svg></svg>'
                 $('.panel-body').html(html)
-                $('.panel-heading').html('Duración intervenciones')
+                $('.panel-heading').html('Relación entre intervenciones')
                 $('.panel-footer').html('')
                 var json = JSON.parse(data)
                 relations()
@@ -192,6 +192,27 @@ function click_buttons(){
         });
         
     });
+
+    /*$('#test').on('click', function(data){      
+        $.ajax({
+            type: "GET",
+            url: '/plot/usersActivity',
+            success: function(data) {
+                html = '<div id="graph" class="graph"></div>'
+                $('.panel-body').html(html)
+                $('.panel-heading').html('Relación entre intervenciones')
+                $('.panel-footer').html('')
+                var json = JSON.parse(data)
+                barGraph(json, '#c9302c', ['Volumen'])
+                console.log(json)
+                console.log('success')
+            },
+            error: function(data) {
+                console.log('error')
+            },
+        });
+        
+    });*/
 
     function click_buttons_interv_time(){
         func = function (row, series, type) {
@@ -232,7 +253,14 @@ function click_buttons(){
         });
     }
 
-        function click_buttons_users_vol(){
+    function click_buttons_users_vol(){
+        func = function (row, series, type) {
+                    /*console.log("--> "+row.label, series, type);*/
+                    if(row.label == "Usuario 1") return "#c9302c";
+                    else if(row.label == "Usuario 2") return "#337ab7";
+                    else if(row.label == "Usuario 3") return "#5cb85c";
+                    else if(row.label == "Usuario 4") return "#f0ad4e";
+                }
         $('#user1').on('click', function(){
            morris.options.barColors = ["#c9302c"]
            morris.setData(data.usersVol[0])
@@ -248,6 +276,18 @@ function click_buttons(){
         $('#user4').on('click', function(){
             morris.options.barColors = ["#f0ad4e"]
             morris.setData(data.usersVol[3])
+        });
+        $('#total').on('click', function(){
+            morris.options.barColors = func
+            /*dat ={
+                "datos": [
+                    {"x":"Usuario 1","y":data.usersVolAVG[0]},
+                    {"x":"Usuario 2","y":data.usersVolAVG[1]},
+                    {"x":"Usuario 3","y":data.usersVolAVG[2]},
+                    {"x":"Usuario 4","y":data.usersVolAVG[3]}
+                ]
+            } */
+            morris.setData(data.usersVolAVG)
         });
     }
 }

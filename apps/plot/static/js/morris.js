@@ -25,13 +25,13 @@ function lineGraph(data){
   });
 }
 
-function barGraphMultiColor(data){
+function barGraphMultiColor(data, labels){
   morrisColors = Morris.Bar({
     element: 'graph',
     data: data,
     xkey: 'x',
     ykeys: ['y'],
-    labels: ['Duración'],
+    labels: labels,
     barColors: function (row, series, type) {
     /*console.log("--> "+row.label, series, type);*/
     if(row.label == "Usuario 1") return "#c9302c";
@@ -42,13 +42,13 @@ function barGraphMultiColor(data){
   });
 }
 
-function barGraph(data, color){
+function barGraph(data, color, labels){
   morris = Morris.Bar({
     element: 'graph',
     data: data,
     xkey: 'x',
     ykeys: ['y'],
-    labels: ['Duración'],
+    labels: labels,
     barColors: [color]
   });
 }

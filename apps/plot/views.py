@@ -115,3 +115,10 @@ def relations(request):
 	#print("data plot",data)
 	data = json.dumps(data['usersRelation'])
 	return HttpResponse(data)
+
+def usersActivity(request):
+	global data_plot
+	data = json.loads(data_plot)
+	#print("data plot",data)
+	data = json.dumps(data['usersActivity'])
+	return HttpResponse(data)

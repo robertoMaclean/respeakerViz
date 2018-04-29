@@ -12,12 +12,15 @@ def FillJson(obj):
 	userStartInt = obj.GetUserStartInt()
 	usersVol = obj.GetUsersVol()
 	usersVolInterv = obj.GetUsersVolPromInterv()
+	usersActivity = obj.GetActivity()
+	usersActivityContinuos = obj.GetActivityContinuos()
 	data = {
 		'usersTime':[],
 		'usersIntDur':[[],[],[],[]],
 		'usersSpeakTimePercent':[],
 		'userIntInTime': [],
 		'usersVol': [[],[],[],[]],
+		'usersVolAVG': [],
 		'usersRelation': {
 			"nodes": [],
 			"links": []
@@ -26,6 +29,8 @@ def FillJson(obj):
 			"name":"Intervenciones",
 			"children": []
 		},
+		'usersActivity': [],
+		'usersActivityContinuos': []
 	}
 	user_num = 1
 	speak_time_users = float(usersTime[0]) + float(usersTime[1]) + float(usersTime[2]) + float(usersTime[3])
@@ -43,7 +48,7 @@ def FillJson(obj):
 			time = "{0:.2f}".format(users[interv][-1]-users[interv][0])	
 			start = "{0:.2f}".format(users[interv][0])	
 			data['usersIntDur'][user_num].append({'x':str(interv+1),'y':time})
-			data['d3']['children'][user_num]['children'].append({"name": "Inicio "+str(time), "size":time })
+			data['d3']['children'][user_num]['children'].append({"name": str(users[interv][0])+"-"+str(users[interv][-1]), "size":time })
 		user_num += 1
 	a=b=c=d=0
 	data['userIntInTime'].append({'y':0,'a':a, 'b':b, 'c':c, 'd':d})	
@@ -69,5 +74,16 @@ def FillJson(obj):
 			data['usersVol'][user_num].append({'x':str(interv),'y':'{0:.2f}'.format(vol)})
 			interv += 1
 		user_num+= 1
+	user_num = 1
+	for vol in usersVol:
+		data['usersVolAVG'].append({'x':'Usuario '+str(user_num),'y':'{0:.2f}'.format(vol)})
+		user_num+= 1
+	# for i in range(len(usersActivity)):
+	# 	for val in usersActivity[i]:
+	# 		data['usersActivity'].append({'x':val,'y':1})
+	# for i in range(len(usersActivityContinuos)):
+	# 	for val in usersActivityContinuos[i]:
+	# 		data['usersActivityContinuos'].append({'x':'Usuario '+str(i+1),'y':val})
 	return data
+	
 

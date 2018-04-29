@@ -54,6 +54,12 @@ class Plot(object):
 	def GetUsersVolPromInterv(self):
 		return self.__volPromInterv
 
+	def GetActivity(self):
+		return self.__activity
+
+	def GetActivityContinuos(self):
+		return self.__activityContinuos
+
 	def ExtractData(self):
 		interTimes = [[],[],[],[]]
 		timeActivity = []
@@ -62,7 +68,6 @@ class Plot(object):
 		silence = 0
 		reader = csv.DictReader(self.__file, delimiter=";")
 		for row in reader:
-			self.__usersVol.append((float(row['amplitude']), int(row['direction'])+1,float(row['seconds'])))
 
 			if int(row['speak']):
 				#print("direccion:", str(row['direction']))
@@ -98,6 +103,8 @@ class Plot(object):
 			self.__activityContinuos[lastPosition].pop()
 		for x in interTimes:
 			self.__usersInterv.append(x)
+		for x in self.__volPromInterv: 
+			self.__usersVol.append(sum(x)/len(x))
 
 	def UsersSpeak(self):
 		#figure = plt.gcf() # get current figure

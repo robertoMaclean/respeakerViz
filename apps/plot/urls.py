@@ -13,6 +13,7 @@ urlpatterns = [
     path('plot/donutGraph', views.donut_graph, name='donut_graph'),
     path('plot/flare.json', views.flare_json, name=''),
     path('plot/relations', views.relations, name='relations'),
+    path('plot/usersActivity', views.usersActivity, name='users_activity'),
 
 ]
 
