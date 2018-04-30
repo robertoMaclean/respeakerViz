@@ -160,9 +160,7 @@ function click_buttons(){
                 $('.panel-body').html(html)
                 $('.panel-heading').html('Agrupación de intervenciones por usuario')
                 $('.panel-footer').html('')
-                var json = JSON.parse(data)
                 buble()
-                console.log(json)
                 console.log('success')
             },
             error: function(data) {
@@ -181,9 +179,9 @@ function click_buttons(){
                 $('.panel-body').html(html)
                 $('.panel-heading').html('Relación entre intervenciones')
                 $('.panel-footer').html('')
-                var json = JSON.parse(data)
+                /*var json = JSON.parse(data)*/
                 relations()
-                console.log(json)
+                /*console.log(json)*/
                 console.log('success')
             },
             error: function(data) {
@@ -213,6 +211,13 @@ function click_buttons(){
         });
         
     });*/
+    function get_sum(array) {
+        sum = 0
+        for(var i=0;i<array.length;i++){
+            sum = parseFloat(array[i].y)+sum
+        }
+        return sum.toFixed(2)
+    }
 
     function click_buttons_interv_time(){
         func = function (row, series, type) {
@@ -243,10 +248,10 @@ function click_buttons(){
             morris.options.barColors = func
             dat ={
                 "datos": [
-                    {"x":"Usuario 1","y":data.usersIntDur[0].length},
-                    {"x":"Usuario 2","y":data.usersIntDur[1].length},
-                    {"x":"Usuario 3","y":data.usersIntDur[2].length},
-                    {"x":"Usuario 4","y":data.usersIntDur[3].length}
+                    {"x":"Usuario 1","y":get_sum(data.usersIntDur[0])},
+                    {"x":"Usuario 2","y":get_sum(data.usersIntDur[1])},
+                    {"x":"Usuario 3","y":get_sum(data.usersIntDur[2])},
+                    {"x":"Usuario 4","y":get_sum(data.usersIntDur[3])}
                 ]
             } 
             morris.setData(dat.datos)
@@ -289,6 +294,10 @@ function click_buttons(){
             } */
             morris.setData(data.usersVolAVG)
         });
+    }
+
+    function getSum(total, num) {
+        return total + num;
     }
 }
 
