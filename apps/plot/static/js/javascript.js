@@ -191,10 +191,21 @@ function click_buttons(){
         
     });
 
-    /*$('#test').on('click', function(data){      
-        $.ajax({
+    function test(){
+        TESTER = $('#graph')[0];
+        Plotly.plot( TESTER, [{
+        x: [1, 2, 3, 4, 5],
+        y: [1, 2, 4, 8, 16] }], {
+        margin: { t: 0 } } );
+    }
+
+    $('#test').on('click', function(data){ 
+        html = '<div id="graph" class="graph"></div>'
+        $('.panel-body').html(html)
+        test()     
+        /*$.ajax({
             type: "GET",
-            url: '/plot/usersActivity',
+            url: '/plot/test',
             success: function(data) {
                 html = '<div id="graph" class="graph"></div>'
                 $('.panel-body').html(html)
@@ -208,9 +219,9 @@ function click_buttons(){
             error: function(data) {
                 console.log('error')
             },
-        });
+        });*/
         
-    });*/
+    });
     function get_sum(array) {
         sum = 0
         for(var i=0;i<array.length;i++){
@@ -299,6 +310,7 @@ function click_buttons(){
     function getSum(total, num) {
         return total + num;
     }
+    
 }
 
     

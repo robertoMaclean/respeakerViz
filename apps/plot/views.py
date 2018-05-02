@@ -13,30 +13,38 @@ from django.urls import reverse
 data_plot = ''
 
 def index(request):
-	if request.method == 'POST' and request.FILES['csv_file']:
-		csv_file = request.FILES["csv_file"]
-		if not csv_file.name.endswith('.csv'):
-			messages.error(request,'File is not CSV type')
+	print(request.method)
+	if request.method == 'POST':
+		filepath = request.FILES.get('csv_file', False)
+		if filepath:
+			#print(request.FILES['csv_file'])
+			csv_file = request.FILES["csv_file"]
+			if not csv_file.name.endswith('.csv'):
+				messages.error(request,'El archivo no tiene extensión CSV')
+				return redirect(reverse("upload_file"))
+			#if file is too large, return
+			if csv_file.multiple_chunks():
+				messages.error(request,"El archivo es muy grande (%.2f MB)." % (csv_file.size/(1000*1000),))
+				return redirect(reverse("upload_file"))
+			
+			# fs = FileSystemStorage()
+			# filename = fs.save(csv_file.name, csv_file)
+			# uploaded_file_url = fs.url(filename)
+			#print(csv_file.read())
+			file_data = csv_file.read().decode("utf-8")
+			plt = ploter.Plot(file_data)
+			#print('tiempo total '+plt.GetTime())
+			#print(plt.GetUserTime())
+			#print(plt.GetSpeakTime())
+			#print(plt.GetUsersInterv()[3])
+			
+			global data_plot
+			data_plot = json.dumps(functions.FillJson(plt))
+			return redirect('plot/')
+		else:
+			messages.error(request,'No ha seleccionado ningun archivo')
 			return redirect(reverse("upload_file"))
-		#if file is too large, return
-		if csv_file.multiple_chunks():
-			messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000),))
-			return redirect(reverse("upload_file"))
-		# fs = FileSystemStorage()
-		# filename = fs.save(csv_file.name, csv_file)
-		# uploaded_file_url = fs.url(filename)
-		#print(csv_file.read())
-		file_data = csv_file.read().decode("utf-8")
-		plt = ploter.Plot(file_data)
-		#print('tiempo total '+plt.GetTime())
-		#print(plt.GetUserTime())
-		#print(plt.GetSpeakTime())
-		#print(plt.GetUsersInterv()[3])
-		
-		global data_plot
-		data_plot = json.dumps(functions.FillJson(plt))
-		return redirect('plot/')
-		#return render(request, 'plot/plot.html')
+	
 	return render(request, 'plot/index.html')
 
 def plot(request):	

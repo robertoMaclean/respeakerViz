@@ -3,14 +3,12 @@
 <head>
 	{% load static %}
 	<meta charset="utf-8">
-	<title>{% block title %} Document {% endblock %}</title>
+	<title>{% block title %} {% endblock %}</title>
 	{# Load the tag library #}
 	{% load bootstrap3 %}
 	{# Load CSS #}
 	{% bootstrap_css%}
 	<link rel="stylesheet" href="{% static '/css/style.css' %}"/>
-	{# Display django.contrib.messages as Bootstrap alerts #}
-	{% bootstrap_messages %}
 	<script type="text/javascript" src="{% static '/js/jquery-3.3.1.min.js' %}"></script>
 	{% block head %}
 	{% endblock %}
@@ -29,5 +27,11 @@
 	{% bootstrap_javascript %}
 	{% block javascript %}
 	{% endblock %}
+	{# Display django.contrib.messages as Bootstrap alerts #}
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3">
+			{% bootstrap_messages %}
+		</div>
+	</div>
 </body>
 </html>
