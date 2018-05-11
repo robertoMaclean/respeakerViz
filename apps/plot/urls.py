@@ -13,11 +13,10 @@ urlpatterns = [
     path('plot/donutGraph', views.donut_graph, name='donut_graph'),
     path('plot/flare.json', views.flare_json, name=''),
     path('plot/relations', views.relations, name='relations'),
-    path('plot/usersActivity', views.usersActivity, name='users_activity'),
+    path('plot/usersActivity', views.usersActivity, name='users_activity')
 
 ]
 
 if settings.DEBUG:
-	print(settings.MEDIA_ROOT, settings.STATIC_ROOT)
 	urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

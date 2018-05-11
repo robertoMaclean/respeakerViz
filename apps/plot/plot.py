@@ -15,7 +15,6 @@ class Plot(object):
 
 	def __init__(self, file, outputPath='media/plot/'):
 		self.__file = StringIO(file)
-		print(outputPath)
 		self.__outputPath = os.path.abspath(outputPath)
 		self.__activity = [[],[],[],[]] 			#Each user activity (without silence)
 		self.__activityContinuos = [[],[],[],[]]  	#Each user activity (include silence)
@@ -68,7 +67,6 @@ class Plot(object):
 		silence = 0
 		reader = csv.DictReader(self.__file, delimiter=";")
 		for row in reader:
-
 			if int(row['speak']):
 				#print("direccion:", str(row['direction']))
 				if int(row['direction']) != lastPosition:

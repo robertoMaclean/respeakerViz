@@ -13,7 +13,6 @@ from django.urls import reverse
 data_plot = ''
 
 def index(request):
-	print(request.method)
 	if request.method == 'POST':
 		filepath = request.FILES.get('csv_file', False)
 		if filepath:
@@ -94,11 +93,11 @@ def simple_upload(request):
 	if request.method == 'POST' and request.FILES['csv_file']:
 		csv_file = request.FILES["csv_file"]
 		if not csv_file.name.endswith('.csv'):
-			messages.error(request,'File is not CSV type')
+			messages.error(request,'El archivo no tiene extensión CSV')
 			return HttpResponseRedirect(reverse("myapp:upload_csv"))
 		#if file is too large, return
 		if csv_file.multiple_chunks():
-			messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000),))
+			messages.error(request,"El archivo es demasiado grande (%.2f MB)." % (csv_file.size/(1000*1000),))
 			return HttpResponseRedirect(reverse("myapp:upload_csv"))
 		# fs = FileSystemStorage()
 		# filename = fs.save(csv_file.name, csv_file)
