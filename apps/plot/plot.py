@@ -66,6 +66,7 @@ class Plot(object):
 		lastPosition = -1
 		silence = 0
 		reader = csv.DictReader(self.__file, delimiter=";")
+		
 		for row in reader:
 			if int(row['speak']):
 				#print("direccion:", str(row['direction']))
@@ -139,18 +140,27 @@ class Plot(object):
 		plt.close()
 
 	def FindUsersInteraction(self, pos1, pos2):
-		if pos1+pos2 == 3:
-			self.__relations[0] += 1
-		elif pos1+pos2 == 4:
-			self.__relations[1] += 1
-		elif pos1 == 1 or pos2 == 1:
-			self.__relations[2] += 1
-		elif pos1 + pos2 == 5:
-			self.__relations[3] += 1
-		elif pos1 + pos2 == 6:
-			self.__relations[4] += 1
-		else:
-			self.__relations[5] += 1
+			#writer.writeheader()
+			file = open('relaciones.csv', 'a')
+			if pos1+pos2 == 3:
+				file.write(str(pos1)+","+str(pos2)+","+str(self.__relations[0]+1))
+				self.__relations[0] += 1
+			elif pos1+pos2 == 4:
+				file.write(str(pos1)+","+str(pos2)+","+str(self.__relations[1]+1))
+				self.__relations[1] += 1
+			elif pos1 == 1 or pos2 == 1:
+				file.write(str(pos1)+","+str(pos2)+","+str(self.__relations[2]+1))
+				self.__relations[2] += 1
+			elif pos1 + pos2 == 5:
+				file.write(str(pos1)+","+str(pos2)+","+str(self.__relations[3]+1))
+				self.__relations[3] += 1
+			elif pos1 + pos2 == 6:
+				file.write(str(pos1)+","+str(pos2)+","+str(self.__relations[4]+1))
+				self.__relations[4] += 1
+			else:
+				file.write(str(pos1)+","+str(pos2)+","+str(self.__relations[5]+1))
+				self.__relations[5] += 1
+			file.write("\n")
 
 	def UsersInteraction(self):
 		node_speak = []
@@ -162,6 +172,7 @@ class Plot(object):
 		for i in range(0, len(self.__activity)):
 			node_speak.append(len(self.__activity[i]))
 			func_max.append(int((float(len(self.__activity[i]))/maximo)*(pix_max-pix_min)+pix_min))
+
 		edgelist = [(1,2),(1,3),(1,4),(2,3),(2,4),(3,4)]
 		G=nx.Graph(edgelist)
 		pos=nx.circular_layout(G)
