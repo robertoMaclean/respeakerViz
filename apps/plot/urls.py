@@ -1,9 +1,10 @@
 from django.urls import path
-from . import views
+from apps.plot import views
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from apps.accounts import views as accounts_views
 
 urlpatterns = [
     path('', views.index, name='upload_file'),
@@ -13,12 +14,9 @@ urlpatterns = [
     path('plot/barGraph', views.bar_graph, name='bar_graph'),
     path('plot/lineGraph', views.line_graph, name='line_graph'),
     path('plot/donutGraph', views.donut_graph, name='donut_graph'),
-    path('plot/flare.json', views.flare_json, name=''),
+    path('plot/flare.json', views.flare_json, name='flare_json'),
     path('plot/relations', views.relations, name='relations'),
     path('plot/usersActivity', views.usersActivity, name='users_activity'),
-    path('login/', auth_views.login, name='login'),
-    path('logout/', auth_views.logout,{'next_page': '/'}, name='logout'),
-    path('registration/signup', views.signup, name='signup'),
 ]
 
 if settings.DEBUG:

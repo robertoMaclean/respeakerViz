@@ -19,32 +19,28 @@
 }
 
 circle {
-  fill: rgb(31, 119, 180);
+  fill: rgb(31, 115, 180);
   fill-opacity: .25;
   stroke: rgb(31, 119, 180);
   stroke-width: 1px;
 }
 
-.leaf circle {
+.leaf.node circle {
   fill: #ff7f0e;
   fill-opacity: 1;
+  stroke: none;
 }
 
 text {
   font: 10px sans-serif;
   text-anchor: middle;
+  color: blue;
 }
 
 .link {
   fill: none;
-  stroke: #000;
-  stroke-opacity: .50;
-}
-
-.node {
-  fill: #fff;
-  stroke: steelblue;
-
+  stroke: black;
+  stroke-opacity: .7;
 }
 
 .axis path,

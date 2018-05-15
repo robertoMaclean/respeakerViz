@@ -36,7 +36,7 @@ function click_buttons(){
     });
 
     $('#users_total_time').on('click', function(){
-    	$.ajax({
+    	/*$.ajax({
             type: "GET",
             url: '/plot/barGraph',
             success: function(data) {
@@ -53,7 +53,18 @@ function click_buttons(){
             error: function(data) {
                 console.log('error')
             },
-        });
+        });*/
+        html = '<div id="graph" class="graph"></div>'
+        html += '<div id="donut" class="graph"></div>'
+        $('.panel-body').html(html)
+        $('.panel-heading').html('Tiempo total de habla por participante')
+        $('.panel-footer').html('')
+        /*var json = JSON.parse(data.data)*/
+        /*console.log(json)*/
+        console.log(data)
+        barGraphMultiColor(data.usersTime, ['Segundos'])
+        donutGraph(data.usersSpeakTimePercent)
+        console.log('success')
     });
 
     $('#users_interv_time').on('click', function(){ 
@@ -64,7 +75,14 @@ function click_buttons(){
     	footer += '<button type="button" id="user4" class="btn btn-warning active">Usuario 4</button>'
         footer += '<button type="button" id="total" class="btn btn-default active">Total</button>'
         footer += '</div>'
-    	$.ajax({
+        html = '<div id="graph" class="graph"></div>' 
+        $('.panel-body').html(html)
+        $('.panel-heading').html('Duración intervenciones')
+        $('.panel-footer').html(footer)
+        click_buttons_interv_time()
+        barGraph(data.usersIntDur[0], '#c9302c', ['Segundos'])
+        console.log('success')
+    	/*$.ajax({
             type: "GET",
             url: '/plot/barGraph',
             success: function(data) {
@@ -81,32 +99,17 @@ function click_buttons(){
             error: function(data) {
                 console.log('error')
             },
-        });
+        });*/
     });
 
-    /*$('#users_time_percent').on('click', function(){
-        $.ajax({
-            type: "GET",
-            url: '/plot/donutGraph',
-            success: function(data) {
-            	//$('.panel-body').load(data)
-            	$('.panel-body').html(data.html)
-            	$('.panel-heading').html('Porcentaje tiempo de habla por participante')
-            	$('.panel-footer').html('')
-            	var json = JSON.parse(data.data)
-    			console.log(json)
-    			donutGraph(json.usersSpeakTimePercent)
-                console.log('success')
-            },
-            error: function(data) {
-                console.log('error')
-            },
-        });
-        
-    });*/
-
     $('#users_int_in_time').on('click', function(){
-        $.ajax({
+        html = '<div id="line" class="graph"></div>'
+        $('.panel-body').html(html)
+        $('.panel-heading').html('Intervenciones a traves del tiempo')
+        $('.panel-footer').html('')
+        lineGraph(data.userIntInTime)
+        console.log('success')
+        /*$.ajax({
             type: "GET",
             url: '/plot/lineGraph',
             success: function(data) {
@@ -121,7 +124,7 @@ function click_buttons(){
             error: function(data) {
                 console.log('error')
             },
-        });
+        });*/
     });
 
     $('#users_vol').on('click', function(){
@@ -132,7 +135,16 @@ function click_buttons(){
         footer += '<button type="submit" id="user4" class="btn btn-warning">Usuario 4</button>'
         footer += '<button type="submit" id="total" class="btn btn-defaul">Total</button>'
         footer += '</div>' 
-        $.ajax({
+        html = '<div id="graph" class="graph"></div>'
+        $('.panel-body').html(html)
+        $('.panel-heading').html('Volumen de la voz de los participante')
+        $('.panel-footer').html(footer)
+        /*var json = JSON.parse(data.data)
+        console.log(json)*/
+        click_buttons_users_vol()
+        barGraph(data.usersVol[0], '#c9302c', ['Volumen'])
+        console.log('success')
+        /*$.ajax({
             type: "GET",
             url: '/plot/barGraph',
             success: function(data) {
@@ -148,7 +160,7 @@ function click_buttons(){
             error: function(data) {
                 console.log('error')
             },
-        });
+        });*/
     });
 
     $('#users_interv_buble').on('click', function(data){      
@@ -158,11 +170,9 @@ function click_buttons(){
             success: function(data) {
                 html = '<svg width="960" height="960"></svg>'
                 $('.panel-body').html(html)
-                $('.panel-heading').html('Duración intervenciones')
+                $('.panel-heading').html('Agrupación de intervenciones por usuario')
                 $('.panel-footer').html('')
-                var json = JSON.parse(data)
                 buble()
-                console.log(json)
                 console.log('success')
             },
             error: function(data) {
@@ -179,11 +189,11 @@ function click_buttons(){
             success: function(data) {
                 html = '<svg></svg>'
                 $('.panel-body').html(html)
-                $('.panel-heading').html('Duración intervenciones')
+                $('.panel-heading').html('Relación entre intervenciones')
                 $('.panel-footer').html('')
-                var json = JSON.parse(data)
+                /*var json = JSON.parse(data)*/
                 relations()
-                console.log(json)
+                /*console.log(json)*/
                 console.log('success')
             },
             error: function(data) {
@@ -192,6 +202,45 @@ function click_buttons(){
         });
         
     });
+
+    function test(){
+        TESTER = $('#graph')[0];
+        Plotly.plot( TESTER, [{
+        x: [1, 2, 3, 4, 5],
+        y: [1, 2, 4, 8, 16] }], {
+        margin: { t: 0 } } );
+    }
+
+    $('#test').on('click', function(data){ 
+        html = '<div id="graph" class="graph"></div>'
+        $('.panel-body').html(html)
+        test()     
+        /*$.ajax({
+            type: "GET",
+            url: '/plot/test',
+            success: function(data) {
+                html = '<div id="graph" class="graph"></div>'
+                $('.panel-body').html(html)
+                $('.panel-heading').html('Relación entre intervenciones')
+                $('.panel-footer').html('')
+                var json = JSON.parse(data)
+                barGraph(json, '#c9302c', ['Volumen'])
+                console.log(json)
+                console.log('success')
+            },
+            error: function(data) {
+                console.log('error')
+            },
+        });*/
+        
+    });
+    function get_sum(array) {
+        sum = 0
+        for(var i=0;i<array.length;i++){
+            sum = parseFloat(array[i].y)+sum
+        }
+        return sum.toFixed(2)
+    }
 
     function click_buttons_interv_time(){
         func = function (row, series, type) {
@@ -222,10 +271,10 @@ function click_buttons(){
             morris.options.barColors = func
             dat ={
                 "datos": [
-                    {"x":"Usuario 1","y":data.usersIntDur[0].length},
-                    {"x":"Usuario 2","y":data.usersIntDur[1].length},
-                    {"x":"Usuario 3","y":data.usersIntDur[2].length},
-                    {"x":"Usuario 4","y":data.usersIntDur[3].length}
+                    {"x":"Usuario 1","y":get_sum(data.usersIntDur[0])},
+                    {"x":"Usuario 2","y":get_sum(data.usersIntDur[1])},
+                    {"x":"Usuario 3","y":get_sum(data.usersIntDur[2])},
+                    {"x":"Usuario 4","y":get_sum(data.usersIntDur[3])}
                 ]
             } 
             morris.setData(dat.datos)
@@ -269,6 +318,11 @@ function click_buttons(){
             morris.setData(data.usersVolAVG)
         });
     }
+
+    function getSum(total, num) {
+        return total + num;
+    }
+    
 }
 
     

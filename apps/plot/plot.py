@@ -65,8 +65,12 @@ class Plot(object):
 		volProm = []
 		lastPosition = -1
 		silence = 0
-		reader = csv.DictReader(self.__file, delimiter=";")
-		
+		reader = csv.DictReader(self.__file, delimiter=";", lineterminator='\n')
+		file = open('relaciones.csv', 'w', newline="\n")
+		fieldnames = ['Usuario 1','Usuario 2','Relaciones']
+		writer = csv.DictWriter(file, fieldnames=fieldnames, delimiter=";")
+		writer.writeheader()
+		#file.write('Usuario 1;Usuario 2;Cantidad relaciones\n')
 		for row in reader:
 			if int(row['speak']):
 				#print("direccion:", str(row['direction']))
@@ -78,7 +82,7 @@ class Plot(object):
 						self.__volPromInterv[int(row['direction'])].append(prom)
 						volProm = []
 						interTimes[lastPosition].append(timeActivity)
-						self.FindUsersInteraction(lastPosition+1, int(row['direction'])+1)
+						self.FindUsersInteraction(lastPosition+1, int(row['direction'])+1, file)
 						for i in range(silence):
 							self.__activityContinuos[lastPosition].pop()
 					else:
@@ -95,8 +99,7 @@ class Plot(object):
 				silence += 1
 			self.__activityContinuos[int(row['direction'])].append(float(row['seconds']))	
 			self.__time = row['seconds']
-
-
+		file.close()
 		interTimes[lastPosition].append(timeActivity)
 		for i in range(silence):
 			self.__activityContinuos[lastPosition].pop()
@@ -139,28 +142,35 @@ class Plot(object):
 		plt.savefig(self.__outputPath+'/users_speak.png')
 		plt.close()
 
-	def FindUsersInteraction(self, pos1, pos2):
+	def FindUsersInteraction(self, pos1, pos2, file):
 			#writer.writeheader()
-			file = open('relaciones.csv', 'a')
+			fieldnames = ['Usuario 1','Usuario 2','Relaciones']
+			writer = csv.DictWriter(file, fieldnames=fieldnames, delimiter=";")
+			
 			if pos1+pos2 == 3:
-				file.write(str(pos1)+","+str(pos2)+","+str(self.__relations[0]+1))
+				print("esperado:(1,2)","salida",pos1,pos2, self.__relations[0]+1)
+				writer.writerow({'Usuario 1':str(pos1),'Usuario 2':str(pos2),'Relaciones':str(self.__relations[0]+1)})
 				self.__relations[0] += 1
 			elif pos1+pos2 == 4:
-				file.write(str(pos1)+","+str(pos2)+","+str(self.__relations[1]+1))
+				print("esperado:(1,3)","salida",pos1,pos2, self.__relations[1]+1)
+				writer.writerow({'Usuario 1':str(pos1),'Usuario 2':str(pos2),'Relaciones':str(self.__relations[1]+1)})
 				self.__relations[1] += 1
 			elif pos1 == 1 or pos2 == 1:
-				file.write(str(pos1)+","+str(pos2)+","+str(self.__relations[2]+1))
+				print("esperado:(1,4)","salida",pos1,pos2,self.__relations[2]+1)
+				writer.writerow({'Usuario 1':str(pos1),'Usuario 2':str(pos2),'Relaciones':str(self.__relations[2]+1)})
 				self.__relations[2] += 1
 			elif pos1 + pos2 == 5:
-				file.write(str(pos1)+","+str(pos2)+","+str(self.__relations[3]+1))
+				print("esperado:(2,3)","salida",pos1,pos2,self.__relations[3]+1)
+				writer.writerow({'Usuario 1':str(pos1),'Usuario 2':str(pos2),'Relaciones':str(self.__relations[3]+1)})
 				self.__relations[3] += 1
 			elif pos1 + pos2 == 6:
-				file.write(str(pos1)+","+str(pos2)+","+str(self.__relations[4]+1))
+				print("esperado:(2,4)","salida",pos1,pos2,self.__relations[4]+1)
+				writer.writerow({'Usuario 1':str(pos1),'Usuario 2':str(pos2),'Relaciones':str(self.__relations[4]+1)})
 				self.__relations[4] += 1
 			else:
-				file.write(str(pos1)+","+str(pos2)+","+str(self.__relations[5]+1))
+				print("esperado:(3,4)","salida",pos1,pos2,self.__relations[5]+1)
+				writer.writerow({'Usuario 1':str(pos1),'Usuario 2':str(pos2),'Relaciones':str(self.__relations[5]+1)})
 				self.__relations[5] += 1
-			file.write("\n")
 
 	def UsersInteraction(self):
 		node_speak = []
