@@ -66,7 +66,7 @@ class Plot(object):
 		lastPosition = -1
 		silence = 0
 		reader = csv.DictReader(self.__file, delimiter=";", lineterminator='\n')
-		file = open('relaciones.csv', 'w', newline="\n")
+		file = open(self.__outputPath+'/relaciones.csv', 'w', newline="\n")
 		fieldnames = ['Usuario 1','Usuario 2','Relaciones']
 		writer = csv.DictWriter(file, fieldnames=fieldnames, delimiter=";")
 		writer.writeheader()
@@ -148,23 +148,18 @@ class Plot(object):
 			writer = csv.DictWriter(file, fieldnames=fieldnames, delimiter=";")
 			
 			if pos1+pos2 == 3:
-				print("esperado:(1,2)","salida",pos1,pos2, self.__relations[0]+1)
 				writer.writerow({'Usuario 1':str(pos1),'Usuario 2':str(pos2),'Relaciones':str(self.__relations[0]+1)})
 				self.__relations[0] += 1
 			elif pos1+pos2 == 4:
-				print("esperado:(1,3)","salida",pos1,pos2, self.__relations[1]+1)
 				writer.writerow({'Usuario 1':str(pos1),'Usuario 2':str(pos2),'Relaciones':str(self.__relations[1]+1)})
 				self.__relations[1] += 1
 			elif pos1 == 1 or pos2 == 1:
-				print("esperado:(1,4)","salida",pos1,pos2,self.__relations[2]+1)
 				writer.writerow({'Usuario 1':str(pos1),'Usuario 2':str(pos2),'Relaciones':str(self.__relations[2]+1)})
 				self.__relations[2] += 1
 			elif pos1 + pos2 == 5:
-				print("esperado:(2,3)","salida",pos1,pos2,self.__relations[3]+1)
 				writer.writerow({'Usuario 1':str(pos1),'Usuario 2':str(pos2),'Relaciones':str(self.__relations[3]+1)})
 				self.__relations[3] += 1
 			elif pos1 + pos2 == 6:
-				print("esperado:(2,4)","salida",pos1,pos2,self.__relations[4]+1)
 				writer.writerow({'Usuario 1':str(pos1),'Usuario 2':str(pos2),'Relaciones':str(self.__relations[4]+1)})
 				self.__relations[4] += 1
 			else:

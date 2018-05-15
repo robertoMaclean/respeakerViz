@@ -17,6 +17,8 @@ urlpatterns = [
     path('plot/flare.json', views.flare_json, name='flare_json'),
     path('plot/relations', views.relations, name='relations'),
     path('plot/usersActivity', views.usersActivity, name='users_activity'),
+    path('plot/download_file', views.download_file, name='download_file'),
+
 ]
 
 if settings.DEBUG:

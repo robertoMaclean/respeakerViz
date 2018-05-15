@@ -12,6 +12,8 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login
 from django.views.generic import View
 from django.contrib.auth.decorators import login_required
+import os
+from django.core.files import File
 
 # Create your views here.
 data_plot = ''
@@ -47,7 +49,6 @@ def index(request):
 		else:
 			messages.error(request,'No ha seleccionado ningun archivo')
 			return redirect(reverse("upload_file"))
-	
 	return render(request, 'plot/index.html')
 
 @login_required(redirect_field_name='login')
@@ -142,6 +143,14 @@ def usersActivity(request):
 	#print("data plot",data)
 	data = json.dumps(data['usersActivity'])
 	return HttpResponse(data)
+
+def download_file(request):
+	path_to_file = os.path.realpath("media/plot/relaciones.csv")
+	f = open(path_to_file, 'r')
+	myfile = File(f)
+	response = HttpResponse(myfile, content_type='application/csv')
+	response['Content-Disposition'] = 'attachment; filename=' + "file.csv"
+	return HttpResponse(response)
 
 
 
