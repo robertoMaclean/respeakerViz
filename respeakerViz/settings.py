@@ -81,13 +81,24 @@ WSGI_APPLICATION = 'respeakerViz.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'Respeaker',
+#         'USER': 'postgres',
+#         'PASSWORD': 'teenage',
+#         'HOST':'localhost',
+#         'PORT': 5432,
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Respeaker',
-        'USER': 'postgres',
-        'PASSWORD': 'teenage',
-        'HOST':'localhost',
+        'NAME': 'ccvnpffr',
+        'USER': 'ccvnpffr',
+        'PASSWORD': 'g_ISkP4VVfO3fS3iTE-mDPGozcMReeOb',
+        'HOST':'tantor.db.elephantsql.com',
         'PORT': 5432,
     }
 }
