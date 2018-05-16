@@ -49,7 +49,6 @@ class UserRegisterForm(forms.ModelForm):
 		password2 = self.cleaned_data.get('password2')
 		email = self.cleaned_data.get('email')
 		email2 = self.cleaned_data.get('email2')
-		print("clean_email")
 		if email != email2:
 			raise forms.ValidationError('Los Emails deben coincidir')
 		email_qs = User.objects.filter(email=email)
@@ -58,14 +57,3 @@ class UserRegisterForm(forms.ModelForm):
 		if password != password2:
 			raise forms.ValidationError("Las contraseñas no coinciden")
 		return super(UserRegisterForm, self).clean(*args, **kwargs)
-	# def clean_email2(self):
-	# 	email = self.cleaned_data.get('email')
-	# 	email2 = self.cleaned_data.get('email2')
-	# 	print("clean_email")
-	# 	if email != email2:
-	# 		print("distintos")
-	# 		raise forms.ValidationError('Emails must match')
-	# 	emails_qs = User.objects.filter(email=email)
-	# 	if email_qs.exists():
-	# 		raise forms.ValidationError("This email has already been registered")
-	# 	return email
