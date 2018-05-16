@@ -8,9 +8,13 @@ function click_buttons(){
             type: "GET",
             url: '/plot/interactions',
             success: function(data) {
-            	$('.panel-body').html(data)
+                footer = '<div>'
+                footer += '<a type="link" id="download_csv" href="/media/plot/relaciones.csv" class="btn btn-primary">Descargar datos</a>'
+            	footer += '</div>'
+                $('.panel-body').html(data)
             	$('.panel-heading').html('Interacción entre participantes')
-            	$('.panel-footer').html('')
+            	$('.panel-footer').html(footer)
+                download_csv_click()
             	console.log('success')
             },
             error: function(data) {
@@ -231,9 +235,30 @@ function click_buttons(){
             error: function(data) {
                 console.log('error')
             },
-        });*/
-        
+        });*/      
     });
+
+    function download_csv_click(){
+        $('#download_csv').on('click', function(data){
+            $.ajax({
+                type: "GET",
+                url: '/plot/download_file',
+                success: function(data) {
+                    console.log('success')
+                    var a = document.createElement('a');
+                    var url = window.URL.createObjectURL(data);
+                    a.href = url;
+                    a.download = 'myfile.csv';
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                        },
+                        error: function(data) {
+                            console.log('error')
+                        },
+                    })
+        })
+    }
+    
     function get_sum(array) {
         sum = 0
         for(var i=0;i<array.length;i++){
@@ -322,6 +347,7 @@ function click_buttons(){
     function getSum(total, num) {
         return total + num;
     }
+
     
 }
 

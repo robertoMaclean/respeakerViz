@@ -84,7 +84,7 @@ function relations(){
           var sx = d.source.x, sy = d.source.y,
               tx = d.target.x, ty = d.target.y,
               dx = tx - sx, dy = ty - sy,
-              dr = 10 * Math.sqrt(dx * dx + dy * dy);
+              dr = 20 * Math.sqrt(dx * dx + dy * dy);
           return "M" + sx + "," + sy + "A" + dr + "," + dr + " 0 0,1 " + tx + "," + ty;
         })
         .style("stroke-width", function(d) { return d.value * 1; });
