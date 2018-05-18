@@ -59,3 +59,7 @@ text {
 .panel-body {
   overflow-y: auto;
 }
+
+#login-body ul {
+  list-style-type: none;
+}

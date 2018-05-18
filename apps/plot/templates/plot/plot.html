@@ -41,10 +41,10 @@
 				Interacción entre participantes
 			</div>
 	  		<div class="panel-body"> 
-	  			<img class="img-responsive" id="plot_img" src="../media/plot/users_interaction.png"/>
+	  			<img class="img-responsive" id="plot_img" src="../media/plot/{{user}}users_interaction.png"/>
     		</div> 
     		<div class="panel-footer"> 
-                <a type="link" id="download_csv" href="/media/plot/relaciones.csv" class="btn btn-primary">Descargar datos</a>'
+                <a type="link" id="download_csv" href="/media/plot/{{user}}relaciones.csv" class="btn btn-primary">Descargar datos</a>'
     		</div> 		
 		</div>
 	</div>
@@ -53,7 +53,7 @@
 
 <script type="text/javascript">
 	var data = JSON.parse("{{data|escapejs}}");
-	console.log("data", data)				
+	var user = "{{user|escapejs}}"	
 </script>    
 {% endblock %} 
 {% block javascript %}

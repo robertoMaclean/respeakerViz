@@ -1,7 +1,12 @@
 $( document ).ready(function() {
     click_buttons()
+    active_nav_li()
 });
 
+function active_nav_li(){
+    var pathname = window.location.pathname;
+    $('.nav > li > a[href="'+pathname+'"]').parent().addClass('active');
+}
 function click_buttons(){
 	$('#users_interaction').on('click', function(){
         $.ajax({
@@ -167,16 +172,18 @@ function click_buttons(){
         });*/
     });
 
-    $('#users_interv_buble').on('click', function(data){      
+    $('#users_interv_buble').on('click', function(data){   
+        console.log(user)   
         $.ajax({
             type: "GET",
-            url: '/plot/flare.json',
+            url: '/plot/'+user+'/flare.json',
             success: function(data) {
                 html = '<svg width="960" height="960"></svg>'
                 $('.panel-body').html(html)
                 $('.panel-heading').html('Agrupación de intervenciones por usuario')
                 $('.panel-footer').html('')
                 buble()
+                console.log(user)
                 console.log('success')
             },
             error: function(data) {
@@ -218,46 +225,8 @@ function click_buttons(){
     $('#test').on('click', function(data){ 
         html = '<div id="graph" class="graph"></div>'
         $('.panel-body').html(html)
-        test()     
-        /*$.ajax({
-            type: "GET",
-            url: '/plot/test',
-            success: function(data) {
-                html = '<div id="graph" class="graph"></div>'
-                $('.panel-body').html(html)
-                $('.panel-heading').html('Relación entre intervenciones')
-                $('.panel-footer').html('')
-                var json = JSON.parse(data)
-                barGraph(json, '#c9302c', ['Volumen'])
-                console.log(json)
-                console.log('success')
-            },
-            error: function(data) {
-                console.log('error')
-            },
-        });*/      
+        test()        
     });
-
-    function download_csv_click(){
-        $('#download_csv').on('click', function(data){
-            $.ajax({
-                type: "GET",
-                url: '/plot/download_file',
-                success: function(data) {
-                    console.log('success')
-                    var a = document.createElement('a');
-                    var url = window.URL.createObjectURL(data);
-                    a.href = url;
-                    a.download = 'myfile.csv';
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                        },
-                        error: function(data) {
-                            console.log('error')
-                        },
-                    })
-        })
-    }
     
     function get_sum(array) {
         sum = 0

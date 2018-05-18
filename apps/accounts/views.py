@@ -12,7 +12,6 @@ def login_view(request):
 	logout(request)
 	title = "Ingresar"
 	next = request.GET.get('next')
-	print(request.user.is_authenticated)
 	form = UserLoginForm(request.POST or None)
 	if form.is_valid():
 		username = form.cleaned_data.get("username")
@@ -33,8 +32,9 @@ def register_view(request):
 			password = form.cleaned_data.get('password')
 			user.set_password(password)
 			user.save()
-			new_user = authenticate(username=user.username, password=password)
-			login(request, new_user)
+			# new_user = authenticate(username=user.username, password=password)
+			# login(request, new_user)
+			messages.success(request, 'Tu cuenta se ha creado satisfactoriamente. Ahora puedes acceder a tu cuenta.')
 			return redirect(reverse_lazy("upload_file"))
 		context = {
 			"form": form,

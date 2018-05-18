@@ -1,0 +1,54 @@
+{% extends "base/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}
+{{ title }}
+{% endblock %}
+{% block content %}
+<div class="col-sm-6 col-sm-offset-3 mt-10">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			{{title}}
+		</div>
+		<div class="panel-body" id="login-body">
+			<!-- {% for file in user_files %}
+			<h1>{{file.user}}</h1>
+			<p>{{file.name}}</p>
+			<h1>{{file.created_date}}</h1>
+			{% endfor %} -->
+			<div class="table-responsive">
+				<table class="table">
+				  <thead class="thead-dark">
+				    <tr>
+				      <th scope="col">Nombre</th>
+				      <th scope="col">Fecha</th>
+				      <th scope="col">Acciones</th>
+				    </tr>
+				  </thead>
+  				  <tbody>
+				  	{% for file in user_files %}
+						<tr>
+					      <td>{{file.name}}</td>
+					      <td>{{file.created_date}}</td>
+					      <td><a type="button" class="btn btn-info btn-sm glyphicon glyphicon-eye-open" href="/plot/show_graphs/{{file.file}}"></a>
+					      <a type="button" class="btn btn-danger btn-sm glyphicon glyphicon-remove" href="/plot/delete_files/{{file.name}}"></a></td>
+					    </tr>
+							<!-- <h1>{{file.user}}</h1>
+							<p>{{file.name}}</p>
+							<h1>{{file.created_date}}</h1> -->
+					{% endfor %}
+				 
+			      </tbody>
+				</table>
+			</div>
+		
+			<!-- <form method="POST" enctype=multipart/form-data>
+				{% csrf_token %}
+				{{ form|crispy}}
+				<div class="form-group">
+					<input type="submit" class="btn btn-primary" value='{{ title }}'>
+				</div>	
+			</form> -->
+		</div>	
+	</div>		
+</div>
+{% endblock content %}

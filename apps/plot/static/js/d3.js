@@ -8,7 +8,7 @@ function buble(){
   var pack = d4.pack()
       .size([diameter - 4, diameter - 4]);
 
-  d4.json('flare.json', function(error, root) {
+  d4.json(user+'/flare.json', function(error, root) {
     if (error) throw error;
 
     root = d4.hierarchy(root)

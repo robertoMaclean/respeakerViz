@@ -14,7 +14,8 @@ import apps.plot.functions as functions
 class Plot(object):
 
 	def __init__(self, file, outputPath='media/plot/'):
-		self.__file = StringIO(file)
+		self.__file = file
+		print(file)
 		self.__outputPath = os.path.abspath(outputPath)
 		self.__activity = [[],[],[],[]] 			#Each user activity (without silence)
 		self.__activityContinuos = [[],[],[],[]]  	#Each user activity (include silence)
@@ -66,7 +67,7 @@ class Plot(object):
 		lastPosition = -1
 		silence = 0
 		reader = csv.DictReader(self.__file, delimiter=";", lineterminator='\n')
-		file = open(self.__outputPath+'/relaciones.csv', 'w', newline="\n")
+		file = open(self.__outputPath+'relaciones.csv', 'w', newline="\n")
 		fieldnames = ['Usuario 1','Usuario 2','Relaciones']
 		writer = csv.DictWriter(file, fieldnames=fieldnames, delimiter=";")
 		writer.writeheader()
@@ -139,7 +140,7 @@ class Plot(object):
 		for line in leg.get_lines():
 			line.set_linewidth(4.0)
 		plt.tight_layout()
-		plt.savefig(self.__outputPath+'/users_speak.png')
+		plt.savefig(self.__outputPath+'users_speak.png')
 		plt.close()
 
 	def FindUsersInteraction(self, pos1, pos2, file):
@@ -163,7 +164,6 @@ class Plot(object):
 				writer.writerow({'Usuario 1':str(pos1),'Usuario 2':str(pos2),'Relaciones':str(self.__relations[4]+1)})
 				self.__relations[4] += 1
 			else:
-				print("esperado:(3,4)","salida",pos1,pos2,self.__relations[5]+1)
 				writer.writerow({'Usuario 1':str(pos1),'Usuario 2':str(pos2),'Relaciones':str(self.__relations[5]+1)})
 				self.__relations[5] += 1
 
@@ -183,7 +183,7 @@ class Plot(object):
 		pos=nx.circular_layout(G)
 		nx.draw(G,pos,node_color='#A0CBE2',node_size=func_max, edge_color=self.__relations,width=4,edge_cmap=plt.cm.Blues,with_labels=True)
 		#plt.show()
-		plt.savefig(self.__outputPath+'/users_interaction.png')
+		plt.savefig(self.__outputPath+'users_interaction.png')
 		plt.close()
 
 	def SpeakTime(self):
