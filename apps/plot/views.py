@@ -119,7 +119,7 @@ def flare_json(request, user):
 	return HttpResponse(data)
 
 @login_required(redirect_field_name='login')
-def relations(request):
+def relations(request, user):
 	data_plot = request.session['data_plot']
 	data = json.loads(data_plot)
 	#print("data plot",data)
@@ -144,7 +144,7 @@ def save_file(request):
 		if form.is_valid():
 			csv_file = request.FILES["file"]
 			file_data = csv_file.read().decode("utf-8")
-			plt = ploter.Plot(file_data, outputPath='media/plot/'+str(request.user))
+			plt = ploter.Plot(StringIO(file_data), outputPath='media/plot/'+str(request.user))
 			request.session['data_plot'] = json.dumps(functions.FillJson(plt))
 			file = form.save(commit=False)
 			file.user = request.user

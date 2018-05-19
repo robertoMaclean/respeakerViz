@@ -69,7 +69,7 @@ function relations(){
       g = svg.append("g").attr("transform", "translate(2,2)"),
       format = d3.format(",d");*/
 
-  d3.json("relations", function(error, social) {
+  d3.json(user+"/relations", function(error, social) {
     if (error) throw error;
     console.log(social.nodes.length)
     x.domain(social.nodes.map(fx));

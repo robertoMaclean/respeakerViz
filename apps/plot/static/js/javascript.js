@@ -19,7 +19,6 @@ function click_buttons(){
                 $('.panel-body').html(data)
             	$('.panel-heading').html('Interacción entre participantes')
             	$('.panel-footer').html(footer)
-                download_csv_click()
             	console.log('success')
             },
             error: function(data) {
@@ -45,24 +44,6 @@ function click_buttons(){
     });
 
     $('#users_total_time').on('click', function(){
-    	/*$.ajax({
-            type: "GET",
-            url: '/plot/barGraph',
-            success: function(data) {
-                html = data.html + '<div id="donut" class="graph"></div>'
-            	$('.panel-body').html(html)
-            	$('.panel-heading').html('Tiempo total de habla por participante')
-            	$('.panel-footer').html('')
-    			var json = JSON.parse(data.data)
-    			console.log(json)
-    			barGraphMultiColor(json.usersTime, ['Segundos'])
-                donutGraph(json.usersSpeakTimePercent)
-                console.log('success')
-            },
-            error: function(data) {
-                console.log('error')
-            },
-        });*/
         html = '<div id="graph" class="graph"></div>'
         html += '<div id="donut" class="graph"></div>'
         $('.panel-body').html(html)
@@ -172,8 +153,7 @@ function click_buttons(){
         });*/
     });
 
-    $('#users_interv_buble').on('click', function(data){   
-        console.log(user)   
+    $('#users_interv_buble').on('click', function(data){      
         $.ajax({
             type: "GET",
             url: '/plot/'+user+'/flare.json',
@@ -183,7 +163,6 @@ function click_buttons(){
                 $('.panel-heading').html('Agrupación de intervenciones por usuario')
                 $('.panel-footer').html('')
                 buble()
-                console.log(user)
                 console.log('success')
             },
             error: function(data) {
@@ -196,7 +175,7 @@ function click_buttons(){
     $('#sec_intertv').on('click', function(data){      
         $.ajax({
             type: "GET",
-            url: '/plot/relations',
+            url: '/plot/'+user+'/relations',
             success: function(data) {
                 html = '<svg></svg>'
                 $('.panel-body').html(html)

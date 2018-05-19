@@ -10,11 +10,6 @@
 			{{title}}
 		</div>
 		<div class="panel-body" id="login-body">
-			<!-- {% for file in user_files %}
-			<h1>{{file.user}}</h1>
-			<p>{{file.name}}</p>
-			<h1>{{file.created_date}}</h1>
-			{% endfor %} -->
 			<div class="table-responsive">
 				<table class="table">
 				  <thead class="thead-dark">
@@ -32,22 +27,10 @@
 					      <td><a type="button" class="btn btn-info btn-sm glyphicon glyphicon-eye-open" href="/plot/show_graphs/{{file.file}}"></a>
 					      <a type="button" class="btn btn-danger btn-sm glyphicon glyphicon-remove" href="/plot/delete_files/{{file.name}}"></a></td>
 					    </tr>
-							<!-- <h1>{{file.user}}</h1>
-							<p>{{file.name}}</p>
-							<h1>{{file.created_date}}</h1> -->
-					{% endfor %}
-				 
+					{% endfor %}				 
 			      </tbody>
 				</table>
 			</div>
-		
-			<!-- <form method="POST" enctype=multipart/form-data>
-				{% csrf_token %}
-				{{ form|crispy}}
-				<div class="form-group">
-					<input type="submit" class="btn btn-primary" value='{{ title }}'>
-				</div>	
-			</form> -->
 		</div>	
 	</div>		
 </div>
