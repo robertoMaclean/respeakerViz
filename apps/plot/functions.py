@@ -14,6 +14,7 @@ def FillJson(obj):
 	usersVolInterv = obj.GetUsersVolPromInterv()
 	usersActivity = obj.GetActivity()
 	usersActivityContinuos = obj.GetActivityContinuos()
+	usersRelation = obj.GetUsersRelations()
 	data = {
 		'usersTime':[],
 		'usersIntDur':[[],[],[],[]],
@@ -30,7 +31,8 @@ def FillJson(obj):
 			"children": []
 		},
 		'usersActivity': [],
-		'usersActivityContinuos': []
+		'usersActivityContinuos': [],
+		'usersInteraction': [],
 	}
 	user_num = 1
 	speak_time_users = float(usersTime[0]) + float(usersTime[1]) + float(usersTime[2]) + float(usersTime[3])
@@ -39,16 +41,15 @@ def FillJson(obj):
 		data['usersSpeakTimePercent'].append({'label':'Porcentaje Usuario '+str(user_num),'value':"{0:.2f}".format((float(users)/speak_time_users)*100)})
 		user_num += 1
 	user_num = 0
-	#print(usersInt)
-	#print(usersInt)
+
 	for users in usersInt:
 		#print('users', users)
 		data['d3']['children'].append({"name": "Usuario"+str(user_num+1), "children": []})
 		for interv in range(0,len(users)):
 			time = "{0:.2f}".format(users[interv][-1]-users[interv][0])	
 			start = "{0:.2f}".format(users[interv][0])	
-			data['usersIntDur'][user_num].append({'x':str(interv+1),'y':time})
-			data['d3']['children'][user_num]['children'].append({"name": str(users[interv][0])+"-"+str(users[interv][-1]), "size":time })
+			data['usersIntDur'][user_num].append({'x':start,'y':time})
+			data['d3']['children'][user_num]['children'].append({"name": str(users[interv][0])+"-"+str(users[interv][-1]), "size":time})
 		user_num += 1
 	a=b=c=d=0
 	data['userIntInTime'].append({'y':0,'a':a, 'b':b, 'c':c, 'd':d})	
@@ -70,14 +71,27 @@ def FillJson(obj):
 	user_num = 0
 	for user in usersVolInterv:
 		interv = 1
-		for vol in user:
-			data['usersVol'][user_num].append({'x':str(interv),'y':'{0:.2f}'.format(vol)})
+		for vol, time in user:
+			data['usersVol'][user_num].append({'x':str(time),'y':'{0:.2f}'.format(vol)})
 			interv += 1
 		user_num+= 1
 	user_num = 1
 	for vol in usersVol:
 		data['usersVolAVG'].append({'x':'Usuario '+str(user_num),'y':'{0:.2f}'.format(vol)})
 		user_num+= 1
+	emisor = 1
+	receptor = 1
+	for x in range(len(usersRelation)):	
+		
+		
+		if(emisor==receptor):
+			receptor += 1
+		data['usersInteraction'].append({'emisor':emisor,'receptor':receptor, 'value': usersRelation[x]})
+		receptor += 1
+		if((x+1) % 3 == 0):
+			emisor += 1	
+		if(receptor == 5):
+			receptor = 1			
 	# for i in range(len(usersActivity)):
 	# 	for val in usersActivity[i]:
 	# 		data['usersActivity'].append({'x':val,'y':1})

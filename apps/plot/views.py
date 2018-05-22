@@ -90,41 +90,41 @@ def donut_graph(request):
 	)
 
 @login_required(redirect_field_name='login')
-def simple_upload(request):
-	if request.method == 'POST' and request.FILES['csv_file']:
-		csv_file = request.FILES["csv_file"]
-		if not csv_file.name.endswith('.csv'):
-			messages.error(request,'El archivo no tiene extensión CSV')
-			return HttpResponseRedirect(reverse("plot:upload_csv"))
-		#if file is too large, return
-		if csv_file.multiple_chunks():
-			messages.error(request,"El archivo es demasiado grande (%.2f MB)." % (csv_file.size/(1000*1000),))
-			return HttpResponseRedirect(reverse("plot:upload_csv"))
-		# fs = FileSystemStorage()
-		# filename = fs.save(csv_file.name, csv_file)
-		# uploaded_file_url = fs.url(filename)
-		#print(csv_file.read())
-		file_data = csv_file.read().decode("utf-8")
-		plt = ploter.Plot(file_data)
-		plt.UsersInteraction()
-		return render(request, 'plot/plot.html')
-	return render(request, 'plot.html')
+def flare_json(request, user):
+	print(user, request.user)
+	if user == str(request.user):
+		data_plot = request.session['data_plot']
+		data = json.loads(data_plot)
+		#print("data plot",data)
+		data = json.dumps(data['d3'])
+		return HttpResponse(data)
+	return HttpResponse(status=404)
 
 @login_required(redirect_field_name='login')
-def flare_json(request, user):
+def force_csv(request):
+	response = HttpResponse(content_type='text/csv')
+	writer = csv.writer(response)
 	data_plot = request.session['data_plot']
-	data = json.loads(data_plot)
-	#print("data plot",data)
-	data = json.dumps(data['d3'])
-	return HttpResponse(data)
+	data = json.loads(data_plot)  
+	values = []
+	writer.writerow(['source', 'target', 'value', 'weight'])
+	for x in data['usersInteraction']:
+		values.append(x['value'])
+	maxim = max(values)
+	for x in range(len(data['usersInteraction'])):
+		writer.writerow(['Usuario '+str(data['usersInteraction'][x]['receptor']),'Usuario '+str(data['usersInteraction'][x]['emisor']) , float(data['usersInteraction'][x]['value']/maxim),20])
+	return HttpResponse(response)
+	
 
 @login_required(redirect_field_name='login')
 def relations(request, user):
-	data_plot = request.session['data_plot']
-	data = json.loads(data_plot)
-	#print("data plot",data)
-	data = json.dumps(data['usersRelation'])
-	return HttpResponse(data)
+	if user == str(request.user):
+		data_plot = request.session['data_plot']
+		data = json.loads(data_plot)
+		#print("data plot",data)
+		data = json.dumps(data['usersRelation'])
+		return HttpResponse(data)
+	return HttpResponse(status=404)
 
 @login_required(redirect_field_name='login')
 def usersActivity(request):
@@ -166,6 +166,7 @@ def show_graphs(request, filename):
 	filename = os.path.join(settings.MEDIA_ROOT, filename)
 	file = open(filename, 'r')
 	plt = ploter.Plot(file, outputPath='media/plot/'+str(request.user))
+	request.session['data_plot'] = json.dumps(functions.FillJson(plt))
 	plt.UsersInteraction()
 	return redirect(reverse("plot"))
 

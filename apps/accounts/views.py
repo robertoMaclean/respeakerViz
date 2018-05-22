@@ -20,7 +20,7 @@ def login_view(request):
 		login(request, user)
 		if next:
 			return redirect(next)
-		return redirect(reverse_lazy("upload_file"))
+		return redirect(reverse_lazy("save_file"))
 	return render(request, "form.html", {"form":form, "title":title})
 
 def register_view(request):
@@ -35,14 +35,14 @@ def register_view(request):
 			# new_user = authenticate(username=user.username, password=password)
 			# login(request, new_user)
 			messages.success(request, 'Tu cuenta se ha creado satisfactoriamente. Ahora puedes acceder a tu cuenta.')
-			return redirect(reverse_lazy("upload_file"))
+			return redirect(reverse_lazy("save_file"))
 		context = {
 			"form": form,
 			"title": title
 		}
 
 		return render(request, "form.html", context)
-	return redirect(reverse_lazy("upload_file"))
+	return redirect(reverse_lazy("save_file"))
 
 @login_required(redirect_field_name='login')
 def logout_view(request):

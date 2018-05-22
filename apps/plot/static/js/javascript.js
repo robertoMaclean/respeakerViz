@@ -59,11 +59,12 @@ function click_buttons(){
 
     $('#users_interv_time').on('click', function(){ 
         footer ='<div class="btn-group">'	
-    	footer += '<button type="button" id="user1" class="btn btn-danger active">Usuario 1</button>'
-    	footer += '<button type="button" id="user2" class="btn btn-primary active">Usuario 2</button>'
-    	footer += '<button type="button" id="user3" class="btn btn-success active">Usuario 3</button>'
-    	footer += '<button type="button" id="user4" class="btn btn-warning active">Usuario 4</button>'
-        footer += '<button type="button" id="total" class="btn btn-default active">Total</button>'
+    	footer += '<button type="button" id="general" class="btn">General</button>'
+        footer += '<button type="button" id="user1" class="btn btn-danger">Usuario 1</button>'
+    	footer += '<button type="button" id="user2" class="btn btn-primary">Usuario 2</button>'
+    	footer += '<button type="button" id="user3" class="btn btn-success">Usuario 3</button>'
+    	footer += '<button type="button" id="user4" class="btn btn-warning">Usuario 4</button>'
+        footer += '<button type="button" id="total" class="btn btn-default">Total</button>'
         footer += '</div>'
         html = '<div id="graph" class="graph"></div>' 
         $('.panel-body').html(html)
@@ -71,6 +72,7 @@ function click_buttons(){
         $('.panel-footer').html(footer)
         click_buttons_interv_time()
         barGraph(data.usersIntDur[0], '#c9302c', ['Segundos'])
+        $("#general").click()
         console.log('success')
     	/*$.ajax({
             type: "GET",
@@ -119,11 +121,12 @@ function click_buttons(){
 
     $('#users_vol').on('click', function(){
         footer ='<div class="btn-group">'
-        footer += '<button type="submit" id="user1" class="btn btn-danger">Usuario 1</button>'
-        footer += '<button type="submit" id="user2" class="btn btn-primary">Usuario 2</button>'
-        footer += '<button type="submit" id="user3" class="btn btn-success">Usuario 3</button>'
-        footer += '<button type="submit" id="user4" class="btn btn-warning">Usuario 4</button>'
-        footer += '<button type="submit" id="total" class="btn btn-defaul">Total</button>'
+        footer += '<button type="button" id="vol_in_time" class="btn">General</button>'
+        footer += '<button type="button" id="user1" class="btn btn-danger">Usuario 1</button>'
+        footer += '<button type="button" id="user2" class="btn btn-primary">Usuario 2</button>'
+        footer += '<button type="button" id="user3" class="btn btn-success">Usuario 3</button>'
+        footer += '<button type="button" id="user4" class="btn btn-warning">Usuario 4</button>'
+        footer += '<button type="button" id="total" class="btn btn-defaul">Total</button>'
         footer += '</div>' 
         html = '<div id="graph" class="graph"></div>'
         $('.panel-body').html(html)
@@ -133,6 +136,7 @@ function click_buttons(){
         console.log(json)*/
         click_buttons_users_vol()
         barGraph(data.usersVol[0], '#c9302c', ['Volumen'])
+        $("#vol_in_time").click()
         console.log('success')
         /*$.ajax({
             type: "GET",
@@ -193,19 +197,25 @@ function click_buttons(){
         
     });
 
-    function test(){
-        TESTER = $('#graph')[0];
-        Plotly.plot( TESTER, [{
-        x: [1, 2, 3, 4, 5],
-        y: [1, 2, 4, 8, 16] }], {
-        margin: { t: 0 } } );
-    }
-
-    $('#test').on('click', function(data){ 
-        html = '<div id="graph" class="graph"></div>'
-        $('.panel-body').html(html)
-        test()        
+    $('#test').on('click', function(data){      
+        $.ajax({
+            type: "GET",
+            url: '/plot/force.csv',
+            success: function(data) {
+                html = '<svg></svg>'
+                $('.panel-body').html(html)
+                $('.panel-heading').html('Agrupación de intervenciones por usuario')
+                $('.panel-footer').html('')
+                nodes()
+                console.log('success')
+            },
+            error: function(data) {
+                console.log('error')
+            },
+        });
+        
     });
+
     
     function get_sum(array) {
         sum = 0
@@ -213,15 +223,34 @@ function click_buttons(){
             sum = parseFloat(array[i].y)+sum
         }
         return sum.toFixed(2)
-    }
+    } 
 
     function click_buttons_interv_time(){
-        func = function (row, series, type) {
+        func_users = function (row, series, type) {
                     /*console.log("--> "+row.label, series, type);*/
                     if(row.label == "Usuario 1") return "#c9302c";
                     else if(row.label == "Usuario 2") return "#337ab7";
                     else if(row.label == "Usuario 3") return "#5cb85c";
                     else if(row.label == "Usuario 4") return "#f0ad4e";
+                }
+        func_times = function (row, series, type) {
+                    /*console.log("--> "+row.label, series, type);*/
+                    if((contador[0]<data.usersIntDur[0].length)&&row.label == String(data.usersIntDur[0][contador[0]]['x'])){
+                        contador[0] += 1
+                        return "#c9302c";
+                    } 
+                    else if((contador[1]<data.usersIntDur[1].length)&&row.label == String(data.usersIntDur[1][contador[1]]['x'])){
+                        contador[1] += 1
+                        return "#337ab7";
+                    } 
+                    else if((contador[2]<data.usersIntDur[2].length)&&row.label == String(data.usersIntDur[2][contador[2]]['x'])){
+                        contador[2] += 1
+                        return "#5cb85c";
+                    } 
+                    else if((contador[3]<data.usersIntDur[3].length)&&row.label == String(data.usersIntDur[3][contador[3]]['x'])){
+                        contador[3] += 1
+                        return "#f0ad4e";
+                    } 
                 }
     	$('#user1').on('click', function(){
            morris.options.barColors = ["#c9302c"]
@@ -241,7 +270,7 @@ function click_buttons(){
             morris.setData(data.usersIntDur[3])
 	    });
         $('#total').on('click', function(){
-            morris.options.barColors = func
+            morris.options.barColors = func_users
             dat ={
                 "datos": [
                     {"x":"Usuario 1","y":get_sum(data.usersIntDur[0])},
@@ -252,16 +281,50 @@ function click_buttons(){
             } 
             morris.setData(dat.datos)
         });
+        $('#general').on('click', function(){
+           morris.options.barColors = func_times
+           var array_concat = data.usersIntDur[0].concat(data.usersIntDur[1], data.usersIntDur[2], data.usersIntDur[3])
+           array_concat.sort(function(a, b){return a['x'] - b['x']});
+           contador = [0,0,0,0]
+           morris.setData(array_concat)
+        });
     }
 
     function click_buttons_users_vol(){
-        func = function (row, series, type) {
+        func_users = function (row, series, type) {
                     /*console.log("--> "+row.label, series, type);*/
                     if(row.label == "Usuario 1") return "#c9302c";
                     else if(row.label == "Usuario 2") return "#337ab7";
                     else if(row.label == "Usuario 3") return "#5cb85c";
                     else if(row.label == "Usuario 4") return "#f0ad4e";
                 }
+        var contador = [0,0,0,0]
+        func_times = function (row, series, type) {
+                    /*console.log("--> "+row.label, series, type);*/
+                    if((contador[0]<data.usersVol[0].length)&&row.label == String(data.usersVol[0][contador[0]]['x'])){
+                        contador[0] += 1
+                        return "#c9302c";
+                    } 
+                    else if((contador[1]<data.usersVol[1].length)&&row.label == String(data.usersVol[1][contador[1]]['x'])){
+                        contador[1] += 1
+                        return "#337ab7";
+                    } 
+                    else if((contador[2]<data.usersVol[2].length)&&row.label == String(data.usersVol[2][contador[2]]['x'])){
+                        contador[2] += 1
+                        return "#5cb85c";
+                    } 
+                    else if((contador[3]<data.usersVol[3].length)&&row.label == String(data.usersVol[3][contador[3]]['x'])){
+                        contador[3] += 1
+                        return "#f0ad4e";
+                    } 
+                }
+        $('#vol_in_time').on('click', function(){
+           morris.options.barColors = func_times
+           var array_concat = data.usersVol[0].concat(data.usersVol[1], data.usersVol[2], data.usersVol[3])
+           array_concat.sort(function(a, b){return a['x'] - b['x']});
+           contador = [0,0,0,0]
+           morris.setData(array_concat)
+        });
         $('#user1').on('click', function(){
            morris.options.barColors = ["#c9302c"]
            morris.setData(data.usersVol[0])
@@ -279,13 +342,60 @@ function click_buttons(){
             morris.setData(data.usersVol[3])
         });
         $('#total').on('click', function(){
+            morris.options.barColors = func_users
+            morris.setData(data.usersVolAVG)
+        });
+    }
+
+    function click_buttons_users_vol2(){
+        var contador = [0,0,0,0]
+        func = function (row, series, type) {
+                    /*console.log("--> "+row.label, series, type);*/
+                    if((contador[0]<data.usersVol[0].length)&&row.label == String(data.usersVol[0][contador[0]]['x'])){
+                        contador[0] += 1
+                        return "#c9302c";
+                    } 
+                    else if((contador[1]<data.usersVol[1].length)&&row.label == String(data.usersVol[1][contador[1]]['x'])){
+                        contador[1] += 1
+                        return "#337ab7";
+                    } 
+                    else if((contador[2]<data.usersVol[2].length)&&row.label == String(data.usersVol[2][contador[2]]['x'])){
+                        contador[2] += 1
+                        return "#5cb85c";
+                    } 
+                    else if((contador[3]<data.usersVol[3].length)&&row.label == String(data.usersVol[3][contador[3]]['x'])){
+                        contador[3] += 1
+                        return "#f0ad4e";
+                    } 
+                }
+        $('#user1').on('click', function(){
+           morris.options.barColors = func
+           var array_concat = data.usersVol[0].concat(data.usersVol[1], data.usersVol[2], data.usersVol[3])
+           array_concat.sort(function(a, b){return a['x'] - b['x']});
+           contador = [0,0,0,0]
+           morris.setData(array_concat)
+        });
+        $('#user2').on('click', function(){
+            morris.options.barColors = ["#337ab7"]
+            morris.setData(data.usersVol[0])
+        });
+        $('#user3').on('click', function(){
+            morris.options.barColors = ["#5cb85c"]
+            morris.setData(data.usersVol[2])
+        });
+        $('#user4').on('click', function(){
+            morris.options.barColors = ["#f0ad4e"]
+            morris.setData(data.usersVol[3])
+        });
+        $('#total').on('click', function(){
             morris.options.barColors = func
-            /*dat ={
+            /*console.log(data.usersVol[0][0]['x'])
+            dat ={
                 "datos": [
-                    {"x":"Usuario 1","y":data.usersVolAVG[0]},
-                    {"x":"Usuario 2","y":data.usersVolAVG[1]},
-                    {"x":"Usuario 3","y":data.usersVolAVG[2]},
-                    {"x":"Usuario 4","y":data.usersVolAVG[3]}
+                    {"x":data.usersVol[0]['x'],"y":data.usersVol[0]['y']},
+                    {"x":data.usersVol[1]['x'],"y":data.usersVol[1]['y']},
+                    {"x":data.usersVol[2]['x'],"y":data.usersVol[2]['y']},
+                    {"x":data.usersVol[3]['x'],"y":data.usersVol[3]['y']},
                 ]
             } */
             morris.setData(data.usersVolAVG)

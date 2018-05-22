@@ -21,6 +21,7 @@ urlpatterns = [
     path('plot/get_files', views.get_files, name='get_files'),
     path('plot/show_graphs/<str:filename>', views.show_graphs, name='show_graphs'),
     path('plot/delete_files/<str:name>', views.delete_files, name='delete_files'),
+    path('plot/force.csv', views.force_csv, name='force_csv'),
 
 ]
 

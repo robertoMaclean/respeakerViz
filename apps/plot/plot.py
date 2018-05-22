@@ -15,7 +15,6 @@ class Plot(object):
 
 	def __init__(self, file, outputPath='media/plot/'):
 		self.__file = file
-		print(file)
 		self.__outputPath = os.path.abspath(outputPath)
 		self.__activity = [[],[],[],[]] 			#Each user activity (without silence)
 		self.__activityContinuos = [[],[],[],[]]  	#Each user activity (include silence)
@@ -27,6 +26,8 @@ class Plot(object):
 		self.__userStartInt = [[],[]]				#User intervention start
 		self.__volPromInterv = [[],[],[],[]]		#User volume AVG per intervention
 		self.__usersVol = []						#User total volume AVG
+		self.__usersVolWithTime = []
+		self.__usersRelations = [0,0,0,0,0,0,0,0,0,0,0,0]				
 		functions.ensureDir(outputPath)
 		self.ExtractData()
 		self.UsersSpeak()
@@ -60,6 +61,9 @@ class Plot(object):
 	def GetActivityContinuos(self):
 		return self.__activityContinuos
 
+	def GetUsersRelations(self):
+		return self.__usersRelations
+
 	def ExtractData(self):
 		interTimes = [[],[],[],[]]
 		timeActivity = []
@@ -80,10 +84,11 @@ class Plot(object):
 					self.__userStartInt[1].append(float(row['seconds']))
 					if lastPosition != -1:
 						prom = sum(volProm)/len(volProm)
-						self.__volPromInterv[int(row['direction'])].append(prom)
+						self.__volPromInterv[int(row['direction'])].append((prom,row['seconds']))
 						volProm = []
 						interTimes[lastPosition].append(timeActivity)
 						self.FindUsersInteraction(lastPosition+1, int(row['direction'])+1, file)
+						self.newFindUsersInteraction(lastPosition+1, int(row['direction'])+1, file)
 						for i in range(silence):
 							self.__activityContinuos[lastPosition].pop()
 					else:
@@ -106,8 +111,11 @@ class Plot(object):
 			self.__activityContinuos[lastPosition].pop()
 		for x in interTimes:
 			self.__usersInterv.append(x)
-		for x in self.__volPromInterv: 
-			self.__usersVol.append(sum(x)/len(x))
+		total_vol = 0
+		for x in self.__volPromInterv:
+			for prom, time in x: 
+				total_vol += prom
+			self.__usersVol.append(total_vol/len(x))
 
 	def UsersSpeak(self):
 		#figure = plt.gcf() # get current figure
@@ -166,6 +174,33 @@ class Plot(object):
 			else:
 				writer.writerow({'Usuario 1':str(pos1),'Usuario 2':str(pos2),'Relaciones':str(self.__relations[5]+1)})
 				self.__relations[5] += 1
+
+	def newFindUsersInteraction(self, pos1, pos2, file):
+			
+			if pos1==1 and pos2 == 2:
+				self.__usersRelations[0] += 1
+			elif pos1==1 and pos2 == 3:
+				self.__usersRelations[1] += 1
+			elif pos1==1 and pos2 == 4:
+				self.__usersRelations[2] += 1
+			elif pos1==2 and pos2 == 1:
+				self.__usersRelations[3] += 1
+			elif pos1==2 and pos2 == 3:
+				self.__usersRelations[4] += 1
+			elif pos1==2 and pos2 == 4:
+				self.__usersRelations[5] += 1
+			elif pos1==3 and pos2 == 1:
+				self.__usersRelations[6] += 1
+			elif pos1==3 and pos2 == 2:
+				self.__usersRelations[7] += 1
+			elif pos1==3 and pos2 == 4:
+				self.__usersRelations[8] += 1
+			elif pos1==4 and pos2 == 1:
+				self.__usersRelations[9] += 1
+			elif pos1==4 and pos2 == 2:
+				self.__usersRelations[10] += 1
+			elif pos1==4 and pos2 == 3:
+				self.__usersRelations[11] += 1
 
 	def UsersInteraction(self):
 		node_speak = []
