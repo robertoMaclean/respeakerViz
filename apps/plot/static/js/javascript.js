@@ -2,6 +2,7 @@ $( document ).ready(function() {
     click_buttons()
     active_nav_li()
     transform_users_time()
+    nodes()
 });
 
 function active_nav_li(){
@@ -14,24 +15,24 @@ function transform_users_time(){
     users_time = [data.usersTime[0]['y']/max, data.usersTime[1]['y']/max, data.usersTime[2]['y']/max, data.usersTime[3]['y']/max]
 }
 function click_buttons(){
-	$('#users_interaction').on('click', function(){
-        $.ajax({
-            type: "GET",
-            url: '/plot/interactions',
-            success: function(data) {
-                footer = '<div>'
-                footer += '<a type="link" id="download_csv" href="/media/plot/relaciones.csv" class="btn btn-primary">Descargar datos</a>'
-            	footer += '</div>'
-                $('.panel-body').html(data)
-            	$('.panel-heading').html('Interacción entre participantes')
-            	$('.panel-footer').html(footer)
-            	console.log('success')
-            },
-            error: function(data) {
-                console.log('error')
-            },
-        });
-    });
+	// $('#users_interaction').on('click', function(){
+ //        $.ajax({
+ //            type: "GET",
+ //            url: '/plot/interactions',
+ //            success: function(data) {
+ //                footer = '<div>'
+ //                footer += '<a type="link" id="download_csv" href="/media/plot/relaciones.csv" class="btn btn-primary">Descargar datos</a>'
+ //            	footer += '</div>'
+ //                $('.panel-body').html(data)
+ //            	$('.panel-heading').html('Interacción entre participantes')
+ //            	$('.panel-footer').html(footer)
+ //            	console.log('success')
+ //            },
+ //            error: function(data) {
+ //                console.log('error')
+ //            },
+ //        });
+ //    });
 
     $('#users_speak').on('click', function(){
         $.ajax({
@@ -203,14 +204,14 @@ function click_buttons(){
         
     });
 
-    $('#test').on('click', function(data){      
+    $('#users_interaction').on('click', function(data){      
         $.ajax({
             type: "GET",
-            url: '/plot/force.csv',
+            url: '/plot/'+user+'/force.csv',
             success: function(data) {
                 html = '<svg></svg>'
                 $('.panel-body').html(html)
-                $('.panel-heading').html('Agrupación de intervenciones por usuario')
+                $('.panel-heading').html('Interacción entre usuarios')
                 $('.panel-footer').html('')
                 nodes()
                 console.log('success')

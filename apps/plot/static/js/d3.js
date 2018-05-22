@@ -109,7 +109,7 @@ function relations(){
 
 function nodes(){
     // get the data
-  d3.csv("force.csv", function(error, links) {
+  d3.csv(user+"/force.csv", function(error, links) {
 
   var nodes = {};
 

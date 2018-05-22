@@ -1,31 +1,37 @@
 $( document ).ready(function() {
     click_buttons()
     active_nav_li()
+    transform_users_time()
 });
 
 function active_nav_li(){
     var pathname = window.location.pathname;
     $('.nav > li > a[href="'+pathname+'"]').parent().addClass('active');
 }
+
+function transform_users_time(){
+    max = Math.max(data.usersTime[0]['y'], data.usersTime[1]['y'], data.usersTime[2]['y'], data.usersTime[3]['y'])
+    users_time = [data.usersTime[0]['y']/max, data.usersTime[1]['y']/max, data.usersTime[2]['y']/max, data.usersTime[3]['y']/max]
+}
 function click_buttons(){
-	$('#users_interaction').on('click', function(){
-        $.ajax({
-            type: "GET",
-            url: '/plot/interactions',
-            success: function(data) {
-                footer = '<div>'
-                footer += '<a type="link" id="download_csv" href="/media/plot/relaciones.csv" class="btn btn-primary">Descargar datos</a>'
-            	footer += '</div>'
-                $('.panel-body').html(data)
-            	$('.panel-heading').html('Interacción entre participantes')
-            	$('.panel-footer').html(footer)
-            	console.log('success')
-            },
-            error: function(data) {
-                console.log('error')
-            },
-        });
-    });
+	// $('#users_interaction').on('click', function(){
+ //        $.ajax({
+ //            type: "GET",
+ //            url: '/plot/interactions',
+ //            success: function(data) {
+ //                footer = '<div>'
+ //                footer += '<a type="link" id="download_csv" href="/media/plot/relaciones.csv" class="btn btn-primary">Descargar datos</a>'
+ //            	footer += '</div>'
+ //                $('.panel-body').html(data)
+ //            	$('.panel-heading').html('Interacción entre participantes')
+ //            	$('.panel-footer').html(footer)
+ //            	console.log('success')
+ //            },
+ //            error: function(data) {
+ //                console.log('error')
+ //            },
+ //        });
+ //    });
 
     $('#users_speak').on('click', function(){
         $.ajax({
@@ -197,19 +203,25 @@ function click_buttons(){
         
     });
 
-    function test(){
-        TESTER = $('#graph')[0];
-        Plotly.plot( TESTER, [{
-        x: [1, 2, 3, 4, 5],
-        y: [1, 2, 4, 8, 16] }], {
-        margin: { t: 0 } } );
-    }
-
-    $('#test').on('click', function(data){ 
-        html = '<div id="graph" class="graph"></div>'
-        $('.panel-body').html(html)
-        test()        
+    $('#users_interaction').on('click', function(data){      
+        $.ajax({
+            type: "GET",
+            url: '/plot/'+user+'/force.csv',
+            success: function(data) {
+                html = '<svg></svg>'
+                $('.panel-body').html(html)
+                $('.panel-heading').html('Interacción entre usuarios')
+                $('.panel-footer').html('')
+                nodes()
+                console.log('success')
+            },
+            error: function(data) {
+                console.log('error')
+            },
+        });
+        
     });
+
     
     function get_sum(array) {
         sum = 0

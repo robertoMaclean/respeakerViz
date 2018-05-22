@@ -101,7 +101,7 @@ def flare_json(request, user):
 	return HttpResponse(status=404)
 
 @login_required(redirect_field_name='login')
-def force_csv(request):
+def force_csv(request, user):
 	response = HttpResponse(content_type='text/csv')
 	writer = csv.writer(response)
 	data_plot = request.session['data_plot']

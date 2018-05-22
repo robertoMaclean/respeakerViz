@@ -63,3 +63,19 @@ text {
 #login-body ul {
   list-style-type: none;
 }
+
+.lateral-title {
+  text-align: center;
+  font-size: 20px;
+  background-color: #333;
+  color: white;
+  padding-bottom: 1px;
+  border-radius: 5px;
+  padding-top: 10px;
+}
+
+path.link {
+  fill: none;
+  stroke: #666;
+}
+
