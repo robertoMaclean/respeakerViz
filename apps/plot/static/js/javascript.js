@@ -1,11 +1,17 @@
 $( document ).ready(function() {
     click_buttons()
     active_nav_li()
+    transform_users_time()
 });
 
 function active_nav_li(){
     var pathname = window.location.pathname;
     $('.nav > li > a[href="'+pathname+'"]').parent().addClass('active');
+}
+
+function transform_users_time(){
+    max = Math.max(data.usersTime[0]['y'], data.usersTime[1]['y'], data.usersTime[2]['y'], data.usersTime[3]['y'])
+    users_time = [data.usersTime[0]['y']/max, data.usersTime[1]['y']/max, data.usersTime[2]['y']/max, data.usersTime[3]['y']/max]
 }
 function click_buttons(){
 	$('#users_interaction').on('click', function(){
