@@ -25,7 +25,13 @@ function buble(){
         .text(function(d) { return d.data.name + "\n"; });
 
     node.append("circle")
-        .attr("r", function(d) {console.log(d); return d.r; });
+        .attr("r", function(d) {console.log(d); return d.r; })
+        .attr("class", function(d) {
+          if(d.data.name == "Usuario1") return "fill-red"
+          else if(d.data.name == "Usuario2") return "fill-blue"
+          else if(d.data.name == "Usuario3") return "fill-green"
+          else if(d.data.name == "Usuario4") return "fill-yellow"
+        });
 
     node.filter(function(d) { return !d.children; }).append("text")
         .attr("dy", "0.3em")
@@ -109,6 +115,7 @@ function relations(){
 
 function nodes(){
     // get the data
+  
   d3.csv(user+"/force.csv", function(error, links) {
 
   var nodes = {};
@@ -157,7 +164,7 @@ function nodes(){
       .data(force.links())
     .enter().append("svg:path")
       .attr("class", function(d) { return "link " + d.type; })
-      .attr("stroke-width", function(d) { return (d.value*2); })
+      .attr("stroke-width", function(d) { return (d.value*2.5); })
       .attr("class", "link")
       .attr("marker-end", "url(#end)");
 
@@ -172,7 +179,7 @@ function nodes(){
   // add the nodes
   node.append("circle")
       .attr("r", function(d) {
-        if(d.name == "Usuario 1") return users_time[0]*30; 
+        if(d.name == "Usuario 1") return users_time[0]*5; 
         else if(d.name == "Usuario 2") return users_time[1]*30; 
         else if(d.name == "Usuario 3") return users_time[2]*30; 
         else return users_time[3]*30; 

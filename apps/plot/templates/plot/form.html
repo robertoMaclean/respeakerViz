@@ -13,11 +13,13 @@
 			<form method="POST" enctype=multipart/form-data>
 				{% csrf_token %}
 				{{ form|crispy}}
-				<div class="form-group">
-					<input type="submit" class="btn btn-primary" value='{{ title }}'>
-				</div>	
-			</form>
+				
 		</div>	
+		<div class="panel-footer">
+			<input type="submit" class="btn btn-primary" value='{{ title }}'>
+			</form>
+		</div>
+				
 	</div>		
 </div>
 {% endblock content %}

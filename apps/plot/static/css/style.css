@@ -39,6 +39,26 @@ circle {
   stroke: none;
 }
 
+.fill-red {
+  fill: #ac2925;
+  fill-opacity: 1;
+}
+
+.fill-green {
+  fill: #5cb85c;
+  fill-opacity: 1;
+}
+
+.fill-yellow {
+  fill: #eea236;
+  fill-opacity: 1;
+}
+
+.fill-blue {
+  fill: #337ab7;
+  fill-opacity: 1;
+}
+
 text {
   font: 10px sans-serif;
   text-anchor: middle;
@@ -78,4 +98,57 @@ path.link {
   fill: none;
   stroke: #666;
 }
+
+.table-container {
+    height: 10em;
+}
+
+table {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    width: 100%;
+}
+
+table thead {
+    /* head takes the height it requires, 
+    and it's not scaled when table is resized */
+    flex: 0 0 auto;
+    width: calc(100% - 0.9em);
+    background-color: #212529;
+    color: #fff;
+}
+
+table tbody {
+    /* body takes all the remaining available space */
+    flex: 1 1 auto;
+    display: block;
+    overflow-y: scroll;
+    height: 400px;
+}
+
+table tbody tr {
+    width: 100%;
+}
+
+table thead, table tbody tr {
+    display: table;
+    table-layout: fixed;
+}
+
+.width-30 {
+  width: 30px;
+}
+
+.margin-bot-10 {
+  margin-bottom: 10px;
+}
+
+
+
+
+
+
+
+
 

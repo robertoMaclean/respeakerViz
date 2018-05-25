@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.template.loader import render_to_string
-from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 import csv, json, os
 import apps.plot.plot as ploter
