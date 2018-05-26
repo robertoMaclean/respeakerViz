@@ -179,7 +179,7 @@ function nodes(){
   // add the nodes
   node.append("circle")
       .attr("r", function(d) {
-        if(d.name == "Usuario 1") return users_time[0]*5; 
+        if(d.name == "Usuario 1") return users_time[0]*30; 
         else if(d.name == "Usuario 2") return users_time[1]*30; 
         else if(d.name == "Usuario 3") return users_time[2]*30; 
         else return users_time[3]*30; 

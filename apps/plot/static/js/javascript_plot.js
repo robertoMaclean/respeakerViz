@@ -2,6 +2,7 @@ $( document ).ready(function() {
     click_buttons()
     transform_users_time()
     nodes()
+    $('#users_interaction').click()
 });
 
 function active_nav_li(){
@@ -203,12 +204,49 @@ function click_buttons(){
         
     });
 
-    $('#users_interaction').on('click', function(data){      
+    $('#users_interaction').on('click', function(dat){      
         $.ajax({
             type: "GET",
             url: '/plot/'+user+'/force.csv',
-            success: function(data) {
+            success: function() {
+
                 html = '<svg></svg>'
+                html += '<div class="col-md-6 col-md-offset-3">'
+                html += '<div class="table-responsive">'
+                html += '<table class="table" id="interaction_table">'
+                html += '<thead><tr>'
+                html += '<th >Emisor</th>'
+                html += '<th >Receptor</th>'
+                html += '<th >Interacciones</th></tr>'
+                html += '</thead>'
+                html += '<tbody>'
+                console.log(data)
+                for(var i=0;i<data.usersInteraction.length;i++){
+                    html += '<tr>'
+                    html += '<td>'+data.usersInteraction[i]['receptor']+'</td>'
+                    html += '<td>'+data.usersInteraction[i]['emisor']+'</td>'
+                    html += '<td>'+data.usersInteraction[i]['value']+'</td>'
+                    html += '</tr>'
+                }
+                html += '</tbody>'
+                html += '</div>'
+                html += '</div>'
+                html += '</div>'
+                              
+            //       <tbody>
+            //         {% for file in user_files %}
+            //             <tr>
+            //               <td class="width-30"><input type="checkbox" id="checkbox"/></td>
+            //               <td id="name">{{file.name}}</td>
+            //               <td>{{file.created_date}}</td>
+            //               <td><a type="button" class="btn btn-info btn-sm glyphicon glyphicon-eye-open" href="/plot/show_graphs/{{file.file}}"></a>
+            //               <a type="button" id="delete" class="btn btn-danger btn-sm glyphicon glyphicon-remove" "></a></td>
+            //             </tr>
+            //         {% endfor %}                 
+            //       </tbody>
+            //     </table>
+            // </div>'
+
                 footer = "<a type='link' id='download_csv' href='/media/plot/"+user+"relaciones.csv' class='btn btn-primary'>Descargar datos</a>"
                 $('.panel-body').html(html)
                 $('.panel-heading').html('Interacción entre usuarios')

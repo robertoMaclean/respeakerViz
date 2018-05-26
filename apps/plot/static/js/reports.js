@@ -1,8 +1,17 @@
 $( document ).ready(function() {
     $("#search").on("change keyup keydown",function(){
-      SearchFiles()
-    })
+      SearchFiles();
+    });
     CheckAll()
+    $("#delete-files").on("click", function() {
+      delete_alert();
+    });
+    $("#delete").on("click", function() {
+      var filename = $(this).closest("tr")   // Finds the closest row <tr> 
+                       .find("#name")     // Gets a descendent with class="nr"
+                       .text();
+      delete_one(filename)
+    })
 });
 
 function SearchFiles() {
@@ -47,4 +56,36 @@ function CheckAll() {
     });
     
     $("[data-toggle=tooltip]").toolt
+}
+
+function DeleteFiles() {
+  for(var i=0;i<$("#myTable #checkbox").length;i++){
+    if($("#myTable #checkbox")[i].checked){
+      $.ajax({
+          type: "GET",
+          url: '/plot/delete_files/'+String(name),
+          success: function(data) {
+              window.location.reload()
+              console.log('success')
+          },
+          error: function(data) {
+              console.log('error')
+          },
+      });
+    }
+  }
+};
+
+function DeleteFile(filename) {
+  $.ajax({
+          type: "GET",
+          url: '/plot/delete_files/'+filename,
+          success: function(data) {
+              window.location.reload()
+              console.log('success')
+          },
+          error: function(data) {
+              console.log('error')
+          },
+      });
 }

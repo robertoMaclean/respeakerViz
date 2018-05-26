@@ -17,9 +17,9 @@
 				  	<span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
 				</div>
             </div>
-			<div class="table-responsive">
+			<div class="table-container">
 				<table class="table" id="myTable">
-				  <thead class="thead-dark">
+				  <thead>
 				    <tr>
 				      <th class="width-30"><input type="checkbox" id="checkall" /></th>
 				      <th >Nombre</th>
@@ -30,20 +30,26 @@
   				  <tbody>
 				  	{% for file in user_files %}
 						<tr>
-						  <td class="width-30"><input type="checkbox" class="checkthis" /></td>
-					      <td>{{file.name}}</td>
+						  <td class="width-30"><input type="checkbox" id="checkbox"/></td>
+					      <td id="name">{{file.name}}</td>
 					      <td>{{file.created_date}}</td>
 					      <td><a type="button" class="btn btn-info btn-sm glyphicon glyphicon-eye-open" href="/plot/show_graphs/{{file.file}}"></a>
-					      <a type="button" class="btn btn-danger btn-sm glyphicon glyphicon-remove" href="/plot/delete_files/{{file.name}}"></a></td>
+					      <a type="button" id="delete" class="btn btn-danger btn-sm glyphicon glyphicon-remove" "></a></td>
 					    </tr>
 					{% endfor %}				 
 			      </tbody>
 				</table>
+			</div>
+		</div>
+		<div class="panel-footer">
+			<div class="btn-group">
+				<button class="btn btn-primary" id="group-analyze">Análisis entre Grupos</button>
+				<button class="btn btn-danger" id="delete-files">Eliminar</button>
 			</div>
 		</div>	
 	</div>		
 </div>
 {% endblock content %}
 {% block javascript %}
-<script type="text/javascript" src="{% static '/js/search.js' %}"></script>
+<script type="text/javascript" src="{% static '/js/reports.js' %}"></script>
 {% endblock %}
