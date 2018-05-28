@@ -13,6 +13,7 @@ from django.core.files import File
 from .forms import FileForm
 from .models import UserFile
 from io import StringIO
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -169,8 +170,12 @@ def show_graphs(request, filename):
 	return redirect(reverse("plot"))
 
 @login_required(redirect_field_name='login')
+@csrf_exempt
 def delete_files(request, name):
-	UserFile.objects.filter(user=request.user, name=name).delete()
-	return redirect(reverse("get_files"))
+	response = UserFile.objects.filter(user=request.user, name=name).delete()
+	if(response[0]):
+		return HttpResponse(status=200)
+	return HttpResponse(status=404)
+	
 
 

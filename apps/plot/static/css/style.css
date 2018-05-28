@@ -99,39 +99,35 @@ path.link {
   stroke: #666;
 }
 
-.table-container {
-    height: 10em;
-}
-
-table {
+#myTable {
     display: flex;
     flex-flow: column;
     height: 100%;
     width: 100%;
 }
 
-table thead {
+#myTable thead {
     /* head takes the height it requires, 
     and it's not scaled when table is resized */
     flex: 0 0 auto;
-    width: calc(100% - 0.9em);
+    width: calc(100% - 0.7em);
     background-color: #212529;
     color: #fff;
 }
 
-table tbody {
+#myTable tbody {
     /* body takes all the remaining available space */
     flex: 1 1 auto;
     display: block;
     overflow-y: scroll;
-    height: 400px;
+    max-height: 400px;
 }
 
-table tbody tr {
+#myTable tbody tr {
     width: 100%;
 }
 
-table thead, table tbody tr {
+#myTable thead, #myTable tbody tr {
     display: table;
     table-layout: fixed;
 }
@@ -142,6 +138,14 @@ table thead, table tbody tr {
 
 .margin-bot-10 {
   margin-bottom: 10px;
+}
+
+.width-140 {
+  width: 140px;
+}
+
+.table-head {
+  padding: none !important;
 }
 
 

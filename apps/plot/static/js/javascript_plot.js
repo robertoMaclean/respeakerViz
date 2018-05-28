@@ -209,26 +209,54 @@ function click_buttons(){
             type: "GET",
             url: '/plot/'+user+'/force.csv',
             success: function() {
-
-                html = '<svg></svg>'
-                html += '<div class="col-md-6 col-md-offset-3">'
+                html = '<div class="row">'
+                html += '<div class="col-md-6">'
+                html += '<svg></svg>'
+                html += '</div>'
+                html += '<div class="col-md-6">'
                 html += '<div class="table-responsive">'
                 html += '<table class="table" id="interaction_table">'
-                html += '<thead><tr>'
-                html += '<th >Emisor</th>'
-                html += '<th >Receptor</th>'
-                html += '<th >Interacciones</th></tr>'
+                html += '<thead>'
+                html += '<tr>'
+                html += '<th class="table-head">Emisor/Receptor</th>'  
+                for(var i=1;i<5;i++){
+                    html += '<th class="table-head">Usuario '+i+'</th>'      
+                }
+                html += '</tr>'
                 html += '</thead>'
                 html += '<tbody>'
+                
                 console.log(data)
-                for(var i=0;i<data.usersInteraction.length;i++){
-                    html += '<tr>'
-                    html += '<td>'+data.usersInteraction[i]['receptor']+'</td>'
-                    html += '<td>'+data.usersInteraction[i]['emisor']+'</td>'
-                    html += '<td>'+data.usersInteraction[i]['value']+'</td>'
-                    html += '</tr>'
+                for(var i=0;i<data.usersInteraction.length;i=i+3){     
+                    html += '<tr>'    
+                    html += '<th class="table-head">Usuario '+data.usersInteraction[i]['emisor']+'</th>'
+                    console.log(data.usersInteraction[i]['emisor'],data.usersInteraction[i]['receptor'] )
+                    if(data.usersInteraction[i]['emisor'] == 1){
+                        html += '<td>0</td>'
+                        html += '<td>'+data.usersInteraction[i+1]['value']+'</td>'
+                        html += '<td>'+data.usersInteraction[i+2]['value']+'</td>'
+                        html += '<td>'+data.usersInteraction[i+3]['value']+'</td>'
+                    }else if(data.usersInteraction[i]['emisor'] == 2){
+                        html += '<td>'+data.usersInteraction[i]['value']+'</td>'
+                        html += '<td>0</td>'
+                        html += '<td>'+data.usersInteraction[i+2]['value']+'</td>'
+                        html += '<td>'+data.usersInteraction[i+3]['value']+'</td>'
+                    }else if(data.usersInteraction[i]['emisor'] == 3){
+                        html += '<td>'+data.usersInteraction[i]['value']+'</td>'
+                        html += '<td>'+data.usersInteraction[i+1]['value']+'</td>'
+                        html += '<td>0</td>'
+                        html += '<td>'+data.usersInteraction[i+3]['value']+'</td>'
+                    }else{
+                        html += '<td>'+data.usersInteraction[i]['value']+'</td>'
+                        html += '<td>'+data.usersInteraction[i+1]['value']+'</td>'
+                        html += '<td>'+data.usersInteraction[i+2]['value']+'</td>'
+                        html += '<td>0</td>'
+                    }
+                    
+                    html += '</tr>'            
                 }
                 html += '</tbody>'
+                html += '</div>'
                 html += '</div>'
                 html += '</div>'
                 html += '</div>'

@@ -6,7 +6,6 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import networkx as nx
 from io import StringIO
-from django.conf import settings as djangoSettings
 import os
 import apps.plot.functions as functions
 

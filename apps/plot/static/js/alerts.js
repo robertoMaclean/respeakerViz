@@ -21,7 +21,9 @@ function delete_one(filename){
           'Eliminado!',
           'Su reporte se ha eliminado exitosamente',
           'success'
-        )
+        ).then(() => {
+          window.location.reload()
+        })
       } else if (
         // Read more about handling dismissals
         result.dismiss === swal.DismissReason.cancel
@@ -52,7 +54,9 @@ function delete_alert(){
           'Eliminado!',
           'Sus reportes se han eliminado exitosamente',
           'success'
-        )
+        ).then(() => {
+          window.location.reload()
+        })
       } else if (
         // Read more about handling dismissals
         result.dismiss === swal.DismissReason.cancel
@@ -72,8 +76,8 @@ function delete_alert(){
 }
 
 function some_check_select(){
-  for(var i=0;i<$("#myTable #checkbox").length;i++){
-    if($("#myTable #checkbox")[i].checked){
+  for(var i=0;i<$("#myTable .checkbox").length;i++){
+    if($("#myTable .checkbox")[i].checked){
       return true
     }
   }

@@ -6,9 +6,9 @@ $( document ).ready(function() {
     $("#delete-files").on("click", function() {
       delete_alert();
     });
-    $("#delete").on("click", function() {
+    $(".delete").on("click", function() {
       var filename = $(this).closest("tr")   // Finds the closest row <tr> 
-                       .find("#name")     // Gets a descendent with class="nr"
+                       .find(".name")     // Gets a descendent with class="nr"
                        .text();
       delete_one(filename)
     })
@@ -59,13 +59,15 @@ function CheckAll() {
 }
 
 function DeleteFiles() {
-  for(var i=0;i<$("#myTable #checkbox").length;i++){
-    if($("#myTable #checkbox")[i].checked){
+  for(var i=0;i<$("#myTable .checkbox").length;i++){
+    if($("#myTable .checkbox")[i].checked){
+      var name = $("#myTable tr .name")[i].textContent  
+      console.log(name)
       $.ajax({
-          type: "GET",
-          url: '/plot/delete_files/'+String(name),
+          type: "DELETE",
+          url: '/plot/delete_files/'+name,
+          headers: { "X-CSRFToken": getCookie("csrftoken") },
           success: function(data) {
-              window.location.reload()
               console.log('success')
           },
           error: function(data) {
@@ -81,7 +83,6 @@ function DeleteFile(filename) {
           type: "GET",
           url: '/plot/delete_files/'+filename,
           success: function(data) {
-              window.location.reload()
               console.log('success')
           },
           error: function(data) {
@@ -89,3 +90,19 @@ function DeleteFile(filename) {
           },
       });
 }
+
+function getCookie(c_name)
+{
+    if (document.cookie.length > 0)
+    {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1)
+        {
+            c_start = c_start + c_name.length + 1;
+            c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1) c_end = document.cookie.length;
+            return unescape(document.cookie.substring(c_start,c_end));
+        }
+    }
+    return "";
+ }

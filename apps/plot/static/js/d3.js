@@ -25,7 +25,7 @@ function buble(){
         .text(function(d) { return d.data.name + "\n"; });
 
     node.append("circle")
-        .attr("r", function(d) {console.log(d); return d.r; })
+        .attr("r", function(d) {return d.r; })
         .attr("class", function(d) {
           if(d.data.name == "Usuario1") return "fill-red"
           else if(d.data.name == "Usuario2") return "fill-blue"
@@ -77,7 +77,6 @@ function relations(){
 
   d3.json(user+"/relations", function(error, social) {
     if (error) throw error;
-    console.log(social.nodes.length)
     x.domain(social.nodes.map(fx));
     y.domain(social.nodes.map(fy));
     var graph = rollup(social);
@@ -129,7 +128,7 @@ function nodes(){
       link.value = +link.value;
   });
 
-  var width = 960,
+  var width = 600,
       height = 500;
 
   var force = d3.layout.force()
