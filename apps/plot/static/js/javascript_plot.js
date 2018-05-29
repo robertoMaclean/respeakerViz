@@ -2,6 +2,7 @@ $( document ).ready(function() {
     click_buttons()
     transform_users_time()
     $('#users_interaction').click()
+    $('.panel').hide()
 });
 
 function active_nav_li(){
@@ -126,6 +127,8 @@ function click_buttons(){
     });
 
     $('#users_vol').on('click', function(){
+        $('.panel').hide()
+        $('.loader').show()
         footer ='<div class="btn-group">'
         footer += '<button type="button" id="vol_in_time" class="btn">General</button>'
         footer += '<button type="button" id="user1" class="btn btn-danger">Usuario 1</button>'
@@ -164,16 +167,16 @@ function click_buttons(){
     });
 
     $('#users_interv_buble').on('click', function(data){     
-        $('.panel-body').html('<div class="loader center-block"></div> ') 
+        $('.panel').hide()
+        $('.loader').show()
         $.ajax({
             type: "GET",
             url: '/plot/'+user+'/flare.json',
             success: function(data) {
                 html = '<svg width="960" height="960"></svg>'
-                $('.panel-body').append(html)
+                $('.panel-body').htnk(html)
                 $('.panel-heading').html('Agrupación de intervenciones por usuario')
                 $('.panel-footer').html('')
-                $('svg').hide()
                 buble()
                 console.log('success')
             },
@@ -185,7 +188,8 @@ function click_buttons(){
     });
 
     $('#sec_intertv').on('click', function(data){    
-        $('.panel-body').html('<div class="loader center-block"></div> ')  
+        $('.panel').hide() 
+        $('.loader').show()
         $.ajax({
             type: "GET",
             url: '/plot/'+user+'/relations',
@@ -207,7 +211,8 @@ function click_buttons(){
         
     });
     $('#users_interaction').on('click', function(dat){      
-        $('.panel-body').html('<div class="loader center-block"></div> ')
+        $('.loader').show()
+        $('.panel').hide()
         $.ajax({
             type: "GET",
             url: '/plot/'+user+'/force.csv',
@@ -279,8 +284,7 @@ function click_buttons(){
             // </div>'
 
                 footer = "<a type='link' id='download_csv' href='/media/plot/"+user+"relaciones.csv' class='btn btn-primary'>Descargar datos</a>"
-                $('.panel-body').append(html)
-                $('.plot').hide()
+                $('.panel-body').html(html)
                 $('.panel-heading').html('Interacción entre usuarios')
                 $('.panel-footer').html(footer)
                 transform_users_time()
@@ -295,6 +299,8 @@ function click_buttons(){
     });
 
     $('#users_vol_frame').on('click', function(){
+       $('.loader').show()
+       $('.panel').hide()
        func_times = function (row, series, type) {
                     /*console.log("--> "+row.label, series, type);*/
                     console.log("loading...")
@@ -325,8 +331,9 @@ function click_buttons(){
        array_concat.sort(function(a, b){return a['x'] - b['x']});
        contador = [0,0,0,0]
        /*barGraph(array_concat, func_times, ['Volumen'])*/
-
        morris.setData(array_concat)
+       $('.loader').hide()
+       $('.panel').show()
     });
 
     
@@ -368,8 +375,12 @@ function click_buttons(){
                 }
 
     	$('#user1').on('click', function(){
+           $('.loader').show()
+           $('.panel').hide()
            morris.options.barColors = ["#c9302c"]
     	   morris.setData(data.usersIntDur[0])
+           $('.loader').hide()
+           $('.panel').show()
 	    });
 	    $('#user2').on('click', function(){
             morris.options.barColors = ["#337ab7"]

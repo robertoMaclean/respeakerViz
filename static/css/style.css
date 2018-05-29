@@ -39,6 +39,26 @@ circle {
   stroke: none;
 }
 
+.fill-red {
+  fill: #ac2925;
+  fill-opacity: 1;
+}
+
+.fill-green {
+  fill: #5cb85c;
+  fill-opacity: 1;
+}
+
+.fill-yellow {
+  fill: #eea236;
+  fill-opacity: 1;
+}
+
+.fill-blue {
+  fill: #337ab7;
+  fill-opacity: 1;
+}
+
 text {
   font: 10px sans-serif;
   text-anchor: middle;
@@ -58,6 +78,7 @@ text {
 
 .panel-body {
   overflow-y: auto;
+  min-height: 400px;
 }
 
 #login-body ul {
@@ -78,4 +99,81 @@ path.link {
   fill: none;
   stroke: #666;
 }
+
+#myTable {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    width: 100%;
+}
+
+#myTable thead {
+    /* head takes the height it requires, 
+    and it's not scaled when table is resized */
+    flex: 0 0 auto;
+    width: calc(100% - 0.7em);
+    background-color: #212529;
+    color: #fff;
+}
+
+#myTable tbody {
+    /* body takes all the remaining available space */
+    flex: 1 1 auto;
+    display: block;
+    overflow-y: scroll;
+    max-height: 400px;
+}
+
+#myTable tbody tr {
+    width: 100%;
+}
+
+#myTable thead, #myTable tbody tr {
+    display: table;
+    table-layout: fixed;
+}
+
+.width-30 {
+  width: 30px;
+}
+
+.margin-bot-10 {
+  margin-bottom: 10px;
+}
+
+.width-140 {
+  width: 140px;
+}
+
+.table-head {
+  padding: none !important;
+}
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+  overflow-y: none;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+
+
+
+
 
