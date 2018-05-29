@@ -163,15 +163,17 @@ function click_buttons(){
         });*/
     });
 
-    $('#users_interv_buble').on('click', function(data){      
+    $('#users_interv_buble').on('click', function(data){     
+        $('.panel-body').html('<div class="loader center-block"></div> ') 
         $.ajax({
             type: "GET",
             url: '/plot/'+user+'/flare.json',
             success: function(data) {
                 html = '<svg width="960" height="960"></svg>'
-                $('.panel-body').html(html)
+                $('.panel-body').append(html)
                 $('.panel-heading').html('Agrupación de intervenciones por usuario')
                 $('.panel-footer').html('')
+                $('svg').hide()
                 buble()
                 console.log('success')
             },
@@ -182,16 +184,18 @@ function click_buttons(){
         
     });
 
-    $('#sec_intertv').on('click', function(data){      
+    $('#sec_intertv').on('click', function(data){    
+        $('.panel-body').html('<div class="loader center-block"></div> ')  
         $.ajax({
             type: "GET",
             url: '/plot/'+user+'/relations',
             success: function(data) {
                 html = '<svg></svg>'
-                $('.panel-body').html(html)
+                $('.panel-body').append(html)
                 $('.panel-heading').html('Relación entre intervenciones')
                 $('.panel-footer').html('')
                 /*var json = JSON.parse(data)*/
+                $('svg').hide()
                 relations()
                 /*console.log(json)*/
                 console.log('success')
@@ -202,13 +206,13 @@ function click_buttons(){
         });
         
     });
-
     $('#users_interaction').on('click', function(dat){      
+        $('.panel-body').html('<div class="loader center-block"></div> ')
         $.ajax({
             type: "GET",
             url: '/plot/'+user+'/force.csv',
             success: function() {
-                html = '<div class="row">'
+                html = '<div class="row plot">'
                 html += '<div class="col-md-6">'
                 html += '<svg></svg>'
                 html += '</div>'
@@ -275,7 +279,8 @@ function click_buttons(){
             // </div>'
 
                 footer = "<a type='link' id='download_csv' href='/media/plot/"+user+"relaciones.csv' class='btn btn-primary'>Descargar datos</a>"
-                $('.panel-body').html(html)
+                $('.panel-body').append(html)
+                $('.plot').hide()
                 $('.panel-heading').html('Interacción entre usuarios')
                 $('.panel-footer').html(footer)
                 transform_users_time()

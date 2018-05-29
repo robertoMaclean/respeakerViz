@@ -36,6 +36,8 @@ function buble(){
     node.filter(function(d) { return !d.children; }).append("text")
         .attr("dy", "0.3em")
         .text(function(d) { return d.data.name.substring(0, d.r / 3); });
+    $('svg').show()
+    $('.loader').remove()
   });
 }
 
@@ -109,6 +111,8 @@ function relations(){
     svg.append("g")
         .attr("class", "y axis")
         .call(yAxis);
+    $('svg').show()
+    $('.loader').remove()
   });
 }
 
@@ -210,6 +214,8 @@ function nodes(){
   }
 
   });
+  $('.plot').show()
+  $('.loader').remove()
 }
 
  
