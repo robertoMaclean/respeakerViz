@@ -92,13 +92,13 @@ function relations(){
               dr = 20 * Math.sqrt(dx * dx + dy * dy);
           return "M" + sx + "," + sy + "A" + dr + "," + dr + " 0 0,1 " + tx + "," + ty;
         })
-        .style("stroke-width", function(d) { return d.value * 1; });
+        .style("stroke-width", function(d) {console.log(d.value); return d.value * 1; });
 
     svg.selectAll(".node")
         .data(graph.nodes)
       .enter().append("circle")
         .attr("class", "node")
-        .attr("r", function(d) { return Math.sqrt(d.nodes.length * 5); })
+        .attr("r", function(d) {return Math.sqrt(d.nodes.length * 5); })
         .attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; });
 

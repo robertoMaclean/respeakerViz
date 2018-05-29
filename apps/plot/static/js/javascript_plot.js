@@ -1,7 +1,6 @@
 $( document ).ready(function() {
     click_buttons()
     transform_users_time()
-    nodes()
     $('#users_interaction').click()
 });
 
@@ -290,6 +289,41 @@ function click_buttons(){
         
     });
 
+    $('#users_vol_frame').on('click', function(){
+       func_times = function (row, series, type) {
+                    /*console.log("--> "+row.label, series, type);*/
+                    console.log("loading...")
+                    if((contador[0]<data.usersVolFrame[0].length)&&row.label == String(data.usersVolFrame[0][contador[0]]['x'])){
+                        contador[0] += 1
+                        return "#c9302c";
+                    } 
+                    else if((contador[1]<data.usersVolFrame[1].length)&&row.label == String(data.usersVolFrame[1][contador[1]]['x'])){
+                        contador[1] += 1
+                        return "#337ab7";
+                    } 
+                    else if((contador[2]<data.usersVolFrame[2].length)&&row.label == String(data.usersVolFrame[2][contador[2]]['x'])){
+                        contador[2] += 1
+                        return "#5cb85c";
+                    } 
+                    else if((contador[3]<data.usersVolFrame[3].length)&&row.label == String(data.usersVolFrame[3][contador[3]]['x'])){
+                        contador[3] += 1
+                        return "#f0ad4e";
+                    } 
+                }
+       html = '<div id="graph" class="graph"></div>'
+       $('.panel-body').html(html)
+       $('.panel-heading').html('Activación de voz y volumen')
+       $('.panel-footer').html('')
+       barGraph(data.usersIntDur[0], '#c9302c', ['Segundos'])
+       morris.options.barColors = func_times
+       var array_concat = data.usersVolFrame[0].concat(data.usersVolFrame[1], data.usersVolFrame[2], data.usersVolFrame[3])
+       array_concat.sort(function(a, b){return a['x'] - b['x']});
+       contador = [0,0,0,0]
+       /*barGraph(array_concat, func_times, ['Volumen'])*/
+
+       morris.setData(array_concat)
+    });
+
     
     function get_sum(array) {
         sum = 0
@@ -307,6 +341,7 @@ function click_buttons(){
                     else if(row.label == "Usuario 3") return "#5cb85c";
                     else if(row.label == "Usuario 4") return "#f0ad4e";
                 }
+        
         func_times = function (row, series, type) {
                     /*console.log("--> "+row.label, series, type);*/
                     if((contador[0]<data.usersIntDur[0].length)&&row.label == String(data.usersIntDur[0][contador[0]]['x'])){
@@ -326,6 +361,7 @@ function click_buttons(){
                         return "#f0ad4e";
                     } 
                 }
+
     	$('#user1').on('click', function(){
            morris.options.barColors = ["#c9302c"]
     	   morris.setData(data.usersIntDur[0])

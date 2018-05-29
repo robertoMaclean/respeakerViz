@@ -166,7 +166,7 @@ def show_graphs(request, filename):
 	file = open(filename, 'r')
 	plt = ploter.Plot(file, outputPath='media/plot/'+str(request.user))
 	request.session['data_plot'] = json.dumps(functions.FillJson(plt))
-	plt.UsersInteraction()
+	# plt.UsersInteraction()
 	return redirect(reverse("plot"))
 
 @login_required(redirect_field_name='login')

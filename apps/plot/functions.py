@@ -15,6 +15,9 @@ def FillJson(obj):
 	usersActivity = obj.GetActivity()
 	usersActivityContinuos = obj.GetActivityContinuos()
 	usersRelation = obj.GetUsersRelations()
+	userVolFrame = obj.GetUsersVolFrame()
+	#print(usersActivity[0])
+	#print(usersActivityContinuos[0])
 	data = {
 		'usersTime':[],
 		'usersIntDur':[[],[],[],[]],
@@ -30,7 +33,7 @@ def FillJson(obj):
 			"name":"Intervenciones",
 			"children": []
 		},
-		'usersActivity': [],
+		'usersVolFrame': [[],[],[],[]],
 		'usersActivityContinuos': [],
 		'usersInteraction': [],
 	}
@@ -70,10 +73,8 @@ def FillJson(obj):
 	pos = 1
 	user_num = 0
 	for user in usersVolInterv:
-		interv = 1
 		for vol, time in user:
 			data['usersVol'][user_num].append({'x':str(time),'y':'{0:.2f}'.format(vol)})
-			interv += 1
 		user_num+= 1
 	user_num = 1
 	for vol in usersVol:
@@ -82,8 +83,6 @@ def FillJson(obj):
 	emisor = 1
 	receptor = 1
 	for x in range(len(usersRelation)):	
-		
-		
 		if(emisor==receptor):
 			receptor += 1
 		data['usersInteraction'].append({'emisor':emisor,'receptor':receptor, 'value': usersRelation[x]})
@@ -91,7 +90,13 @@ def FillJson(obj):
 		if((x+1) % 3 == 0):
 			emisor += 1	
 		if(receptor == 5):
-			receptor = 1			
+			receptor = 1
+	user_num = 0
+	print(len(userVolFrame))
+	for user in userVolFrame:
+		for vol, time in user:
+			data['usersVolFrame'][user_num].append({'x':time,'y':vol})
+		user_num+= 1
 	# for i in range(len(usersActivity)):
 	# 	for val in usersActivity[i]:
 	# 		data['usersActivity'].append({'x':val,'y':1})
