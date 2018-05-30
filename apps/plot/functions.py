@@ -34,6 +34,7 @@ def FillJson(obj):
 			"children": []
 		},
 		'usersVolFrame': [[],[],[],[]],
+		'userVolFrameWhitoutSilence': [[],[],[],[]],
 		'usersActivityContinuos': [],
 		'usersInteraction': [],
 	}
@@ -92,10 +93,35 @@ def FillJson(obj):
 		if(receptor == 5):
 			receptor = 1
 	user_num = 0
-	print(len(userVolFrame))
+	prom_len_userVolFrame = (len(userVolFrame[0])+len(userVolFrame[1])+len(userVolFrame[2])+len(userVolFrame[3]))
+	max_data_plot = int((prom_len_userVolFrame)/500)
+	index = 0
+	volsum = 0
+	volsumNoSilence = 0
+	# print(prom_len_userVolFrame/max_data_plot)
+	# print(max_data_plot)
+	i = 0
 	for user in userVolFrame:
+		index = 0
+		indexNoSilence = 0
 		for vol, time in user:
-			data['usersVolFrame'][user_num].append({'x':time,'y':vol})
+			volsum = volsum + float(vol)
+			if(vol!=0):
+				indexNoSilence += 1
+				volsumNoSilence = volsumNoSilence + float(vol) 
+			if (max_data_plot==index):
+				data['usersVolFrame'][user_num].append({'x':time,'y':'{0:.2f}'.format(volsum/max_data_plot)})
+				data['userVolFrameWhitoutSilence'][user_num].append({'x':time,'y':'{0:.2f}'.format(volsumNoSilence/indexNoSilence)})
+				volsum = 0
+				index = 0
+				volsumNoSilence = 0 
+				indexNoSilence = 0
+			index+=1
+			i+=1
+
+			# elif index == (len(user) - 1):
+			#  	data['usersVolFrame'][user_num].append({'x':time,'y':'{0:.2f}'.format(volsum/(max_data_plot-(max_data_plot%index)))})
+			#  	index == 0
 		user_num+= 1
 	# for i in range(len(usersActivity)):
 	# 	for val in usersActivity[i]:

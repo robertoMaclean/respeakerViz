@@ -2,7 +2,7 @@ $( document ).ready(function() {
     click_buttons()
     transform_users_time()
     $('#users_interaction').click()
-    $('.panel').hide()
+    $('.loader').hide()
 });
 
 function active_nav_li(){
@@ -34,7 +34,10 @@ function click_buttons(){
  //        });
  //    });
 
+
     $('#users_speak').on('click', function(){
+        // $('.panel').hide()
+        /*$('.loader').show()*/ 
         $.ajax({
             type: "GET",
             url: '/plot/interv',
@@ -43,6 +46,8 @@ function click_buttons(){
             	$('.panel-heading').html('Intervenciones en el tiempo')
             	$('.panel-footer').html('')
                 console.log('success')
+                $('.panel').show()
+                /*$('.loader').hide()*/
             },
             error: function(data) {
                 console.log('error')
@@ -51,6 +56,8 @@ function click_buttons(){
     });
 
     $('#users_total_time').on('click', function(){
+        // $('.panel').hide()
+        /*$('.loader').show()*/ 
         html = '<div id="graph" class="graph"></div>'
         html += '<div id="donut" class="graph"></div>'
         $('.panel-body').html(html)
@@ -61,10 +68,12 @@ function click_buttons(){
         console.log(data)
         barGraphMultiColor(data.usersTime, ['Segundos'])
         donutGraph(data.usersSpeakTimePercent)
-        console.log('success')
+        console.log('success') 
     });
 
-    $('#users_interv_time').on('click', function(){ 
+    $('#users_interv_time').on('click', function(){
+        //$('.panel').hide()
+        /*$('.loader').show()*/ 
         footer ='<div class="btn-group">'	
     	footer += '<button type="button" id="general" class="btn">General</button>'
         footer += '<button type="button" id="user1" class="btn btn-danger">Usuario 1</button>'
@@ -102,6 +111,7 @@ function click_buttons(){
     });
 
     $('#users_int_in_time').on('click', function(){
+        /*$('.loader').show()*/ 
         html = '<div id="line" class="graph"></div>'
         $('.panel-body').html(html)
         $('.panel-heading').html('Intervenciones a traves del tiempo')
@@ -127,8 +137,8 @@ function click_buttons(){
     });
 
     $('#users_vol').on('click', function(){
-        $('.panel').hide()
-        $('.loader').show()
+        //$('.panel').hide()
+        /*$('.loader').show()*/
         footer ='<div class="btn-group">'
         footer += '<button type="button" id="vol_in_time" class="btn">General</button>'
         footer += '<button type="button" id="user1" class="btn btn-danger">Usuario 1</button>'
@@ -139,7 +149,7 @@ function click_buttons(){
         footer += '</div>' 
         html = '<div id="graph" class="graph"></div>'
         $('.panel-body').html(html)
-        $('.panel-heading').html('Volumen de la voz de los participante')
+        $('.panel-heading').html('Volumen promedio de cada intervención')
         $('.panel-footer').html(footer)
         /*var json = JSON.parse(data.data)
         console.log(json)*/
@@ -167,14 +177,14 @@ function click_buttons(){
     });
 
     $('#users_interv_buble').on('click', function(data){     
-        $('.panel').hide()
-        $('.loader').show()
+        /*$('.panel').hide()*/
+        /*$('.loader').show()*/
         $.ajax({
             type: "GET",
             url: '/plot/'+user+'/flare.json',
             success: function(data) {
                 html = '<svg width="960" height="960"></svg>'
-                $('.panel-body').htnk(html)
+                $('.panel-body').html(html)
                 $('.panel-heading').html('Agrupación de intervenciones por usuario')
                 $('.panel-footer').html('')
                 buble()
@@ -188,18 +198,17 @@ function click_buttons(){
     });
 
     $('#sec_intertv').on('click', function(data){    
-        $('.panel').hide() 
-        $('.loader').show()
+        /*$('.panel').hide()*/ 
+        /*$('.loader').show()*/
         $.ajax({
             type: "GET",
             url: '/plot/'+user+'/relations',
             success: function(data) {
                 html = '<svg></svg>'
-                $('.panel-body').append(html)
+                $('.panel-body').html(html)
                 $('.panel-heading').html('Relación entre intervenciones')
                 $('.panel-footer').html('')
                 /*var json = JSON.parse(data)*/
-                $('svg').hide()
                 relations()
                 /*console.log(json)*/
                 console.log('success')
@@ -211,8 +220,8 @@ function click_buttons(){
         
     });
     $('#users_interaction').on('click', function(dat){      
-        $('.loader').show()
-        $('.panel').hide()
+        /*$('.loader').show()*/
+        //$('.panel').hide()
         $.ajax({
             type: "GET",
             url: '/plot/'+user+'/force.csv',
@@ -241,19 +250,19 @@ function click_buttons(){
                     console.log(data.usersInteraction[i]['emisor'],data.usersInteraction[i]['receptor'] )
                     if(data.usersInteraction[i]['emisor'] == 1){
                         html += '<td>0</td>'
+                        html += '<td>'+data.usersInteraction[i]['value']+'</td>'
                         html += '<td>'+data.usersInteraction[i+1]['value']+'</td>'
                         html += '<td>'+data.usersInteraction[i+2]['value']+'</td>'
-                        html += '<td>'+data.usersInteraction[i+3]['value']+'</td>'
                     }else if(data.usersInteraction[i]['emisor'] == 2){
                         html += '<td>'+data.usersInteraction[i]['value']+'</td>'
                         html += '<td>0</td>'
+                        html += '<td>'+data.usersInteraction[i+1]['value']+'</td>'
                         html += '<td>'+data.usersInteraction[i+2]['value']+'</td>'
-                        html += '<td>'+data.usersInteraction[i+3]['value']+'</td>'
                     }else if(data.usersInteraction[i]['emisor'] == 3){
                         html += '<td>'+data.usersInteraction[i]['value']+'</td>'
                         html += '<td>'+data.usersInteraction[i+1]['value']+'</td>'
                         html += '<td>0</td>'
-                        html += '<td>'+data.usersInteraction[i+3]['value']+'</td>'
+                        html += '<td>'+data.usersInteraction[i+2]['value']+'</td>'
                     }else{
                         html += '<td>'+data.usersInteraction[i]['value']+'</td>'
                         html += '<td>'+data.usersInteraction[i+1]['value']+'</td>'
@@ -299,9 +308,21 @@ function click_buttons(){
     });
 
     $('#users_vol_frame').on('click', function(){
-       $('.loader').show()
-       $('.panel').hide()
-       func_times = function (row, series, type) {
+       /*$('.loader').show()*/
+       html = '<div id="graph" class="graph"></div>'
+       $('.panel-body').html(html)
+       $('.panel-heading').html('Activación de voz y volumen')
+       $('.panel-footer').html('')
+       barGraph(data.usersIntDur[0], '#c9302c', ['Segundos'])
+       user_vol_frame_buttons()
+       $('#vol_frame_silence').click()
+       /*$('.loader').hide()*/
+    });
+
+    function user_vol_frame_buttons() {
+        $('#vol_frame_silence').on('click', function(){
+            console.log("en vol sil")
+            func_times = function (row, series, type) {
                     /*console.log("--> "+row.label, series, type);*/
                     console.log("loading...")
                     if((contador[0]<data.usersVolFrame[0].length)&&row.label == String(data.usersVolFrame[0][contador[0]]['x'])){
@@ -321,22 +342,45 @@ function click_buttons(){
                         return "#f0ad4e";
                     } 
                 }
-       html = '<div id="graph" class="graph"></div>'
-       $('.panel-body').html(html)
-       $('.panel-heading').html('Activación de voz y volumen')
-       $('.panel-footer').html('')
-       barGraph(data.usersIntDur[0], '#c9302c', ['Segundos'])
-       morris.options.barColors = func_times
-       var array_concat = data.usersVolFrame[0].concat(data.usersVolFrame[1], data.usersVolFrame[2], data.usersVolFrame[3])
-       array_concat.sort(function(a, b){return a['x'] - b['x']});
-       contador = [0,0,0,0]
-       /*barGraph(array_concat, func_times, ['Volumen'])*/
-       morris.setData(array_concat)
-       $('.loader').hide()
-       $('.panel').show()
-    });
 
-    
+            morris.options.barColors = func_times
+            var array_concat = data.usersVolFrame[0].concat(data.usersVolFrame[1], data.usersVolFrame[2], data.usersVolFrame[3])
+            array_concat.sort(function(a, b){return a['x'] - b['x']});
+            morris.setData(array_concat)
+            contador = [0,0,0,0]
+        });
+
+        $('#vol_frame').on('click', function(){
+            func_times = function (row, series, type) {
+                    /*console.log("--> "+row.label, series, type);*/
+                    console.log("loading...")
+                    if((contador[0]<data.usersVolFrameWhitoutSilence[0].length)&&row.label == String(data.usersVolFrameWhitoutSilence[0][contador[0]]['x'])){
+                        contador[0] += 1
+                        return "#c9302c";
+                    } 
+                    else if((contador[1]<data.usersVolFrameWhitoutSilence[1].length)&&row.label == String(data.usersVolFrameWhitoutSilence[1][contador[1]]['x'])){
+                        contador[1] += 1
+                        return "#337ab7";
+                    } 
+                    else if((contador[2]<data.usersVolFrameWhitoutSilence[2].length)&&row.label == String(data.usersVolFrameWhitoutSilence[2][contador[2]]['x'])){
+                        contador[2] += 1
+                        return "#5cb85c";
+                    } 
+                    else if((contador[3]<data.usersVolFrameWhitoutSilence[3].length)&&row.label == String(data.usersVolFrameWhitoutSilence[3][contador[3]]['x'])){
+                        contador[3] += 1
+                        return "#f0ad4e";
+                    } 
+                }
+                
+            morris.options.barColors = func_times
+            var array_concat = data.usersVolFrameWhitoutSilence[0].concat(data.usersVolFrameWhitoutSilence[1], data.usersVolFrameWhitoutSilence[2], data.usersVolFrameWhitoutSilence[3])
+            array_concat.sort(function(a, b){return a['x'] - b['x']});
+            morris.setData(array_concat)
+            contador = [0,0,0,0]
+        });      
+
+    }
+
     function get_sum(array) {
         sum = 0
         for(var i=0;i<array.length;i++){
@@ -375,11 +419,9 @@ function click_buttons(){
                 }
 
     	$('#user1').on('click', function(){
-           $('.loader').show()
-           $('.panel').hide()
+           /*$('.loader').show()*/
            morris.options.barColors = ["#c9302c"]
     	   morris.setData(data.usersIntDur[0])
-           $('.loader').hide()
            $('.panel').show()
 	    });
 	    $('#user2').on('click', function(){
