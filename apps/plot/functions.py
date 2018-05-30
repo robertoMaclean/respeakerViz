@@ -98,27 +98,31 @@ def FillJson(obj):
 	index = 0
 	volsum = 0
 	volsumNoSilence = 0
+	firstime = True
 	# print(prom_len_userVolFrame/max_data_plot)
 	# print(max_data_plot)
 	i = 0
 	for user in userVolFrame:
 		index = 0
-		indexNoSilence = 0
+		indexNoSilence = 1
 		for vol, time in user:
-			volsum = volsum + float(vol)
-			if(vol!=0):
+			if(firstime and float(vol)>0):
+				firstime = False
+
+			print(index, indexNoSilence, vol)
+			if(float(vol)>0):
 				indexNoSilence += 1
 				volsumNoSilence = volsumNoSilence + float(vol) 
-			if (max_data_plot==index):
-				data['usersVolFrame'][user_num].append({'x':time,'y':'{0:.2f}'.format(volsum/max_data_plot)})
-				data['userVolFrameWhitoutSilence'][user_num].append({'x':time,'y':'{0:.2f}'.format(volsumNoSilence/indexNoSilence)})
-				volsum = 0
-				index = 0
-				volsumNoSilence = 0 
-				indexNoSilence = 0
-			index+=1
-			i+=1
-
+			if not firstime:
+				index+=1
+				volsum = volsum + float(vol)
+				if (max_data_plot==index):
+					data['usersVolFrame'][user_num].append({'x':time,'y':'{0:.2f}'.format(volsum/max_data_plot)})
+					data['userVolFrameWhitoutSilence'][user_num].append({'x':time,'y':'{0:.2f}'.format(volsumNoSilence/indexNoSilence)})
+					volsum = 0
+					index = 0
+					volsumNoSilence = 0 
+					indexNoSilence = 1
 			# elif index == (len(user) - 1):
 			#  	data['usersVolFrame'][user_num].append({'x':time,'y':'{0:.2f}'.format(volsum/(max_data_plot-(max_data_plot%index)))})
 			#  	index == 0

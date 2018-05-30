@@ -309,19 +309,25 @@ function click_buttons(){
 
     $('#users_vol_frame').on('click', function(){
        /*$('.loader').show()*/
-       html = '<div id="graph" class="graph"></div>'
-       $('.panel-body').html(html)
-       $('.panel-heading').html('Activación de voz y volumen')
-       $('.panel-footer').html('')
-       barGraph(data.usersIntDur[0], '#c9302c', ['Segundos'])
-       user_vol_frame_buttons()
-       $('#vol_frame_silence').click()
-       /*$('.loader').hide()*/
+        footer =  '<div class="btn-group">'
+        footer += '<button type="button" id="vol_frame_silence" class="btn">Con silencio</button>'
+        footer += '<button type="button" id="vol_frame" class="btn">Sin silencio</button>'
+        footer += '</div>'
+        console.log("click")
+        html = '<div id="graph" class="graph"></div>'
+        $('.panel-body').html(html)
+        $('.panel-heading').html('Activación de voz y volumen')
+        $('.panel-footer').html(footer)
+        barGraph(data.usersIntDur[0], '#c9302c', ['Segundos'])
+        user_vol_frame_buttons()
+        $('#vol_frame_silence').click()
+        /*$('.loader').hide()*/
     });
 
     function user_vol_frame_buttons() {
         $('#vol_frame_silence').on('click', function(){
             console.log("en vol sil")
+            contador = [0,0,0,0]
             func_times = function (row, series, type) {
                     /*console.log("--> "+row.label, series, type);*/
                     console.log("loading...")
@@ -347,36 +353,37 @@ function click_buttons(){
             var array_concat = data.usersVolFrame[0].concat(data.usersVolFrame[1], data.usersVolFrame[2], data.usersVolFrame[3])
             array_concat.sort(function(a, b){return a['x'] - b['x']});
             morris.setData(array_concat)
-            contador = [0,0,0,0]
+            
         });
 
         $('#vol_frame').on('click', function(){
+            contador = [0,0,0,0]
+
             func_times = function (row, series, type) {
                     /*console.log("--> "+row.label, series, type);*/
                     console.log("loading...")
-                    if((contador[0]<data.usersVolFrameWhitoutSilence[0].length)&&row.label == String(data.usersVolFrameWhitoutSilence[0][contador[0]]['x'])){
+                    if((contador[0]<data.userVolFrameWhitoutSilence[0].length)&&row.label == String(data.userVolFrameWhitoutSilence[0][contador[0]]['x'])){
                         contador[0] += 1
                         return "#c9302c";
                     } 
-                    else if((contador[1]<data.usersVolFrameWhitoutSilence[1].length)&&row.label == String(data.usersVolFrameWhitoutSilence[1][contador[1]]['x'])){
+                    else if((contador[1]<data.userVolFrameWhitoutSilence[1].length)&&row.label == String(data.userVolFrameWhitoutSilence[1][contador[1]]['x'])){
                         contador[1] += 1
                         return "#337ab7";
                     } 
-                    else if((contador[2]<data.usersVolFrameWhitoutSilence[2].length)&&row.label == String(data.usersVolFrameWhitoutSilence[2][contador[2]]['x'])){
+                    else if((contador[2]<data.userVolFrameWhitoutSilence[2].length)&&row.label == String(data.userVolFrameWhitoutSilence[2][contador[2]]['x'])){
                         contador[2] += 1
                         return "#5cb85c";
                     } 
-                    else if((contador[3]<data.usersVolFrameWhitoutSilence[3].length)&&row.label == String(data.usersVolFrameWhitoutSilence[3][contador[3]]['x'])){
+                    else if((contador[3]<data.userVolFrameWhitoutSilence[3].length)&&row.label == String(data.userVolFrameWhitoutSilence[3][contador[3]]['x'])){
                         contador[3] += 1
                         return "#f0ad4e";
                     } 
                 }
                 
             morris.options.barColors = func_times
-            var array_concat = data.usersVolFrameWhitoutSilence[0].concat(data.usersVolFrameWhitoutSilence[1], data.usersVolFrameWhitoutSilence[2], data.usersVolFrameWhitoutSilence[3])
+            var array_concat = data.userVolFrameWhitoutSilence[0].concat(data.userVolFrameWhitoutSilence[1], data.userVolFrameWhitoutSilence[2], data.userVolFrameWhitoutSilence[3])
             array_concat.sort(function(a, b){return a['x'] - b['x']});
             morris.setData(array_concat)
-            contador = [0,0,0,0]
         });      
 
     }
