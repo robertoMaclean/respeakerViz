@@ -34,6 +34,38 @@ function click_buttons(){
  //        });
  //    });
 
+    $('#users_interv').on('click', function(){
+        contador = [0,0,0,0]
+        func_times = function (row, series, type) {
+            /*console.log("--> "+row.label, series, type);*/            
+            if((contador[0]<data.usersActivity[0].length)&&row.label == String(data.usersActivity[0][contador[0]]['x'])){
+                contador[0] += 1
+                return "#c9302c";
+            } 
+            else if((contador[1]<data.usersActivity[1].length)&&row.label == String(data.usersActivity[1][contador[1]]['x'])){
+                contador[1] += 1
+                return "#337ab7";
+            } 
+            else if((contador[2]<data.usersActivity[2].length)&&row.label == String(data.usersActivity[2][contador[2]]['x'])){
+                contador[2] += 1
+                return "#5cb85c";
+            } 
+            else if((contador[3]<data.usersActivity[3].length)&&row.label == String(data.usersActivity[3][contador[3]]['x'])){
+                contador[3] += 1
+                return "#f0ad4e";
+            } 
+        }
+
+        html = '<div id="graph" class="graph"></div>'
+        $('.panel-body').html(html)
+        $('.panel-heading').html('Volumen promedio de cada intervención')
+        $('.panel-footer').html()
+        var array_concat = data.usersActivity[0].concat(data.usersActivity[1], data.usersActivity[2], data.usersActivity[3])
+        array_concat.sort(function(a, b){return a['x'] - b['x']});
+        barGraph(array_concat, func_times, ['Activación'])
+        console.log('success')
+
+    });
 
     $('#users_speak').on('click', function(){
         // $('.panel').hide()
@@ -67,6 +99,7 @@ function click_buttons(){
         /*console.log(json)*/
         console.log(data)
         barGraphMultiColor(data.usersTime, ['Segundos'])
+       
         donutGraph(data.usersSpeakTimePercent)
         console.log('success') 
     });

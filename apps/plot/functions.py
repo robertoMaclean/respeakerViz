@@ -35,7 +35,8 @@ def FillJson(obj):
 		},
 		'usersVolFrame': [[],[],[],[]],
 		'userVolFrameWhitoutSilence': [[],[],[],[]],
-		'usersActivityContinuos': [],
+		'usersActivity': [[],[],[],[]],
+		'usersActivityContinuos': [[],[],[],[]],
 		'usersInteraction': [],
 	}
 	user_num = 1
@@ -109,7 +110,6 @@ def FillJson(obj):
 			if(firstime and float(vol)>0):
 				firstime = False
 
-			print(index, indexNoSilence, vol)
 			if(float(vol)>0):
 				indexNoSilence += 1
 				volsumNoSilence = volsumNoSilence + float(vol) 
@@ -127,12 +127,12 @@ def FillJson(obj):
 			#  	data['usersVolFrame'][user_num].append({'x':time,'y':'{0:.2f}'.format(volsum/(max_data_plot-(max_data_plot%index)))})
 			#  	index == 0
 		user_num+= 1
-	# for i in range(len(usersActivity)):
-	# 	for val in usersActivity[i]:
-	# 		data['usersActivity'].append({'x':val,'y':1})
-	# for i in range(len(usersActivityContinuos)):
-	# 	for val in usersActivityContinuos[i]:
-	# 		data['usersActivityContinuos'].append({'x':'Usuario '+str(i+1),'y':val})
+	for i in range(len(usersActivity)):
+		for val in usersActivity[i]:
+			data['usersActivity'][i].append({'x':val,'y':1})
+	for i in range(len(usersActivityContinuos)):
+		for val in usersActivityContinuos[i]:
+			data['usersActivityContinuos'][i].append({'x':val,'y':1})
 	return data
 	
 
