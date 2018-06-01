@@ -143,7 +143,7 @@ def save_file(request):
 		if form.is_valid():
 			csv_file = request.FILES["file"]
 			file_data = csv_file.read().decode("utf-8")
-			plt = ploter.Plot(StringIO(file_data), outputPath='media/plot/'+str(request.user))
+			plt = ploter.Plot(StringIO(file_data), outputPath='/media/plot/'+str(request.user))
 			request.session['data_plot'] = json.dumps(functions.FillJson(plt))
 			file = form.save(commit=False)
 			file.user = request.user

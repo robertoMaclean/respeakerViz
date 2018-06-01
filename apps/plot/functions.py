@@ -123,16 +123,7 @@ def FillJson(obj):
 					index = 0
 					volsumNoSilence = 0 
 					indexNoSilence = 1
-			# elif index == (len(user) - 1):
-			#  	data['usersVolFrame'][user_num].append({'x':time,'y':'{0:.2f}'.format(volsum/(max_data_plot-(max_data_plot%index)))})
-			#  	index == 0
 		user_num+= 1
-	# for i in range(len(usersActivity)):
-	# 	for val in usersActivity[i]:
-	# 		data['usersActivity'].append({'x':val,'y':1})
-	# for i in range(len(usersActivityContinuos)):
-	# 	for val in usersActivityContinuos[i]:
-	# 		data['usersActivityContinuos'].append({'x':'Usuario '+str(i+1),'y':val})
 	return data
 	
 
