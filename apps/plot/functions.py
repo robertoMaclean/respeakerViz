@@ -125,11 +125,29 @@ def FillJson(obj):
 					indexNoSilence = 1
 		user_num+= 1
 	for i in range(len(usersActivity)):
+		index = 0
+		time = 0
 		for val in usersActivity[i]:
-			data['usersActivity'][i].append({'x':val,'y':1})
-	for i in range(len(usersActivityContinuos)):
-		for val in usersActivityContinuos[i]:
-			data['usersActivityContinuos'][i].append({'x':val,'y':1})
+			if time == 0:
+				time = val
+			if index%20 == 0:
+				while(time < val):
+					data['usersActivity'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
+					data['usersActivityContinuos'][i].append({'x':float('{0:.2f}'.format(time)),'y':1})
+					time += 20*0.02
+				data['usersActivity'][i].append({'x':val,'y':1})
+				data['usersActivityContinuos'][i].append({'x':val,'y':1})
+			time = val+20*0.02
+			index += 1
+	# for i in range(len(usersActivityContinuos)):
+	# 	index = 0
+	# 	time = 0
+	# 	for val in usersActivityContinuos[i]:
+	# 		if time == 0:
+	# 			time = val
+	# 		if index%20 == 0:
+	# 			data['usersActivityContinuos'][i].append({'x':val,'y':1})
+	# 		index += 1
 	return data
 	
 

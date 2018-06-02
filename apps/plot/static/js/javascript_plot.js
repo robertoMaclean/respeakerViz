@@ -55,14 +55,38 @@ function click_buttons(){
                 return "#f0ad4e";
             } 
         }
+        contador = [0,0,0,0]
+        func_times2 = function (row, series, type) {
+            /*console.log("--> "+row.label, series, type);*/            
+            if((contador[0]<data.usersActivityContinuos[0].length)&&row.label == String(data.usersActivityContinuos[0][contador[0]]['x'])){
+                contador[0] += 1
+                return "#c9302c";
+            } 
+            else if((contador[1]<data.usersActivityContinuos[1].length)&&row.label == String(data.usersActivityContinuos[1][contador[1]]['x'])){
+                contador[1] += 1
+                return "#337ab7";
+            } 
+            else if((contador[2]<data.usersActivityContinuos[2].length)&&row.label == String(data.usersActivityContinuos[2][contador[2]]['x'])){
+                contador[2] += 1
+                return "#5cb85c";
+            } 
+            else if((contador[3]<data.usersActivityContinuos[3].length)&&row.label == String(data.usersActivityContinuos[3][contador[3]]['x'])){
+                contador[3] += 1
+                return "#f0ad4e";
+            } 
+        }
 
         html = '<div id="graph" class="graph"></div>'
+       /* html += '<div id="graph2" class="graph"></div>'*/
         $('.panel-body').html(html)
         $('.panel-heading').html('Volumen promedio de cada intervención')
         $('.panel-footer').html()
         var array_concat = data.usersActivity[0].concat(data.usersActivity[1], data.usersActivity[2], data.usersActivity[3])
         array_concat.sort(function(a, b){return a['x'] - b['x']});
         barGraph(array_concat, func_times, ['Activación'])
+        /*var array_concat2 = data.usersActivityContinuos[0].concat(data.usersActivityContinuos[1], data.usersActivityContinuos[2], data.usersActivityContinuos[3])
+        array_concat2.sort(function(a, b){return a['x'] - b['x']});
+        barGraph2(array_concat2, func_times2, ['Activación'])*/
         console.log('success')
 
     });
@@ -91,7 +115,9 @@ function click_buttons(){
         // $('.panel').hide()
         /*$('.loader').show()*/ 
         html = '<div id="graph" class="graph"></div>'
-        html += '<div id="donut" class="graph"></div>'
+        html += '<div id="donut" class="graph">'
+        html += '<div id="legend" class="donut-legend"></div>'
+        html += '</div>'
         $('.panel-body').html(html)
         $('.panel-heading').html('Tiempo total de habla por participante')
         $('.panel-footer').html('')
@@ -99,8 +125,12 @@ function click_buttons(){
         /*console.log(json)*/
         console.log(data)
         barGraphMultiColor(data.usersTime, ['Segundos'])
-       
         donutGraph(data.usersSpeakTimePercent)
+        morrisDonut.options.data.forEach(function(label, i){
+            var legendItem = $('<span></span>').text(label['label']).prepend('<i>&nbsp;</i>');
+            legendItem.find('i').css('backgroundColor', morrisDonut.options.colors[i]);
+            $('#legend').append(legendItem)
+          })
         console.log('success') 
     });
 

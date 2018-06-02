@@ -87,11 +87,11 @@ class Plot(object):
 					self.__userStartInt[1].append(float(row['seconds']))
 					if lastPosition != -1:
 						prom = sum(volProm)/len(volProm)
-						self.__volPromInterv[int(row['direction'])].append((prom,row['seconds']))
+						self.__volPromInterv[lastPosition].append((prom,row['seconds']))
 						volProm = []
 						interTimes[lastPosition].append(timeActivity)
 						#self.FindUsersInteraction(lastPosition+1, int(row['direction'])+1, file)
-						self.newFindUsersInteraction(lastPosition+1, int(row['direction'])+1, file)
+						self.FindUsersInteraction(lastPosition+1, int(row['direction'])+1, file)
 						for i in range(silence):
 							self.__activityContinuos[lastPosition].pop()
 					else:
@@ -178,7 +178,7 @@ class Plot(object):
 	# 			writer.writerow({'Usuario 1':str(pos1),'Usuario 2':str(pos2),'Relaciones':str(self.__relations[5]+1)})
 	# 			self.__relations[5] += 1
 
-	def newFindUsersInteraction(self, pos1, pos2, file):
+	def FindUsersInteraction(self, pos1, pos2, file):
 		fieldnames = ['Emisor','Receptor','Interacciones']
 		writer = csv.DictWriter(file, fieldnames=fieldnames, delimiter=";")
 

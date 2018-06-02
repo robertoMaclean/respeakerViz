@@ -162,7 +162,7 @@ function nodes(){
   var path = svg.append("svg:g").selectAll("path")
       .data(force.links())
     .enter().append("svg:path")
-      .attr("class", function(d) { return "link " + d.type; })
+      /*.attr("class", function(d) { return "link " + d.type; })*/
       .attr("stroke-width", function(d) { return (d.value*2.5); })
       .attr("class", "link")
       .attr("marker-end", "url(#end)");
@@ -177,17 +177,24 @@ function nodes(){
 
   // add the nodes
   node.append("circle")
+      .attr("class", function(d) {
+        if(d.name == "Usuario 1") return "node red fill-opacity-055"
+        else if(d.name == "Usuario 2") return "node blue fill-opacity-055"
+        else if(d.name == "Usuario 3") return "node green fill-opacity-055"
+        else if(d.name == "Usuario 4") return "node yellow fill-opacity-055"
+      })
       .attr("r", function(d) {
         if(d.name == "Usuario 1") return users_time[0]*30; 
         else if(d.name == "Usuario 2") return users_time[1]*30; 
         else if(d.name == "Usuario 3") return users_time[2]*30; 
         else return users_time[3]*30; 
       });
+      
 
   // add the text 
   node.append("text")
       .attr("x", 12)
-      .attr("dy", -10)
+      .attr("dy", function(d) {return -40})
       .text(function(d) { return d.name; });
 
   // add the curvy lines

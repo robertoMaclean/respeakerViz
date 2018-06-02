@@ -21,7 +21,7 @@ function lineGraph(data){
     lineColors: ['#c9302c', '#337ab7','#5cb85c','#f0ad4e'],
     resize: true,
     redraw: true,
-    xLabels: 'seconds'
+    xLabels: 'seconds',
   });
 }
 
@@ -43,13 +43,29 @@ function barGraphMultiColor(data, labels){
 }
 
 function barGraph(data, color, labels){
-  morris = Morris.Bar({
-    element: 'graph',
-    data: data,
-    xkey: 'x',
-    ykeys: ['y'],
-    labels: labels,
-    barColors: color
-  });
+  if ($('#graph').length > 0){
+    morris = Morris.Bar({
+      element: 'graph',
+      data: data,
+      xkey: 'x',
+      ykeys: ['y'],
+      labels: labels,
+      barColors: color
+    });
+  }
+    
+}
+
+function barGraph2(data, color, labels){
+  if ($('#graph2').length > 0){
+    morris2 = Morris.Bar({
+      element: 'graph2',
+      data: data,
+      xkey: 'x',
+      ykeys: ['y'],
+      labels: labels,
+      barColors: color
+    });
+  }   
 }
   

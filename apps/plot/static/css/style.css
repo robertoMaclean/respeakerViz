@@ -170,9 +170,45 @@ path.link {
   100% { transform: rotate(360deg); }
 }
 
+.donut-legend > span {
+  display: inline-block;
+  margin-right: 25px;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
 
+.donut-legend > span:last-child {
+  margin-right: 0;
+}
 
+.donut-legend > span > i {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-right: 7px;
+  margin-top: -3px;
+  vertical-align: middle;
+  border-radius: 1px;
+}
 
+.red {
+  fill: #ac2925;
+}
 
+.green {
+  fill: #5cb85c;
+}
+
+.yellow {
+  fill: #eea236;
+}
+
+.blue {
+  fill: #337ab7;
+}
+
+.fill-opacity-055 {
+  fill-opacity:  0.55;
+}
 
 
