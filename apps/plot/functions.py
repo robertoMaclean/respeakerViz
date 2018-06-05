@@ -16,8 +16,8 @@ def FillJson(obj):
 	usersActivityContinuos = obj.GetActivityContinuos()
 	usersRelation = obj.GetUsersRelations()
 	userVolFrame = obj.GetUsersVolFrame()
-	#print(usersActivity[0])
-	#print(usersActivityContinuos[0])
+	# print(usersActivity[0])
+	# print(usersActivityContinuos[0])
 	data = {
 		'usersTime':[],
 		'usersIntDur':[[],[],[],[]],
@@ -124,30 +124,32 @@ def FillJson(obj):
 					volsumNoSilence = 0 
 					indexNoSilence = 1
 		user_num+= 1
+	factor = (len(usersActivity[0])+len(usersActivity[0])+len(usersActivity[0])+len(usersActivity[0]))/5000
 	for i in range(len(usersActivity)):
 		index = 0
 		time = 0
 		for val in usersActivity[i]:
-			if time == 0:
-				time = val
-			if index%20 == 0:
-				while(time < val):
-					data['usersActivity'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
-					data['usersActivityContinuos'][i].append({'x':float('{0:.2f}'.format(time)),'y':1})
-					time += 20*0.02
+			if time<=val:
+				data['usersActivity'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
+				time += factor
+			elif (time-val)<factor:
 				data['usersActivity'][i].append({'x':val,'y':1})
-				data['usersActivityContinuos'][i].append({'x':val,'y':1})
-			time = val+20*0.02
+				time += factor
 			index += 1
-	# for i in range(len(usersActivityContinuos)):
-	# 	index = 0
-	# 	time = 0
-	# 	for val in usersActivityContinuos[i]:
-	# 		if time == 0:
-	# 			time = val
-	# 		if index%20 == 0:
-	# 			data['usersActivityContinuos'][i].append({'x':val,'y':1})
-	# 		index += 1
+	for i in range(len(usersActivityContinuos)):
+		index = 0
+		time = 0
+		for val in usersActivityContinuos[i]:
+			print(time, val)
+			print(val%factor)
+			if time<val:
+				# while(time < val):
+				data['usersActivityContinuos'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
+				time += factor
+			elif (time-val)<factor: 
+				data['usersActivityContinuos'][i].append({'x':val,'y':1})
+				time += factor
+			index += 1
 	return data
 	
 

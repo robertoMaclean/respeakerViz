@@ -21,7 +21,7 @@ function lineGraph(data){
     lineColors: ['#c9302c', '#337ab7','#5cb85c','#f0ad4e'],
     resize: true,
     redraw: true,
-    xLabels: 'seconds'
+    xLabels: 'seconds',
   });
 }
 
@@ -52,4 +52,5 @@ function barGraph(data, color, labels){
     barColors: color
   });
 }
+
   

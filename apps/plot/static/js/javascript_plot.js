@@ -35,6 +35,19 @@ function click_buttons(){
  //    });
 
     $('#users_interv').on('click', function(){
+        html = '<div id="graph" class="graph"></div>'
+        html += '<div id="graph2" class="graph"></div>'
+        /*footer ='<div class="btn-group">'   
+        footer += '<button type="button" id="interv_silence" class="btn">Con silencios</button>'
+        footer += '<button type="button" id="interv_continuos" class="btn">Continuo</button>'*/
+        /*footer += '</div>'*/
+        $('.panel-body').html(html)
+        $('.panel-heading').html('Volumen promedio de cada intervención')
+        $('.panel-footer').html('')
+        /*barGraph(data.usersIntDur[0], '#c9302c', ['Segundos'])*/
+        /*click_buttons_interv()
+        $('#interv_silence').click()  */
+
         contador = [0,0,0,0]
         func_times = function (row, series, type) {
             /*console.log("--> "+row.label, series, type);*/            
@@ -55,6 +68,12 @@ function click_buttons(){
                 return "#f0ad4e";
             } 
         }
+        /*morris.options.barColors = func_times*/
+        var array_concat = data.usersActivity[0].concat(data.usersActivity[1], data.usersActivity[2], data.usersActivity[3])
+        array_concat.sort(function(a, b){return a['x'] - b['x']});
+        /*morris.setData(array_concat)*/
+        barGraph(array_concat, func_times, ['Segundos'])
+        
         contador = [0,0,0,0]
         func_times2 = function (row, series, type) {
             /*console.log("--> "+row.label, series, type);*/            
@@ -75,21 +94,16 @@ function click_buttons(){
                 return "#f0ad4e";
             } 
         }
-
-        html = '<div id="graph" class="graph"></div>'
-       /* html += '<div id="graph2" class="graph"></div>'*/
-        $('.panel-body').html(html)
-        $('.panel-heading').html('Volumen promedio de cada intervención')
-        $('.panel-footer').html()
-        var array_concat = data.usersActivity[0].concat(data.usersActivity[1], data.usersActivity[2], data.usersActivity[3])
+        /*morris.options.barColors = func_times2*/
+        var array_concat = data.usersActivityContinuos[0].concat(data.usersActivityContinuos[1], data.usersActivityContinuos[2], data.usersActivityContinuos[3])
         array_concat.sort(function(a, b){return a['x'] - b['x']});
-        barGraph(array_concat, func_times, ['Activación'])
-        /*var array_concat2 = data.usersActivityContinuos[0].concat(data.usersActivityContinuos[1], data.usersActivityContinuos[2], data.usersActivityContinuos[3])
-        array_concat2.sort(function(a, b){return a['x'] - b['x']});
-        barGraph2(array_concat2, func_times2, ['Activación'])*/
+        console.log(array_concat)
+        barGraph2(array_concat, func_times2, ['Segundos'])
+        /*morris.setData(array_concat)*/
         console.log('success')
-
     });
+    
+
 
     $('#users_speak').on('click', function(){
         // $('.panel').hide()
@@ -585,59 +599,9 @@ function click_buttons(){
         });
     }
 
-    function click_buttons_users_vol2(){
-        var contador = [0,0,0,0]
-        func = function (row, series, type) {
-                    /*console.log("--> "+row.label, series, type);*/
-                    if((contador[0]<data.usersVol[0].length)&&row.label == String(data.usersVol[0][contador[0]]['x'])){
-                        contador[0] += 1
-                        return "#c9302c";
-                    } 
-                    else if((contador[1]<data.usersVol[1].length)&&row.label == String(data.usersVol[1][contador[1]]['x'])){
-                        contador[1] += 1
-                        return "#337ab7";
-                    } 
-                    else if((contador[2]<data.usersVol[2].length)&&row.label == String(data.usersVol[2][contador[2]]['x'])){
-                        contador[2] += 1
-                        return "#5cb85c";
-                    } 
-                    else if((contador[3]<data.usersVol[3].length)&&row.label == String(data.usersVol[3][contador[3]]['x'])){
-                        contador[3] += 1
-                        return "#f0ad4e";
-                    } 
-                }
-        $('#user1').on('click', function(){
-           morris.options.barColors = func
-           var array_concat = data.usersVol[0].concat(data.usersVol[1], data.usersVol[2], data.usersVol[3])
-           array_concat.sort(function(a, b){return a['x'] - b['x']});
-           contador = [0,0,0,0]
-           morris.setData(array_concat)
-        });
-        $('#user2').on('click', function(){
-            morris.options.barColors = ["#337ab7"]
-            morris.setData(data.usersVol[0])
-        });
-        $('#user3').on('click', function(){
-            morris.options.barColors = ["#5cb85c"]
-            morris.setData(data.usersVol[2])
-        });
-        $('#user4').on('click', function(){
-            morris.options.barColors = ["#f0ad4e"]
-            morris.setData(data.usersVol[3])
-        });
-        $('#total').on('click', function(){
-            morris.options.barColors = func
-            /*console.log(data.usersVol[0][0]['x'])
-            dat ={
-                "datos": [
-                    {"x":data.usersVol[0]['x'],"y":data.usersVol[0]['y']},
-                    {"x":data.usersVol[1]['x'],"y":data.usersVol[1]['y']},
-                    {"x":data.usersVol[2]['x'],"y":data.usersVol[2]['y']},
-                    {"x":data.usersVol[3]['x'],"y":data.usersVol[3]['y']},
-                ]
-            } */
-            morris.setData(data.usersVolAVG)
-        });
+    function click_buttons_interv(){
+        
+        
     }
 
     function getSum(total, num) {

@@ -43,29 +43,25 @@ function barGraphMultiColor(data, labels){
 }
 
 function barGraph(data, color, labels){
-  if ($('#graph').length > 0){
-    morris = Morris.Bar({
-      element: 'graph',
-      data: data,
-      xkey: 'x',
-      ykeys: ['y'],
-      labels: labels,
-      barColors: color
-    });
-  }
-    
+  morris = Morris.Bar({
+    element: 'graph',
+    data: data,
+    xkey: 'x',
+    ykeys: ['y'],
+    labels: labels,
+    barColors: color
+  });
 }
 
 function barGraph2(data, color, labels){
-  if ($('#graph2').length > 0){
-    morris2 = Morris.Bar({
-      element: 'graph2',
-      data: data,
-      xkey: 'x',
-      ykeys: ['y'],
-      labels: labels,
-      barColors: color
-    });
-  }   
+  morris2 = Morris.Bar({
+    element: 'graph2',
+    data: data,
+    xkey: 'x',
+    ykeys: ['y'],
+    labels: labels,
+    barColors: color
+  });
 }
+
   
