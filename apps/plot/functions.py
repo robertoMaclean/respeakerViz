@@ -124,32 +124,41 @@ def FillJson(obj):
 					volsumNoSilence = 0 
 					indexNoSilence = 1
 		user_num+= 1
-	factor = (len(usersActivity[0])+len(usersActivity[0])+len(usersActivity[0])+len(usersActivity[0]))/5000
+	factor = (len(usersActivity[0])+len(usersActivity[0])+len(usersActivity[0])+len(usersActivity[0]))/2000
+	factor = 0.4
 	for i in range(len(usersActivity)):
 		index = 0
 		time = 0
+		last = 0
 		for val in usersActivity[i]:
-			if time<=val:
-				data['usersActivity'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
-				time += factor
-			elif (time-val)<factor:
+			print(time, val)
+			print(factor)
+			if time<val:
+				while(time<val):
+					data['usersActivity'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
+					time += factor
+			elif (val-last)>factor: 
+				last = val
 				data['usersActivity'][i].append({'x':val,'y':1})
 				time += factor
-			index += 1
+			
+			
 	for i in range(len(usersActivityContinuos)):
 		index = 0
 		time = 0
+		last = 0
 		for val in usersActivityContinuos[i]:
-			print(time, val)
-			print(val%factor)
-			if time<val:
-				# while(time < val):
-				data['usersActivityContinuos'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
-				time += factor
-			elif (time-val)<factor: 
+			#print(val-last, factor)
+			#print(factor)
+			
+			if (val-last)>factor: 
+				if time<val:
+					while(time < val):
+						data['usersActivityContinuos'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
+						time += factor
+				last = val
 				data['usersActivityContinuos'][i].append({'x':val,'y':1})
-				time += factor
-			index += 1
+				#time += factor
 	return data
 	
 
