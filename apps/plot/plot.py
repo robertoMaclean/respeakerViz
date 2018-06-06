@@ -8,6 +8,7 @@ import networkx as nx
 from io import StringIO
 import os
 import apps.plot.functions as functions
+import math
 
 
 class Plot(object):
@@ -69,6 +70,8 @@ class Plot(object):
 	def ExtractData(self):
 		interTimes = [[],[],[],[]]
 		timeActivity = []
+		usersVol = [[[],[]], [[],[]], [[],[]], [[],[]]]
+		usersVolProm = [[[],[]], [[],[]], [[],[]], [[],[]]]
 		volProm = []
 		lastPosition = -1
 		silence = 0
@@ -79,7 +82,9 @@ class Plot(object):
 		writer.writeheader()
 		#file.write('Usuario 1;Usuario 2;Cantidad relaciones\n')
 		for row in reader:
-			self.__usersVolFrame[int(row['direction'])].append((row['amplitude'],row['seconds']))
+			#self.__usersVolFrame[int(row['direction'])].append((row['amplitude'],row['seconds']))
+			usersVol[int(row['direction'])][0].append(float(row['amplitude']))
+			usersVol[int(row['direction'])][1].append(row['seconds'])
 			if int(row['speak']):
 				#print("direccion:", str(row['direction']))
 				if int(row['direction']) != lastPosition:
@@ -87,7 +92,9 @@ class Plot(object):
 					self.__userStartInt[1].append(float(row['seconds']))
 					if lastPosition != -1:
 						prom = sum(volProm)/len(volProm)
-						self.__volPromInterv[lastPosition].append((prom,row['seconds']))
+						usersVolProm[int(row['direction'])][0].append(prom)
+						usersVolProm[int(row['direction'])][1].append(row['seconds'])
+						#self.__volPromInterv[lastPosition].append((prom,row['seconds']))
 						volProm = []
 						interTimes[lastPosition].append(timeActivity)
 						#self.FindUsersInteraction(lastPosition+1, int(row['direction'])+1, file)
@@ -114,11 +121,33 @@ class Plot(object):
 			self.__activityContinuos[lastPosition].pop()
 		for x in interTimes:
 			self.__usersInterv.append(x)
+		
+		vol_array = np.array(usersVolProm[0][0]+usersVolProm[1][0]+usersVolProm[2][0]+usersVolProm[3][0])
+		rms = np.sqrt(np.mean(vol_array**2))
+		user = 0
+		for users in usersVolProm:
+			for x in range(len(users[0])):
+				if(float(users[0][x])>0):
+					self.__volPromInterv[user].append((20*math.log10(rms/float(users[0][x])),users[1][x]))
+				else:
+				 	self.__volPromInterv[user].append((0,users[1][x]))
+			user += 1
 		total_vol = 0
 		for x in self.__volPromInterv:
 			for prom, time in x: 
 				total_vol += prom
 			self.__usersVol.append(total_vol/len(x))
+		user = 0
+		vol_array = np.array(usersVol[0][0]+usersVol[1][0]+usersVol[2][0]+usersVol[3][0])
+		rms = np.sqrt(np.mean(vol_array**2))
+		for users in usersVol:
+			for x in range(len(users[0])):
+				if(float(users[0][x])>0 and (20*math.log10(rms/float(users[0][x])))>0):
+					self.__usersVolFrame[user].append((20*math.log10(rms/float(users[0][x])),users[1][x]))
+				else:
+				 	self.__usersVolFrame[user].append((0,users[1][x]))
+			user += 1
+
 
 	def UsersSpeak(self):
 		#figure = plt.gcf() # get current figure

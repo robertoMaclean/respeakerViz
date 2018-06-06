@@ -1,4 +1,5 @@
 import os
+import numpy as np
 
 def ensureDir(file_path):
 	directory = os.path.dirname(file_path)
@@ -125,14 +126,14 @@ def FillJson(obj):
 					indexNoSilence = 1
 		user_num+= 1
 	factor = (len(usersActivity[0])+len(usersActivity[0])+len(usersActivity[0])+len(usersActivity[0]))/2000
-	factor = 0.4
+	# factor = 0.2
 	for i in range(len(usersActivity)):
 		index = 0
 		time = 0
 		last = 0
 		for val in usersActivity[i]:
-			print(time, val)
-			print(factor)
+			#print(time, val)
+			#print(factor)
 			if time<val:
 				while(time<val):
 					data['usersActivity'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
@@ -147,18 +148,37 @@ def FillJson(obj):
 		index = 0
 		time = 0
 		last = 0
-		for val in usersActivityContinuos[i]:
+		for ii in range(len(usersActivityContinuos[i])):
 			#print(val-last, factor)
 			#print(factor)
-			
-			if (val-last)>factor: 
-				if time<val:
-					while(time < val):
-						data['usersActivityContinuos'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
-						time += factor
-				last = val
-				data['usersActivityContinuos'][i].append({'x':val,'y':1})
-				#time += factor
+			contar = 0
+			if usersActivityContinuos[i][ii] < time:
+				data['usersActivityContinuos'][i].append({'x':usersActivityContinuos[i][ii],'y':1})
+				while usersActivityContinuos[i][ii] >= time and ii < len(usersActivityContinuos[i])-1:
+					ii += 1
+			else:
+				while time < usersActivityContinuos[i][ii]:
+					data['usersActivityContinuos'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
+					time += factor
+
+			# while time > usersActivityContinuos[i][ii] and ii < len(usersActivityContinuos[i])-1 :
+			# 	contar += 1
+			# 	ii += 1
+			# if contar > 0 :
+			# 	data['usersActivityContinuos'][i].append({'x':usersActivityContinuos[i][ii],'y':1})
+			# else:
+			# 	data['usersActivityContinuos'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
+			# time += factor
+			# if (val-last)>factor:
+			# 	print(time, val) 
+			# 	if time<val:
+			# 		while(time < val):
+			# 			print(time)
+			# 			data['usersActivityContinuos'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
+			# 			time += factor
+			# 	last = val
+			# 	data['usersActivityContinuos'][i].append({'x':val,'y':1})
+			# 	#time += factor
 	return data
 	
 

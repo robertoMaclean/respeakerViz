@@ -3,12 +3,23 @@ $( document ).ready(function() {
     transform_users_time()
     $('#users_interaction').click()
     $('.loader').hide()
+    amplitud_to_db()
 });
 
 function active_nav_li(){
     var pathname = window.location.pathname;
     $('.nav > li > a[href="'+pathname+'"]').parent().addClass('active');
 }
+
+function amplitud_to_db() {
+   
+}
+
+function root_mean_square(ary) {
+    var sum_of_squares = ary.reduce(function(s,x) {return (s + x*x)}, 0);
+    return Math.sqrt(sum_of_squares / ary.length);
+}
+ 
 
 function transform_users_time(){
     max = Math.max(data.usersTime[0]['y'], data.usersTime[1]['y'], data.usersTime[2]['y'], data.usersTime[3]['y'])
