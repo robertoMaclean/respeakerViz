@@ -123,11 +123,15 @@ class Plot(object):
 			self.__usersInterv.append(x)
 		
 		vol_array = np.array(usersVolProm[0][0]+usersVolProm[1][0]+usersVolProm[2][0]+usersVolProm[3][0])
-		rms = np.sqrt(np.mean(vol_array**2))
+		#rms = np.sqrt(np.mean(vol_array**2))
+		rms = np.amax(vol_array)
+		print(rms)
 		user = 0
 		for users in usersVolProm:
 			for x in range(len(users[0])):
 				if(float(users[0][x])>0):
+					if 20*math.log10(rms/float(users[0][x]))<0:
+						print("negativo", float(users[0][x]))
 					self.__volPromInterv[user].append((20*math.log10(rms/float(users[0][x])),users[1][x]))
 				else:
 				 	self.__volPromInterv[user].append((0,users[1][x]))
@@ -139,10 +143,11 @@ class Plot(object):
 			self.__usersVol.append(total_vol/len(x))
 		user = 0
 		vol_array = np.array(usersVol[0][0]+usersVol[1][0]+usersVol[2][0]+usersVol[3][0])
-		rms = np.sqrt(np.mean(vol_array**2))
+		rms = np.amax(vol_array)
+		#rms = np.sqrt(np.mean(vol_array**2))
 		for users in usersVol:
 			for x in range(len(users[0])):
-				if(float(users[0][x])>0 and (20*math.log10(rms/float(users[0][x])))>0):
+				if(float(users[0][x])>0):
 					self.__usersVolFrame[user].append((20*math.log10(rms/float(users[0][x])),users[1][x]))
 				else:
 				 	self.__usersVolFrame[user].append((0,users[1][x]))

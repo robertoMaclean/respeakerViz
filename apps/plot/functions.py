@@ -126,7 +126,7 @@ def FillJson(obj):
 					indexNoSilence = 1
 		user_num+= 1
 	factor = (len(usersActivity[0])+len(usersActivity[0])+len(usersActivity[0])+len(usersActivity[0]))/2000
-	# factor = 0.2
+	factor = 5
 	for i in range(len(usersActivity)):
 		index = 0
 		time = 0
@@ -145,17 +145,13 @@ def FillJson(obj):
 			
 			
 	for i in range(len(usersActivityContinuos)):
-		index = 0
 		time = 0
-		last = 0
 		for ii in range(len(usersActivityContinuos[i])):
-			#print(val-last, factor)
-			#print(factor)
-			contar = 0
 			if usersActivityContinuos[i][ii] < time:
 				data['usersActivityContinuos'][i].append({'x':usersActivityContinuos[i][ii],'y':1})
-				while usersActivityContinuos[i][ii] >= time and ii < len(usersActivityContinuos[i])-1:
+				while usersActivityContinuos[i][ii] < time and ii < len(usersActivityContinuos[i])-1:
 					ii += 1
+				time += factor
 			else:
 				while time < usersActivityContinuos[i][ii]:
 					data['usersActivityContinuos'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
