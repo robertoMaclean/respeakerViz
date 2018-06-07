@@ -125,7 +125,6 @@ class Plot(object):
 		vol_array = np.array(usersVolProm[0][0]+usersVolProm[1][0]+usersVolProm[2][0]+usersVolProm[3][0])
 		#rms = np.sqrt(np.mean(vol_array**2))
 		rms = np.amax(vol_array)
-		print(rms)
 		user = 0
 		for users in usersVolProm:
 			for x in range(len(users[0])):

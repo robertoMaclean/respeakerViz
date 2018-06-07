@@ -125,37 +125,62 @@ def FillJson(obj):
 					volsumNoSilence = 0 
 					indexNoSilence = 1
 		user_num+= 1
-	factor = (len(usersActivity[0])+len(usersActivity[0])+len(usersActivity[0])+len(usersActivity[0]))/2000
-	factor = 5
+	factor = (len(usersActivity[0])+len(usersActivity[0])+len(usersActivity[0])+len(usersActivity[0]))/20000
+	factor = 1
+	#print(factor)
 	for i in range(len(usersActivity)):
-		index = 0
 		time = 0
-		last = 0
-		for val in usersActivity[i]:
+		#for val in usersActivity[i]:
+		for ii in range(len(usersActivity[i])):
 			#print(time, val)
 			#print(factor)
-			if time<val:
-				while(time<val):
+			if usersActivity[i][ii] > time:
+				if(usersActivity[i][ii]-usersActivity[i][ii-1]<=0.02):
+					data['usersActivity'][i].append({'x':float('{0:.2f}'.format(time)),'y':1})
+				else:
 					data['usersActivity'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
-					time += factor
-			elif (val-last)>factor: 
-				last = val
-				data['usersActivity'][i].append({'x':val,'y':1})
 				time += factor
+			# print(usersActivity[i][ii]-usersActivity[i][ii-1])
+			# if usersActivity[i][ii] < time:
+			# 	data['usersActivity'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
+			# else:
+			# 	data['usersActivity'][i].append({'x':float('{0:.2f}'.format(time)),'y':1})
+			
+				# if (usersActivity[i][ii] - time) < factor:
+				# 	data['usersActivity'][i].append({'x':float('{0:.2f}'.format(time)),'y':1})
+				# else:
+				# 	data['usersActivity'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
+				# time += factor
+			# 	if count > 10:
+			# 		data['usersActivity'][i].append({'x':float('{0:.2f}'.format(time)),'y':1})
+			# 	else:
+			# 		data['usersActivity'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
+			# 	time += factor
+			# 	count = 0
+			# else:
+			# 	count += 1
+
+			# 	while(usersActivityContinuos[i][ii] < time and ii < len(usersActivityContinuos[i])-1):
+			# 		ii += 1
+			# 	time += factor
+			# else: 
+			# 	while time < usersActivityContinuos[i][ii]:
+			# 		data['usersActivity'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
+			# 		time += factor
 			
 			
-	for i in range(len(usersActivityContinuos)):
-		time = 0
-		for ii in range(len(usersActivityContinuos[i])):
-			if usersActivityContinuos[i][ii] < time:
-				data['usersActivityContinuos'][i].append({'x':usersActivityContinuos[i][ii],'y':1})
-				while usersActivityContinuos[i][ii] < time and ii < len(usersActivityContinuos[i])-1:
-					ii += 1
-				time += factor
-			else:
-				while time < usersActivityContinuos[i][ii]:
-					data['usersActivityContinuos'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
-					time += factor
+	# for i in range(len(usersActivityContinuos)):
+	# 	time = 0
+	# 	for ii in range(len(usersActivityContinuos[i])):
+	# 		if usersActivityContinuos[i][ii] < time:
+	# 			data['usersActivityContinuos'][i].append({'x':usersActivityContinuos[i][ii],'y':1})
+	# 			while usersActivityContinuos[i][ii] < time and ii < len(usersActivityContinuos[i])-1:
+	# 				ii += 1
+	# 			time += factor
+	# 		else:
+	# 			while time < usersActivityContinuos[i][ii]:
+	# 				data['usersActivityContinuos'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
+	# 				time += factor
 
 			# while time > usersActivityContinuos[i][ii] and ii < len(usersActivityContinuos[i])-1 :
 			# 	contar += 1

@@ -3,21 +3,11 @@ $( document ).ready(function() {
     transform_users_time()
     $('#users_interaction').click()
     $('.loader').hide()
-    amplitud_to_db()
 });
 
 function active_nav_li(){
     var pathname = window.location.pathname;
     $('.nav > li > a[href="'+pathname+'"]').parent().addClass('active');
-}
-
-function amplitud_to_db() {
-   
-}
-
-function root_mean_square(ary) {
-    var sum_of_squares = ary.reduce(function(s,x) {return (s + x*x)}, 0);
-    return Math.sqrt(sum_of_squares / ary.length);
 }
  
 
@@ -106,10 +96,10 @@ function click_buttons(){
             } 
         }
         /*morris.options.barColors = func_times2*/
-        var array_concat = data.usersActivityContinuos[0].concat(data.usersActivityContinuos[1], data.usersActivityContinuos[2], data.usersActivityContinuos[3])
+        /*var array_concat = data.usersActivityContinuos[0].concat(data.usersActivityContinuos[1], data.usersActivityContinuos[2], data.usersActivityContinuos[3])
         array_concat.sort(function(a, b){return a['x'] - b['x']});
         console.log(array_concat)
-        barGraph2(array_concat, func_times2, ['Segundos'])
+        barGraph2(array_concat, func_times2, ['Segundos'])*/
         /*morris.setData(array_concat)*/
         console.log('success')
     });
