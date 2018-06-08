@@ -170,18 +170,18 @@ path.link {
   100% { transform: rotate(360deg); }
 }
 
-.donut-legend > span {
+.legend > span {
   display: inline-block;
   margin-right: 25px;
   margin-bottom: 10px;
   font-size: 13px;
 }
 
-.donut-legend > span:last-child {
+.legend > span:last-child {
   margin-right: 0;
 }
 
-.donut-legend > span > i {
+.legend > span > i {
   display: inline-block;
   width: 15px;
   height: 15px;
@@ -210,5 +210,23 @@ path.link {
 .fill-opacity-055 {
   fill-opacity:  0.55;
 }
+
+.back-red {
+  background-color: rgb(201, 48, 44);
+}
+
+.back-green {
+  background-color: rgb(92, 184, 92);
+}
+
+.back-yellow {
+  background-color: rgb(240, 173, 78);
+}
+
+.back-blue {
+  background-color: rgb(51, 122, 183);
+}
+
+
 
 

@@ -38,16 +38,9 @@ function click_buttons(){
     $('#users_interv').on('click', function(){
         html = '<div id="graph" class="graph"></div>'
         html += '<div id="graph2" class="graph"></div>'
-        /*footer ='<div class="btn-group">'   
-        footer += '<button type="button" id="interv_silence" class="btn">Con silencios</button>'
-        footer += '<button type="button" id="interv_continuos" class="btn">Continuo</button>'*/
-        /*footer += '</div>'*/
         $('.panel-body').html(html)
         $('.panel-heading').html('Volumen promedio de cada intervención')
         $('.panel-footer').html('')
-        /*barGraph(data.usersIntDur[0], '#c9302c', ['Segundos'])*/
-        /*click_buttons_interv()
-        $('#interv_silence').click()  */
 
         contador = [0,0,0,0]
         func_times = function (row, series, type) {
@@ -108,11 +101,17 @@ function click_buttons(){
 
     $('#users_speak').on('click', function(){
         // $('.panel').hide()
-        /*$('.loader').show()*/ 
+        /*$('.loader').show()*/
+        html = '<div class="table-responsive">'
+        html += '<div class="col-md-8 col-md-offset-2">'
+        html += interv_table
+        html += '</div>' 
+        html += '</div>' 
         $.ajax({
             type: "GET",
             url: '/plot/interv',
             success: function(data) {
+                data += html
             	$('.panel-body').html(data)
             	$('.panel-heading').html('Intervenciones en el tiempo')
             	$('.panel-footer').html('')
@@ -130,9 +129,7 @@ function click_buttons(){
         // $('.panel').hide()
         /*$('.loader').show()*/ 
         html = '<div id="graph" class="graph"></div>'
-        html += '<div id="donut" class="graph">'
-        html += '<div id="legend" class="donut-legend"></div>'
-        html += '</div>'
+        html += '<div id="donut" class="graph"></div>'
         $('.panel-body').html(html)
         $('.panel-heading').html('Tiempo total de habla por participante')
         $('.panel-footer').html('')
@@ -141,11 +138,12 @@ function click_buttons(){
         console.log(data)
         barGraphMultiColor(data.usersTime, ['Segundos'])
         donutGraph(data.usersSpeakTimePercent)
-        morrisDonut.options.data.forEach(function(label, i){
+
+        /*morrisDonut.options.data.forEach(function(label, i){
             var legendItem = $('<span></span>').text(label['label']).prepend('<i>&nbsp;</i>');
             legendItem.find('i').css('backgroundColor', morrisDonut.options.colors[i]);
             $('#legend').append(legendItem)
-          })
+          })*/
         console.log('success') 
     });
 
@@ -191,11 +189,17 @@ function click_buttons(){
     $('#users_int_in_time').on('click', function(){
         /*$('.loader').show()*/ 
         html = '<div id="line" class="graph"></div>'
+        html += '<div id="legend" class="legend col-md-offset-3"></div>'
         $('.panel-body').html(html)
         $('.panel-heading').html('Intervenciones a traves del tiempo')
         $('.panel-footer').html('')
         lineGraph(data.userIntInTime)
         console.log('success')
+        morrisLine.options.labels.forEach(function(label, i){
+        var legendItem = $('<span></span>').text(label).prepend('<i>&nbsp;</i>');
+        legendItem.find('i').css('backgroundColor', morrisLine.options.lineColors[i])
+        $('#legend').append(legendItem)
+        });
         /*$.ajax({
             type: "GET",
             url: '/plot/lineGraph',
@@ -232,7 +236,7 @@ function click_buttons(){
         /*var json = JSON.parse(data.data)
         console.log(json)*/
         click_buttons_users_vol()
-        barGraph(data.usersVol[0], '#c9302c', ['Volumen'])
+        barGraph(data.usersVol[0], '#c9302c', ['Decibelios'])
         $("#vol_in_time").click()
         console.log('success')
         /*$.ajax({
@@ -310,47 +314,7 @@ function click_buttons(){
                 html += '</div>'
                 html += '<div class="col-md-6">'
                 html += '<div class="table-responsive">'
-                html += '<table class="table" id="interaction_table">'
-                html += '<thead>'
-                html += '<tr>'
-                html += '<th class="table-head">Emisor/Receptor</th>'  
-                for(var i=1;i<5;i++){
-                    html += '<th class="table-head">Usuario '+i+'</th>'      
-                }
-                html += '</tr>'
-                html += '</thead>'
-                html += '<tbody>'
-                
-                console.log(data)
-                for(var i=0;i<data.usersInteraction.length;i=i+3){     
-                    html += '<tr>'    
-                    html += '<th class="table-head">Usuario '+data.usersInteraction[i]['emisor']+'</th>'
-                    console.log(data.usersInteraction[i]['emisor'],data.usersInteraction[i]['receptor'] )
-                    if(data.usersInteraction[i]['emisor'] == 1){
-                        html += '<td>0</td>'
-                        html += '<td>'+data.usersInteraction[i]['value']+'</td>'
-                        html += '<td>'+data.usersInteraction[i+1]['value']+'</td>'
-                        html += '<td>'+data.usersInteraction[i+2]['value']+'</td>'
-                    }else if(data.usersInteraction[i]['emisor'] == 2){
-                        html += '<td>'+data.usersInteraction[i]['value']+'</td>'
-                        html += '<td>0</td>'
-                        html += '<td>'+data.usersInteraction[i+1]['value']+'</td>'
-                        html += '<td>'+data.usersInteraction[i+2]['value']+'</td>'
-                    }else if(data.usersInteraction[i]['emisor'] == 3){
-                        html += '<td>'+data.usersInteraction[i]['value']+'</td>'
-                        html += '<td>'+data.usersInteraction[i+1]['value']+'</td>'
-                        html += '<td>0</td>'
-                        html += '<td>'+data.usersInteraction[i+2]['value']+'</td>'
-                    }else{
-                        html += '<td>'+data.usersInteraction[i]['value']+'</td>'
-                        html += '<td>'+data.usersInteraction[i+1]['value']+'</td>'
-                        html += '<td>'+data.usersInteraction[i+2]['value']+'</td>'
-                        html += '<td>0</td>'
-                    }
-                    
-                    html += '</tr>'            
-                }
-                html += '</tbody>'
+                html += interaction_table
                 html += '</div>'
                 html += '</div>'
                 html += '</div>'
@@ -393,13 +357,38 @@ function click_buttons(){
         footer += '</div>'
         console.log("click")
         html = '<div id="graph" class="graph"></div>'
+        html += '<div id="legend" class="legend col-md-offset-3"></div>'
         $('.panel-body').html(html)
         $('.panel-heading').html('Activación de voz y volumen')
         $('.panel-footer').html(footer)
-        barGraph(data.usersIntDur[0], '#c9302c', ['Segundos'])
+        barGraph(data.usersIntDur[0], '#c9302c', ['Decibelios'])
         user_vol_frame_buttons()
         $('#vol_frame_silence').click()
+        legendItem =  '<span><i class="back-red"> </i>Usuario 1</span>'
+        legendItem += '<span><i class="back-blue"> </i>Usuario 2</span>'
+        legendItem += '<span><i class="back-green"> </i>Usuario 3</span>'
+        legendItem += '<span><i class="back-yellow"> </i>Usuario 4</span>'   
+        $('#legend').append(legendItem)
         /*$('.loader').hide()*/
+    });
+
+    $('#summary').on('click', function(){
+       /*$('.loader').show()*/
+        /*footer =  '<div class="btn-group">'
+        footer += '<button type="button" id="vol_frame_silence" class="btn">Con silencio</button>'
+        footer += '<button type="button" id="vol_frame" class="btn">Sin silencio</button>'
+        footer += '</div>'*/
+        html = '<div class="table-responsive">'
+        html += summary_table
+        html += '</div>'
+        html += '</div>'
+        html += '</div>'
+        html += '</div>'
+        $('.panel-body').html(html)
+        $('.panel-heading').html('Resumen actividad')
+        $('.panel-footer').html('')
+
+
     });
 
     function user_vol_frame_buttons() {
@@ -465,14 +454,6 @@ function click_buttons(){
         });      
 
     }
-
-    function get_sum(array) {
-        sum = 0
-        for(var i=0;i<array.length;i++){
-            sum = parseFloat(array[i].y)+sum
-        }
-        return sum.toFixed(2)
-    } 
 
     function click_buttons_interv_time(){
         func_users = function (row, series, type) {
@@ -599,17 +580,18 @@ function click_buttons(){
             morris.setData(data.usersVolAVG)
         });
     }
+}
 
-    function click_buttons_interv(){
-        
-        
+function get_sum(array) {
+    sum = 0
+    for(var i=0;i<array.length;i++){
+        sum = parseFloat(array[i].y)+sum
     }
+    return sum.toFixed(2)
+} 
 
-    function getSum(total, num) {
-        return total + num;
-    }
-
-    
+function getSum(total, num) {
+    return total + num;
 }
 
     

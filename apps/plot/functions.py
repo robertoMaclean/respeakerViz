@@ -44,7 +44,7 @@ def FillJson(obj):
 	speak_time_users = float(usersTime[0]) + float(usersTime[1]) + float(usersTime[2]) + float(usersTime[3])
 	for users in usersTime:
 		data['usersTime'].append({'x':'Usuario '+str(user_num),'y':users})
-		data['usersSpeakTimePercent'].append({'label':'Porcentaje Usuario '+str(user_num),'value':"{0:.2f}".format((float(users)/speak_time_users)*100)})
+		data['usersSpeakTimePercent'].append({'label':'Usuario '+str(user_num),'value':"{0:.2f}".format((float(users)/speak_time_users)*100)})
 		user_num += 1
 	user_num = 0
 
@@ -125,21 +125,21 @@ def FillJson(obj):
 					volsumNoSilence = 0 
 					indexNoSilence = 1
 		user_num+= 1
-	factor = (len(usersActivity[0])+len(usersActivity[0])+len(usersActivity[0])+len(usersActivity[0]))/20000
-	factor = 1
+	# factor = (len(usersActivity[0])+len(usersActivity[0])+len(usersActivity[0])+len(usersActivity[0]))/20000
+	# factor = 1
 	#print(factor)
-	for i in range(len(usersActivity)):
-		time = 0
-		#for val in usersActivity[i]:
-		for ii in range(len(usersActivity[i])):
-			#print(time, val)
-			#print(factor)
-			if usersActivity[i][ii] > time:
-				if(usersActivity[i][ii]-usersActivity[i][ii-1]<=0.02):
-					data['usersActivity'][i].append({'x':float('{0:.2f}'.format(time)),'y':1})
-				else:
-					data['usersActivity'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
-				time += factor
+	# for i in range(len(usersActivity)):
+	# 	time = 0
+	# 	#for val in usersActivity[i]:
+	# 	for ii in range(len(usersActivity[i])):
+	# 		#print(time, val)
+	# 		#print(factor)
+	# 		if usersActivity[i][ii] > time:
+	# 			if(usersActivity[i][ii]-usersActivity[i][ii-1]<=0.02):
+	# 				data['usersActivity'][i].append({'x':float('{0:.2f}'.format(time)),'y':1})
+	# 			else:
+	# 				data['usersActivity'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
+	# 			time += factor
 			# print(usersActivity[i][ii]-usersActivity[i][ii-1])
 			# if usersActivity[i][ii] < time:
 			# 	data['usersActivity'][i].append({'x':float('{0:.2f}'.format(time)),'y':0})
