@@ -46,7 +46,6 @@ def plot(request):
 
 @login_required(redirect_field_name='login')
 def interactions(request):
-	print(request.user)
 	html = '<img class="img-responsive" id="plot_img" src="../media/plot/'+str(request.user)+'users_interaction.png" />'
 	print(html)
 	return HttpResponse(html)
