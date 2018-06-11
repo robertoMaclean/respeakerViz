@@ -11,7 +11,10 @@ $( document ).ready(function() {
                        .find(".name")     // Gets a descendent with class="nr"
                        .text();
       delete_one(filename)
-    })
+    });
+    $("#group-analyze").on("click", function() {
+        groupPlots();
+    });
 });
 
 function SearchFiles() {
@@ -80,7 +83,7 @@ function DeleteFiles() {
 
 function DeleteFile(filename) {
   $.ajax({
-          type: "GET",
+          type: "DELETE",
           url: '/plot/delete_files/'+filename,
           success: function(data) {
               console.log('success')
@@ -89,6 +92,35 @@ function DeleteFile(filename) {
               console.log('error')
           },
       });
+}
+
+function groupPlots() {
+  groups = getNames()
+  if(groups.length>=2){
+    $.ajax({
+      type: "POST",
+      url: '/plot/group_plots',
+      headers: { "X-CSRFToken": getCookie("csrftoken") },
+      data: {
+        groups: groups
+      },
+      dataType: 'json',
+      success: function(data) {
+          console.log('success')
+          window.location.replace("./group_plots");
+      },
+      error: function(data) {
+          console.log('error')
+      },
+    });
+  }else{
+    swalWithBootstrapButtons(
+          'Advertencia',
+          'Debe seleccionar al menos dos grupos',
+          'warning'
+        )
+  }
+  
 }
 
 function getCookie(c_name)
@@ -106,3 +138,13 @@ function getCookie(c_name)
     }
     return "";
  }
+
+ function getNames(){
+  var names = []
+  for(var i=0;i<$("#myTable .checkbox").length;i++){
+    if($("#myTable .checkbox")[i].checked){
+      names.push($("#myTable tr .name")[i].textContent)
+    }
+  }
+  return names;
+}

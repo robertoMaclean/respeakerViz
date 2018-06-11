@@ -6,7 +6,7 @@ def ensureDir(file_path):
 	if not os.path.exists(directory):
 		os.makedirs(directory)
 
-def FillJson(obj):
+def FillJson(obj, group):
 	usersTime = obj.GetUserTime()
 	usersInt = obj.GetUsersInterv()
 	time = obj.GetTime()
@@ -17,9 +17,11 @@ def FillJson(obj):
 	usersActivityContinuos = obj.GetActivityContinuos()
 	usersRelation = obj.GetUsersRelations()
 	userVolFrame = obj.GetUsersVolFrame()
+	activity_time = obj.GetTime()
 	# print(usersActivity[0])
 	# print(usersActivityContinuos[0])
 	data = {
+		'time': 0,
 		'usersTime':[],
 		'usersIntDur':[[],[],[],[]],
 		'usersSpeakTimePercent':[],
@@ -31,15 +33,16 @@ def FillJson(obj):
 			"links": []
 		},
 		'd3': {
-			"name":"Intervenciones",
+			"name": group,
 			"children": []
 		},
 		'usersVolFrame': [[],[],[],[]],
 		'userVolFrameWhitoutSilence': [[],[],[],[]],
-		'usersActivity': [[],[],[],[]],
-		'usersActivityContinuos': [[],[],[],[]],
+		# 'usersActivity': [[],[],[],[]],
+		# 'usersActivityContinuos': [[],[],[],[]],
 		'usersInteraction': [],
 	}
+	data['time'] = activity_time
 	user_num = 1
 	speak_time_users = float(usersTime[0]) + float(usersTime[1]) + float(usersTime[2]) + float(usersTime[3])
 	for users in usersTime:
@@ -202,4 +205,47 @@ def FillJson(obj):
 			# 	#time += factor
 	return data
 	
-
+def FillJsonGroups(groups):
+	data = {
+		'd3': {
+			'name': 'grupos',
+			'children': []
+		},
+		'treemap_intdur': {
+			'name': 'grupos',
+			'children': []
+		},
+		'treemap_volume': {
+			'name': 'grupos',
+			'children': []
+		},
+		'groupsSpeakTime': [],
+		'groupsIntervTime': [],
+		'usersVolFrame': [[],[],[],[]],
+		'userVolFrameWhitoutSilence': [[],[],[],[]],
+		'usersActivity': [[],[],[],[]],
+		'usersActivityContinuos': [[],[],[],[]],
+		'usersInteraction': [],
+	}
+	children = 0
+	for group in groups:
+		data['d3']['children'].append(group['d3'])
+		group_name = group['d3']['name']
+		group_speak_time = float(group['usersTime'][0]['y'])+float(group['usersTime'][1]['y'])+float(group['usersTime'][2]['y'])+float(group['usersTime'][3]['y'])
+		data['groupsSpeakTime'].append({'x':group_name,'y':'{0:.2f}'.format(group_speak_time)})
+		intdur_sum = 0
+		induruser_sum = 0
+		data['treemap_intdur']['children'].append({'name':group_name, 'children':[]})
+		data['treemap_intdur']['children'][-1]['children'].append({'name':'Intervención', 'children': []})
+		data['treemap_volume']['children'].append({'name':group_name, 'children':[]})	
+		data['treemap_volume']['children'][-1]['children'].append({'name':'Volumen', 'children': []})
+		user_pos = 1
+		for i in range(len(group['usersIntDur'])):
+			for intdur in group['usersIntDur'][i]:
+					induruser_sum += float(intdur['y'])
+			intdur_sum += induruser_sum
+			data['treemap_intdur']['children'][-1]['children'][-1]['children'].append({'name':group_name+'Duración: '+'{0:.2f}'.format(induruser_sum)+group['usersVolAVG'][i]['x'], 'size':'{0:.2f}'.format(induruser_sum)})
+			data['treemap_volume']['children'][-1]['children'][-1]['children'].append({'name':group_name+'Intensidad: '+group['usersVolAVG'][i]['y']+group['usersVolAVG'][i]['x'], 'size':'{0:.2f}'.format(float(group['usersVolAVG'][i]['y']))})
+			user_pos += 1
+		data['groupsIntervTime'].append({'x':group_name, 'y':'{0:.2f}'.format(intdur_sum)})
+	return data

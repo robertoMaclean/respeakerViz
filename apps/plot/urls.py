@@ -22,7 +22,10 @@ urlpatterns = [
     path('plot/show_graphs/<str:filename>', views.show_graphs, name='show_graphs'),
     path('plot/delete_files/<str:name>', views.delete_files, name='delete_files'),
     path('plot/<str:user>/force.csv', views.force_csv, name='force_csv'),
-
+    path('plot/group_plots', views.group_plots, name='group_plots'),
+    path('plot/group_plots/<str:user>/flare.json', views.group_flare_json, name='group_flare_json'),
+    path('plot/group_plots/<str:user>/intdur.json', views.intdur_json, name='intdur_json'),
+    path('plot/group_plots/<str:user>/volume.json', views.volume_json, name='volume_json')
 ]
 
 if settings.DEBUG:

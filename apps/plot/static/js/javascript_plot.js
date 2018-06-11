@@ -39,7 +39,7 @@ function click_buttons(){
         html = '<div id="graph" class="graph"></div>'
         html += '<div id="graph2" class="graph"></div>'
         $('.panel-body').html(html)
-        $('.panel-heading').html('Volumen promedio de cada intervención')
+        $('.panel-heading').html('Intensidad promedio de cada intervención')
         $('.panel-footer').html('')
 
         contador = [0,0,0,0]
@@ -97,8 +97,6 @@ function click_buttons(){
         console.log('success')
     });
     
-
-
     $('#users_speak').on('click', function(){
         // $('.panel').hide()
         /*$('.loader').show()*/
@@ -136,7 +134,13 @@ function click_buttons(){
         /*var json = JSON.parse(data.data)*/
         /*console.log(json)*/
         console.log(data)
-        barGraphMultiColor(data.usersTime, ['Segundos'])
+        colors = function (row, series, type) {
+            if(row.label == "Usuario 1") return "#c9302c";
+            else if(row.label == "Usuario 2") return "#337ab7";
+            else if(row.label == "Usuario 3") return "#5cb85c";
+            else if(row.label == "Usuario 4") return "#f0ad4e";
+        }
+        barGraph(data.usersTime, colors, ['Segundos'])
         donutGraph(data.usersSpeakTimePercent)
 
         /*morrisDonut.options.data.forEach(function(label, i){
@@ -193,7 +197,9 @@ function click_buttons(){
         $('.panel-body').html(html)
         $('.panel-heading').html('Intervenciones a traves del tiempo')
         $('.panel-footer').html('')
-        lineGraph(data.userIntInTime)
+        labels = ['Usuario 1', 'Usuario 2', 'Usuario 3', 'Usuario 4']
+        colors =  ['#c9302c', '#337ab7','#5cb85c','#f0ad4e']
+        lineGraph(data.userIntInTime, colors, labels)
         console.log('success')
         morrisLine.options.labels.forEach(function(label, i){
         var legendItem = $('<span></span>').text(label).prepend('<i>&nbsp;</i>');
@@ -236,7 +242,7 @@ function click_buttons(){
         /*var json = JSON.parse(data.data)
         console.log(json)*/
         click_buttons_users_vol()
-        barGraph(data.usersVol[0], '#c9302c', ['Decibelios'])
+        barGraph(data.usersVol[0], ['#c9302c'], ['Decibelios'])
         $("#vol_in_time").click()
         console.log('success')
         /*$.ajax({
@@ -265,10 +271,16 @@ function click_buttons(){
             type: "GET",
             url: '/plot/'+user+'/flare.json',
             success: function(data) {
-                html = '<svg width="960" height="960"></svg>'
+                html = '<div id="legend" class="legend col-md-offset-3"></div>'
+                html += '<svg width="960" height="960"></svg>'
                 $('.panel-body').html(html)
                 $('.panel-heading').html('Agrupación de intervenciones por usuario')
                 $('.panel-footer').html('')
+                legendItem =  '<span><i class="back-red"> </i>Usuario 1</span>'
+                legendItem += '<span><i class="back-blue"> </i>Usuario 2</span>'
+                legendItem += '<span><i class="back-green"> </i>Usuario 3</span>'
+                legendItem += '<span><i class="back-yellow"> </i>Usuario 4</span>'   
+                $('#legend').append(legendItem)
                 buble()
                 console.log('success')
             },
@@ -316,6 +328,8 @@ function click_buttons(){
                 html += '<div class="table-responsive">'
                 html += interaction_table
                 html += '</div>'
+                html += '<div class="alert alert-info">'
+                html += '<strong>Información!</strong> El tamaño del nodo es proporcional a la duración de habla del participante durante el evento.</div>'
                 html += '</div>'
                 html += '</div>'
                 html += '</div>'
@@ -338,7 +352,6 @@ function click_buttons(){
                 $('.panel-body').html(html)
                 $('.panel-heading').html('Interacción entre usuarios')
                 $('.panel-footer').html(footer)
-                transform_users_time()
                 nodes()
                 console.log('success')
             },
@@ -359,7 +372,7 @@ function click_buttons(){
         html = '<div id="graph" class="graph"></div>'
         html += '<div id="legend" class="legend col-md-offset-3"></div>'
         $('.panel-body').html(html)
-        $('.panel-heading').html('Activación de voz y volumen')
+        $('.panel-heading').html('Intensidad de voz')
         $('.panel-footer').html(footer)
         barGraph(data.usersIntDur[0], '#c9302c', ['Decibelios'])
         user_vol_frame_buttons()

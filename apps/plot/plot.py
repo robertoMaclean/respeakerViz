@@ -13,7 +13,7 @@ import math
 
 class Plot(object):
 
-	def __init__(self, file, outputPath='media/plot/'):
+	def __init__(self, file, outputPath='media/plot/', plot_user_speak= True):
 		self.__file = file
 		self.__outputPath = os.path.abspath(outputPath)
 		self.__activity = [[],[],[],[]] 			#Each user activity (without silence)
@@ -30,7 +30,8 @@ class Plot(object):
 		self.__usersRelations = [0,0,0,0,0,0,0,0,0,0,0,0]				
 		functions.ensureDir(outputPath)
 		self.ExtractData()
-		self.UsersSpeak()
+		if(plot_user_speak):
+			self.UsersSpeak()
 		# self.UsersInteraction()
 		self.SpeakTime()
 
@@ -129,14 +130,12 @@ class Plot(object):
 		for users in usersVolProm:
 			for x in range(len(users[0])):
 				if(float(users[0][x])>0):
-					if 20*math.log10(rms/float(users[0][x]))<0:
-						print("negativo", float(users[0][x]))
 					self.__volPromInterv[user].append((20*math.log10(rms/float(users[0][x])),users[1][x]))
 				else:
 				 	self.__volPromInterv[user].append((0,users[1][x]))
-			user += 1
-		total_vol = 0
+			user += 1	
 		for x in self.__volPromInterv:
+			total_vol = 0
 			for prom, time in x: 
 				total_vol += prom
 			self.__usersVol.append(total_vol/len(x))

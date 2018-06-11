@@ -38,6 +38,7 @@ from django.views.decorators.csrf import csrf_exempt
 # 			messages.error(request,'No ha seleccionado ningun archivo')
 # 			return redirect(reverse("upload_file"))
 # 	return render(request, 'plot/index.html')
+data = []
 
 @login_required(redirect_field_name='login')
 def plot(request):	
@@ -47,7 +48,6 @@ def plot(request):
 @login_required(redirect_field_name='login')
 def interactions(request):
 	html = '<img class="img-responsive" id="plot_img" src="../media/plot/'+str(request.user)+'users_interaction.png" />'
-	print(html)
 	return HttpResponse(html)
 
 @login_required(login_url='accounts/login/')
@@ -128,7 +128,6 @@ def relations(request, user):
 def usersActivity(request):
 	data_plot = request.session['data_plot']
 	data = json.loads(data_plot)
-	#print("data plot",data)
 	data = json.dumps(data['usersActivity'])
 	return HttpResponse(data)
 
@@ -138,12 +137,13 @@ def save_file(request):
 	title = 'Generar'
 	if request.method == 'POST':
 		form = FileForm(request.POST, request.FILES, request=request)
-		print(form.is_valid())
+		print(request.POST["name"])
+		# print(form.is_valid())
 		if form.is_valid():
 			csv_file = request.FILES["file"]
 			file_data = csv_file.read().decode("utf-8")
 			plt = ploter.Plot(StringIO(file_data), outputPath=settings.MEDIA_ROOT+'/plot/'+str(request.user))
-			request.session['data_plot'] = json.dumps(functions.FillJson(plt))
+			request.session['data_plot'] = json.dumps(functions.FillJson(plt, request.POST["name"]))
 			file = form.save(commit=False)
 			file.user = request.user
 			file.save()
@@ -161,10 +161,12 @@ def get_files(request):
 
 @login_required(redirect_field_name='login')
 def show_graphs(request, filename):
+	group = UserFile.objects.get(user=request.user, file = filename)
 	filename = os.path.join(settings.MEDIA_ROOT, filename)
 	file = open(filename, 'r')
 	plt = ploter.Plot(file, outputPath=settings.MEDIA_ROOT+'/plot/'+str(request.user))
-	request.session['data_plot'] = json.dumps(functions.FillJson(plt))
+	request.session['data_plot'] = json.dumps(functions.FillJson(plt, group.name))
+	file.close()
 	# plt.UsersInteraction()
 	return redirect(reverse("plot"))
 
@@ -175,6 +177,61 @@ def delete_files(request, name):
 	if(response[0]):
 		return HttpResponse(status=200)
 	return HttpResponse(status=404)
-	
+
+@login_required(redirect_field_name='login')
+def group_plots(request):
+	if request.method == 'POST':
+		groups = []
+		groups = request.POST.getlist('groups[]')
+		files = []
+
+		for group in groups:
+			query = UserFile.objects.get(user=request.user, name=group)
+			files.append((query.file.path, group))
+			#files.append(query[0]['file'])
+		global data
+		data = []
+		for file, group in files:
+			f = open(file, 'r')
+			plt = ploter.Plot(f, plot_user_speak=False)
+			data.append(functions.FillJson(plt, group))
+			f.close()
+		data = json.dumps(functions.FillJsonGroups(data))
+		return HttpResponse(data)
+	return render(request, 'plot/group_plot.html', {"data":data})
+
+@login_required(redirect_field_name='login')
+def group_flare_json(request, user):
+	print(data)
+	if user == str(request.user):
+		global data
+		data_plot = json.loads(data)
+		#print("data plot",data)
+		data_plot = json.dumps(data_plot['d3'])
+		return HttpResponse(data_plot)
+	return HttpResponse(status=404)
+
+@login_required(redirect_field_name='login')
+def intdur_json(request, user):
+	print(user, request.user)
+	if user == str(request.user):
+		global data
+		data_plot = json.loads(data)
+		#print("data plot",data)
+		data_plot = json.dumps(data_plot['treemap_intdur'])
+		return HttpResponse(data_plot)
+	return HttpResponse(status=404)
+
+@login_required(redirect_field_name='login')
+def volume_json(request, user):
+	print(user, request.user)
+	if user == str(request.user):
+		global data
+		data_plot = json.loads(data)
+		#print("data plot",data)
+		data_plot = json.dumps(data_plot['treemap_volume'])
+		return HttpResponse(data_plot)
+	return HttpResponse(status=404)
+
 
 

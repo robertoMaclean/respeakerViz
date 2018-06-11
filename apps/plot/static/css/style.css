@@ -59,7 +59,7 @@ circle {
   fill-opacity: 1;
 }
 
-text {
+.node text {
   font: 10px sans-serif;
   text-anchor: middle;
   color: blue;
@@ -227,6 +227,24 @@ path.link {
   background-color: rgb(51, 122, 183);
 }
 
+svg {
+  font: 10px sans-serif;
+  text-anchor: left;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print, .print * {
+    visibility: visible;
+  }
+  .print {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
 
 
 

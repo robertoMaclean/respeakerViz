@@ -68,11 +68,9 @@ function delete_alert(){
         )
       }
     })
-
   }else {
     swal("Mensaje", "Debe seleccionar al menos un reporte", "warning")
-  }
-  
+  }  
 }
 
 function some_check_select(){
@@ -83,3 +81,4 @@ function some_check_select(){
   }
   return false
 }
+

@@ -1,0 +1,59 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+<script type="text/javascript" src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+<script type="text/javascript">
+	var d4 = d3				
+</script>  
+<script type="text/javascript" src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script type="text/javascript" src="{% static '/js/d3.rollup.min.js' %}"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{% endblock %}
+{% block header%}
+{% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col-sm-2">
+		<div class='span2 sidebar margin-left-20'>
+		    <ul class="nav nav-tabs nav-stacked">
+	    	  <li class='lateral-title'><p>Visualizaciones</p></li>
+		      <li><a class='btn lateral clicked' id="users_interv_buble" active>Agrupación intervenciones</a></li>
+		      <li><a class='btn lateral' id="group_interv_dur">Intervenciones</a></li>
+		      <li><a class='btn lateral' id="group_volume">Intensidad</a></li>
+		   
+		    </ul>
+	  	</div>
+	</div>
+	<div class="col-sm-9">
+		<!-- <div class="loader center-block"></div> -->
+		<div class="panel panel-primary" id="plot_panel">
+			<div class="panel-heading">
+				Interacción entre participantes
+			</div>
+	  		<div class="panel-body">
+    		</div> 
+    		<div class="panel-footer"> 
+                <a type="link" id="download_csv" href="/media/plot/{{user}}relaciones.csv" class="btn btn-primary">Descargar datos</a>'
+    		</div> 		
+		</div>
+	</div>
+	<div id="tester" style="width:600px;height:250px;"></div>	
+</div>
+
+<script type="text/javascript">
+	var data = JSON.parse("{{data|escapejs}}");
+	var user = "{{user|escapejs}}"	
+</script>    
+{% endblock %} 
+{% block javascript %}
+<script type="text/javascript" src="{% static '/js/button.js' %}"></script>
+<script type="text/javascript" src="{% static '/js/javascript_group_plot.js' %}"></script>
+<script type="text/javascript" src="{% static '/js/button.js' %}"></script>
+<script type="text/javascript" src="{% static '/js/d3.js' %}"></script>
+<script type="text/javascript" src="{% static '/js/morris.js' %}"></script>
+<script type="text/javascript" src="{% static '/js/group_tables.js' %}"></script>
+{% endblock %}
