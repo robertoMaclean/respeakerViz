@@ -9,7 +9,6 @@ interaction_table += '</tr>'
 interaction_table += '</thead>'
 interaction_table += '<tbody>'
 
-console.log(data)
 for(var i=0;i<data.usersInteraction.length;i=i+3){     
     interaction_table += '<tr>'    
     interaction_table += '<th class="table-head">Usuario '+data.usersInteraction[i]['emisor']+'</th>'
@@ -65,36 +64,30 @@ vol_prom += '<td>'+data.usersVolAVG[1]['y']+'</td>'
 vol_prom += '<td>'+data.usersVolAVG[2]['y']+'</td>'
 vol_prom += '<td>'+data.usersVolAVG[3]['y']+'</td>'
 
-var interv_table = '<table class="table" id="intervention_table">'
-interv_table += '<thead>'
-interv_table += '<tr>'
-interv_table += '<th class="table-head"></th>'  
+var table_up = '<table class="table" id="intervention_table">'
+table_up += '<thead>'
+table_up += '<tr>'
+table_up += '<th class="table-head"></th>'  
 for(var i=1;i<5;i++){
-    interv_table += '<th class="table-head">Usuario '+i+'</th>'      
+    table_up += '<th class="table-head">Usuario '+i+'</th>'      
 }
-interv_table += '</tr>'
-interv_table += '</thead>'
-interv_table += '<tbody>'
-interv_table += '<tr>'
+table_up += '</tr>'
+table_up += '</thead>'
+table_up += '<tbody>'
+table_up += '<tr>'
+
+var table_down = '</tr>' 
+table_down += '</tbody>'
+table_down += '</table>'
+
+interv_table = table_up
 interv_table += interv
 interv_table += '</tr>'  
 interv_table += '<tr>'
 interv_table += interv_time
-interv_table += '</tr>' 
-interv_table += '</tbody>'
-interv_table += '</table>'
+interv_table += table_down 
 
-var summary_table = '<table class="table" id="summary_table">'
-summary_table += '<thead>'
-summary_table += '<tr>'
-summary_table += '<th class="table-head"></th>'  
-for(var i=1;i<5;i++){
-    summary_table += '<th class="table-head">Usuario '+i+'</th>'      
-}
-summary_table += '</tr>'
-summary_table += '</thead>'
-summary_table += '<tbody>'
-summary_table += '<tr>'
+summary_table = table_up
 summary_table += interv
 summary_table += '</tr>'  
 summary_table += '<tr>'
@@ -105,6 +98,18 @@ summary_table += speak_time
 summary_table += '</tr>'
 summary_table += '<tr>'
 summary_table += vol_prom
-summary_table += '</tr>' 
-summary_table += '</tbody>'
-summary_table += '</table>'
+summary_table += table_down 
+
+
+summary_total_table = '<table class="table" id="intervention_table">'
+summary_total_table += '<thead>'
+summary_total_table += '<tr>'
+summary_total_table += '<th class="table-head"></th>'  
+summary_total_table += '</tr>'  
+summary_total_table += '</thead>'
+summary_total_table += '<tbody>'
+summary_total_table += '<tr>' 
+summary_total_table += speak_time
+summary_total_table += '</tr>' 
+summary_total_table += '</tbody>'
+

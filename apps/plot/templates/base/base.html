@@ -9,9 +9,11 @@
 	{# Load CSS #}
 	{% bootstrap_css%}
 	<link rel="stylesheet" href="{% static '/css/style.css' %}"/>
+	<link rel="shortcut icon" type="image/png" href="{% static '/favicon.ico' %}"/>
 	<script type="text/javascript" src="{% static '/js/jquery-3.3.1.min.js' %}"></script>
 	<script src="https://unpkg.com/sweetalert2@7.20.10/dist/sweetalert2.all.js"></script>
 	<script type="text/javascript" src="{% static '/js/alerts.js' %}"></script>
+
 	{% block head %}
 	{% endblock %}
 </head>

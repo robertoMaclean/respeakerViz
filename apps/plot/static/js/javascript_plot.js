@@ -386,17 +386,22 @@ function click_buttons(){
     });
 
     $('#summary').on('click', function(){
-       /*$('.loader').show()*/
-        /*footer =  '<div class="btn-group">'
-        footer += '<button type="button" id="vol_frame_silence" class="btn">Con silencio</button>'
-        footer += '<button type="button" id="vol_frame" class="btn">Sin silencio</button>'
-        footer += '</div>'*/
-        html = '<div class="table-responsive">'
+        html = '<div class="col-md-8 col-md-offset-2">'
+        html += '<div class="page-header">'
+        html += '<h2>Resultados por participante</h2>'
+        html += '</div>'
+        html += '<div class="table-responsive">'
         html += summary_table
         html += '</div>'
+        html += '<div class="page-header">'
+        html += '<h2>Resultados totales evento</h2>'
+        html += '</div>'
+        html += '<div class="table-responsive">'
+        html += summary_total_table
         html += '</div>'
         html += '</div>'
-        html += '</div>'
+
+        
         $('.panel-body').html(html)
         $('.panel-heading').html('Resumen actividad')
         $('.panel-footer').html('')

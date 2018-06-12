@@ -7,7 +7,7 @@ class FileForm(forms.ModelForm):
 		self.request = kwargs.pop('request', None)
 		super(FileForm, self).__init__(*args, **kwargs)
 
-	name = forms.CharField(min_length=3, label='Nombre')
+	name = forms.CharField(min_length=3, label='Nombre', widget=forms.TextInput(attrs={'placeholder':'Ingresa el nombre del grupo'}))
 	file = forms.FileField(label='Subir archivo')
 	class Meta:
 		model = UserFile

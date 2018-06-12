@@ -133,7 +133,6 @@ def usersActivity(request):
 
 @login_required(redirect_field_name='login')
 def save_file(request):
-	print("en save file")
 	title = 'Generar'
 	if request.method == 'POST':
 		form = FileForm(request.POST, request.FILES, request=request)
