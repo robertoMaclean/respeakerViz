@@ -27,7 +27,8 @@ class Plot(object):
 		self.__volPromInterv = [[],[],[],[]]		#User volume AVG per intervention
 		self.__usersVol = []						#User total volume AVG
 		self.__usersVolFrame = [[],[],[],[]]
-		self.__usersRelations = [0,0,0,0,0,0,0,0,0,0,0,0]				
+		self.__usersRelations = [0,0,0,0,0,0,0,0,0,0,0,0]	
+		self.__plot_user_speak = plot_user_speak			
 		functions.ensureDir(outputPath)
 		self.ExtractData()
 		if(plot_user_speak):
@@ -77,16 +78,23 @@ class Plot(object):
 		lastPosition = -1
 		silence = 0
 		reader = csv.DictReader(self.__file, delimiter=";", lineterminator='\n')
-		file = open(self.__outputPath+'relaciones.csv', 'w', newline="\n")
-		fieldnames = ['Emisor','Receptor','Interacciones']
-		writer = csv.DictWriter(file, fieldnames=fieldnames, delimiter=";")
-		writer.writeheader()
+		if(self.__plot_user_speak):
+			file = open(self.__outputPath+'relaciones.csv', 'w', newline="\n")
+			fieldnames = ['Emisor','Receptor','Interacciones']
+			writer = csv.DictWriter(file, fieldnames=fieldnames, delimiter=";")
+			writer.writeheader()
+			file_interv = open(self.__outputPath+'intervenciones.csv', 'w', newline="\n")
+			fieldnames = ['Emisor','Segundo voz activa']
+			writer_interv = csv.DictWriter(file_interv, fieldnames=fieldnames, delimiter=";")
+			writer_interv.writeheader()
 		#file.write('Usuario 1;Usuario 2;Cantidad relaciones\n')
 		for row in reader:
 			#self.__usersVolFrame[int(row['direction'])].append((row['amplitude'],row['seconds']))
 			usersVol[int(row['direction'])][0].append(float(row['amplitude']))
 			usersVol[int(row['direction'])][1].append(row['seconds'])
 			if int(row['speak']):
+				if(self.__plot_user_speak):
+					writer_interv.writerow({'Emisor':row['direction'],'Segundo voz activa':row['seconds']})
 				#print("direccion:", str(row['direction']))
 				if int(row['direction']) != lastPosition:
 					self.__userStartInt[0].append(int(row['direction'])+1)
@@ -99,7 +107,8 @@ class Plot(object):
 						volProm = []
 						interTimes[lastPosition].append(timeActivity)
 						#self.FindUsersInteraction(lastPosition+1, int(row['direction'])+1, file)
-						self.FindUsersInteraction(lastPosition+1, int(row['direction'])+1, file)
+						if(self.__plot_user_speak):
+							self.FindUsersInteraction(lastPosition+1, int(row['direction'])+1, file)
 						for i in range(silence):
 							self.__activityContinuos[lastPosition].pop()
 					else:
@@ -116,7 +125,9 @@ class Plot(object):
 				silence += 1
 			self.__activityContinuos[int(row['direction'])].append(float(row['seconds']))	
 			self.__time = row['seconds']
-		file.close()
+		if(self.__plot_user_speak):
+			file.close()
+			file_interv.close()
 		interTimes[lastPosition].append(timeActivity)
 		for i in range(silence):
 			self.__activityContinuos[lastPosition].pop()
@@ -213,7 +224,6 @@ class Plot(object):
 	def FindUsersInteraction(self, pos1, pos2, file):
 		fieldnames = ['Emisor','Receptor','Interacciones']
 		writer = csv.DictWriter(file, fieldnames=fieldnames, delimiter=";")
-
 		if pos1==1 and pos2 == 2:
 			writer.writerow({'Emisor':str(pos1),'Receptor':str(pos2),'Interacciones':str(self.__usersRelations[0]+1)})
 			self.__usersRelations[0] += 1

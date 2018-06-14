@@ -35,7 +35,9 @@ function barGraph(data, color, labels){
     xkey: 'x',
     ykeys: ['y'],
     labels: labels,
-    barColors: color
+    barColors: color,
+    resize: true,
+    redraw: true,
   });
 }
 

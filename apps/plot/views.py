@@ -222,6 +222,17 @@ def intdur_json(request, user):
 	return HttpResponse(status=404)
 
 @login_required(redirect_field_name='login')
+def interv_json(request, user):
+	print(user, request.user)
+	if user == str(request.user):
+		global data
+		data_plot = json.loads(data)
+		#print("data plot",data)
+		data_plot = json.dumps(data_plot['treemap_interv'])
+		return HttpResponse(data_plot)
+	return HttpResponse(status=404)
+
+@login_required(redirect_field_name='login')
 def volume_json(request, user):
 	print(user, request.user)
 	if user == str(request.user):

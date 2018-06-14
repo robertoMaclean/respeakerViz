@@ -98,13 +98,13 @@ function click_buttons(){
     });
     
     $('#users_speak').on('click', function(){
-        // $('.panel').hide()
-        /*$('.loader').show()*/
+        swal.showLoading();
         html = '<div class="table-responsive">'
         html += '<div class="col-md-8 col-md-offset-2">'
         html += interv_table
         html += '</div>' 
-        html += '</div>' 
+        html += '</div>'
+        footer = "<a type='link' id='download_csv' href='/media/plot/"+user+"intervenciones.csv' class='btn btn-primary'>Descargar datos</a>"
         $.ajax({
             type: "GET",
             url: '/plot/interv',
@@ -112,9 +112,10 @@ function click_buttons(){
                 data += html
             	$('.panel-body').html(data)
             	$('.panel-heading').html('Intervenciones en el tiempo')
-            	$('.panel-footer').html('')
+            	$('.panel-footer').html(footer)
+                swal.close();
                 console.log('success')
-                $('.panel').show()
+                //$('.panel').show()
                 /*$('.loader').hide()*/
             },
             error: function(data) {
@@ -126,6 +127,7 @@ function click_buttons(){
     $('#users_total_time').on('click', function(){
         // $('.panel').hide()
         /*$('.loader').show()*/ 
+        swal.showLoading();
         html = '<div id="graph" class="graph"></div>'
         html += '<div id="donut" class="graph"></div>'
         $('.panel-body').html(html)
@@ -142,6 +144,7 @@ function click_buttons(){
         }
         barGraph(data.usersTime, colors, ['Segundos'])
         donutGraph(data.usersSpeakTimePercent)
+        swal.close();
 
         /*morrisDonut.options.data.forEach(function(label, i){
             var legendItem = $('<span></span>').text(label['label']).prepend('<i>&nbsp;</i>');
@@ -154,6 +157,7 @@ function click_buttons(){
     $('#users_interv_time').on('click', function(){
         //$('.panel').hide()
         /*$('.loader').show()*/ 
+        swal.showLoading();
         footer ='<div class="btn-group">'	
     	footer += '<button type="button" id="general" class="btn">General</button>'
         footer += '<button type="button" id="user1" class="btn btn-danger">Usuario 1</button>'
@@ -169,6 +173,7 @@ function click_buttons(){
         click_buttons_interv_time()
         barGraph(data.usersIntDur[0], '#c9302c', ['Segundos'])
         $("#general").click()
+        swal.close();
         console.log('success')
     	/*$.ajax({
             type: "GET",
@@ -192,6 +197,7 @@ function click_buttons(){
 
     $('#users_int_in_time').on('click', function(){
         /*$('.loader').show()*/ 
+        swal.showLoading();
         html = '<div id="line" class="graph"></div>'
         html += '<div id="legend" class="legend col-md-offset-3"></div>'
         $('.panel-body').html(html)
@@ -206,6 +212,7 @@ function click_buttons(){
         legendItem.find('i').css('backgroundColor', morrisLine.options.lineColors[i])
         $('#legend').append(legendItem)
         });
+        swal.close();
         /*$.ajax({
             type: "GET",
             url: '/plot/lineGraph',
@@ -227,6 +234,7 @@ function click_buttons(){
     $('#users_vol').on('click', function(){
         //$('.panel').hide()
         /*$('.loader').show()*/
+        swal.showLoading();
         footer ='<div class="btn-group">'
         footer += '<button type="button" id="vol_in_time" class="btn">General</button>'
         footer += '<button type="button" id="user1" class="btn btn-danger">Usuario 1</button>'
@@ -244,6 +252,7 @@ function click_buttons(){
         click_buttons_users_vol()
         barGraph(data.usersVol[0], ['#c9302c'], ['Decibelios'])
         $("#vol_in_time").click()
+        swal.close();
         console.log('success')
         /*$.ajax({
             type: "GET",
@@ -267,6 +276,7 @@ function click_buttons(){
     $('#users_interv_buble').on('click', function(data){     
         /*$('.panel').hide()*/
         /*$('.loader').show()*/
+        swal.showLoading();
         $.ajax({
             type: "GET",
             url: '/plot/'+user+'/flare.json',
@@ -282,6 +292,7 @@ function click_buttons(){
                 legendItem += '<span><i class="back-yellow"> </i>Usuario 4</span>'   
                 $('#legend').append(legendItem)
                 buble()
+                swal.close();
                 console.log('success')
             },
             error: function(data) {
@@ -291,9 +302,10 @@ function click_buttons(){
         
     });
 
-    $('#sec_intertv').on('click', function(data){    
+    $('#sec_interv').on('click', function(data){    
         /*$('.panel').hide()*/ 
         /*$('.loader').show()*/
+        swal.showLoading();
         $.ajax({
             type: "GET",
             url: '/plot/'+user+'/relations',
@@ -304,6 +316,7 @@ function click_buttons(){
                 $('.panel-footer').html('')
                 /*var json = JSON.parse(data)*/
                 relations()
+                swal.close();
                 /*console.log(json)*/
                 console.log('success')
             },
@@ -316,6 +329,7 @@ function click_buttons(){
     $('#users_interaction').on('click', function(dat){      
         /*$('.loader').show()*/
         //$('.panel').hide()
+        swal.showLoading();
         $.ajax({
             type: "GET",
             url: '/plot/'+user+'/force.csv',
@@ -353,6 +367,7 @@ function click_buttons(){
                 $('.panel-heading').html('Interacción entre usuarios')
                 $('.panel-footer').html(footer)
                 nodes()
+                swal.close();
                 console.log('success')
             },
             error: function(data) {
@@ -364,6 +379,7 @@ function click_buttons(){
 
     $('#users_vol_frame').on('click', function(){
        /*$('.loader').show()*/
+        swal.showLoading();
         footer =  '<div class="btn-group">'
         footer += '<button type="button" id="vol_frame_silence" class="btn">Con silencio</button>'
         footer += '<button type="button" id="vol_frame" class="btn">Sin silencio</button>'
@@ -382,10 +398,12 @@ function click_buttons(){
         legendItem += '<span><i class="back-green"> </i>Usuario 3</span>'
         legendItem += '<span><i class="back-yellow"> </i>Usuario 4</span>'   
         $('#legend').append(legendItem)
+        swal.close();
         /*$('.loader').hide()*/
     });
 
     $('#summary').on('click', function(){
+        swal.showLoading();
         html = '<div class="col-md-8 col-md-offset-2">'
         html += '<div class="page-header">'
         html += '<h2>Resultados por participante</h2>'
@@ -394,8 +412,10 @@ function click_buttons(){
         html += summary_table
         html += '</div>'
         html += '<div class="page-header">'
-        html += '<h2>Resultados totales evento</h2>'
+        html += '<h2>Resultados evento</h2>'
         html += '</div>'
+        html += '</div>'
+        html += '<div class="col-md-4 col-md-offset-2">'
         html += '<div class="table-responsive">'
         html += summary_total_table
         html += '</div>'
@@ -405,6 +425,7 @@ function click_buttons(){
         $('.panel-body').html(html)
         $('.panel-heading').html('Resumen actividad')
         $('.panel-footer').html('')
+        swal.close();
 
 
     });

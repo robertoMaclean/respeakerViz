@@ -13,7 +13,11 @@ $( document ).ready(function() {
       delete_one(filename)
     });
     $("#group-analyze").on("click", function() {
+        swal.showLoading();
         groupPlots();
+    });
+    $(".watch").on("click", function(){
+        swal.showLoading();
     });
 });
 

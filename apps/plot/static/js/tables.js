@@ -64,6 +64,26 @@ vol_prom += '<td>'+data.usersVolAVG[1]['y']+'</td>'
 vol_prom += '<td>'+data.usersVolAVG[2]['y']+'</td>'
 vol_prom += '<td>'+data.usersVolAVG[3]['y']+'</td>'
 
+total_speak = parseFloat(data.usersTime[0]['y'])+parseFloat(data.usersTime[1]['y'])+parseFloat(data.usersTime[2]['y'])+parseFloat(data.usersTime[3]['y'])
+total_speak_time = '<th class="table-head">Duración habla</th>'
+total_speak_time += '<td>'+String(total_speak.toFixed(2))+'</td>'
+
+total_int_dur = parseFloat(get_sum(data.usersIntDur[0]))+parseFloat(get_sum(data.usersIntDur[1]))+parseFloat(get_sum(data.usersIntDur[2]))+parseFloat(get_sum(data.usersIntDur[3]))
+total_int_dur_time = '<th class="table-head">Duración intervenciones</th>'
+total_int_dur_time += '<td>'+String(total_int_dur)+'</td>'
+
+total_int = parseInt(data.usersIntDur[0].length)+parseInt(data.usersIntDur[1].length)+parseInt(data.usersIntDur[2].length)+parseInt(data.usersIntDur[3].length)
+total_intervention = '<th class="table-head">Intervenciones</th>'
+total_intervention += '<td>'+String(total_int)+'</td>'
+
+total_vol = parseFloat(data.usersVolAVG[0]['y'])+parseFloat(data.usersVolAVG[1]['y'])+parseFloat(data.usersVolAVG[2]['y'])+parseFloat(data.usersVolAVG[3]['y'])
+total_vol = total_vol/4
+total_vol_prom = '<th class="table-head">Promedio intensidad</th>'
+total_vol_prom += '<td>'+String(total_vol.toFixed(2))+'</td>'
+
+duration = '<th class="table-head">Duración total</th>'
+duration += '<td>'+String(data.time)+'</td>'
+
 var table_up = '<table class="table" id="intervention_table">'
 table_up += '<thead>'
 table_up += '<tr>'
@@ -101,15 +121,29 @@ summary_table += vol_prom
 summary_table += table_down 
 
 
-summary_total_table = '<table class="table" id="intervention_table">'
+summary_total_table  = '<table class="table" id="intervention_table">'
 summary_total_table += '<thead>'
 summary_total_table += '<tr>'
 summary_total_table += '<th class="table-head"></th>'  
-summary_total_table += '</tr>'  
+summary_total_table += '<th class="table-head">Evento</th>' 
+summary_total_table += '</tr>'
 summary_total_table += '</thead>'
 summary_total_table += '<tbody>'
 summary_total_table += '<tr>' 
-summary_total_table += speak_time
+summary_total_table += total_speak_time
+summary_total_table += '</tr>'
+summary_total_table += '<tr>' 
+summary_total_table += total_int_dur_time
 summary_total_table += '</tr>' 
-summary_total_table += '</tbody>'
+summary_total_table += '<tr>' 
+summary_total_table += total_intervention
+summary_total_table += '</tr>' 
+summary_total_table += '<tr>' 
+summary_total_table += total_vol_prom
+summary_total_table += '</tr>'  
+summary_total_table += '<tr>' 
+summary_total_table += duration
+summary_total_table += table_down
+
+
 
