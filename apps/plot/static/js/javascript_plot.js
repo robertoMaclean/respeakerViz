@@ -383,6 +383,7 @@ function click_buttons(){
         footer =  '<div class="btn-group">'
         footer += '<button type="button" id="vol_frame_silence" class="btn">Con silencio</button>'
         footer += '<button type="button" id="vol_frame" class="btn">Sin silencio</button>'
+        footer += "<a type='link' id='download_csv' href='/media/plot/"+user+"Intensidad.csv' class='btn btn-primary'>Descargar datos</a>"
         footer += '</div>'
         console.log("click")
         html = '<div id="graph" class="graph"></div>'
@@ -390,15 +391,38 @@ function click_buttons(){
         $('.panel-body').html(html)
         $('.panel-heading').html('Intensidad de voz')
         $('.panel-footer').html(footer)
-        barGraph(data.usersIntDur[0], '#c9302c', ['Decibelios'])
+        contador = [0,0,0,0]
+        func_times = function (row, series, type) {
+                    /*console.log("--> "+row.label, series, type);*/
+                    if((contador[0]<data.usersVolFrame[0].length)&&row.label == String(data.usersVolFrame[0][contador[0]]['x'])){
+                        contador[0] += 1
+                        return "#c9302c";
+                    } 
+                    else if((contador[1]<data.usersVolFrame[1].length)&&row.label == String(data.usersVolFrame[1][contador[1]]['x'])){
+                        contador[1] += 1
+                        return "#337ab7";
+                    } 
+                    else if((contador[2]<data.usersVolFrame[2].length)&&row.label == String(data.usersVolFrame[2][contador[2]]['x'])){
+                        contador[2] += 1
+                        return "#5cb85c";
+                    } 
+                    else if((contador[3]<data.usersVolFrame[3].length)&&row.label == String(data.usersVolFrame[3][contador[3]]['x'])){
+                        contador[3] += 1
+                        return "#f0ad4e";
+                    } 
+                }
+        var array_concat = data.usersVolFrame[0].concat(data.usersVolFrame[1], data.usersVolFrame[2], data.usersVolFrame[3])
+        array_concat.sort(function(a, b){return a['x'] - b['x']});  
+        barGraph(array_concat, func_times, ['Decibelios'])
         user_vol_frame_buttons()
-        $('#vol_frame_silence').click()
+        //$('#vol_frame_silence').click()
         legendItem =  '<span><i class="back-red"> </i>Usuario 1</span>'
         legendItem += '<span><i class="back-blue"> </i>Usuario 2</span>'
         legendItem += '<span><i class="back-green"> </i>Usuario 3</span>'
         legendItem += '<span><i class="back-yellow"> </i>Usuario 4</span>'   
         $('#legend').append(legendItem)
-        swal.close();
+        swal.close()
+        
         /*$('.loader').hide()*/
     });
 
@@ -436,7 +460,6 @@ function click_buttons(){
             contador = [0,0,0,0]
             func_times = function (row, series, type) {
                     /*console.log("--> "+row.label, series, type);*/
-                    console.log("loading...")
                     if((contador[0]<data.usersVolFrame[0].length)&&row.label == String(data.usersVolFrame[0][contador[0]]['x'])){
                         contador[0] += 1
                         return "#c9302c";
@@ -467,7 +490,6 @@ function click_buttons(){
 
             func_times = function (row, series, type) {
                     /*console.log("--> "+row.label, series, type);*/
-                    console.log("loading...")
                     if((contador[0]<data.userVolFrameWhitoutSilence[0].length)&&row.label == String(data.userVolFrameWhitoutSilence[0][contador[0]]['x'])){
                         contador[0] += 1
                         return "#c9302c";

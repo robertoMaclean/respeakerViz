@@ -24,9 +24,11 @@ urlpatterns = [
     path('plot/<str:user>/force.csv', views.force_csv, name='force_csv'),
     path('plot/group_plots', views.group_plots, name='group_plots'),
     path('plot/group_plots/<str:user>/flare.json', views.group_flare_json, name='group_flare_json'),
-    path('plot/group_plots/<str:user>/intdur.json', views.intdur_json, name='intdur_json'),
-    path('plot/group_plots/<str:user>/volume.json', views.volume_json, name='volume_json'),
-    path('plot/group_plots/<str:user>/interv.json', views.interv_json, name='interv_json')
+    path('plot/group_plots/<str:user>/intdur.json', views.group_intdur_json, name='intdur_json'),
+    path('plot/group_plots/<str:user>/volume.json', views.group_volume_json, name='volume_json'),
+    path('plot/group_plots/<str:user>/interv.json', views.group_interv_json, name='interv_json'),
+    path('plot/group_plots/<str:user>/speak.json', views.group_speak_json, name='interv_json'),
+    path('plot/group_plots/<str:user>/summary.json', views.group_summary_json, name='summary_json')
 ]
 
 if settings.DEBUG:

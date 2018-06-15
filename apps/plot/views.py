@@ -211,7 +211,7 @@ def group_flare_json(request, user):
 	return HttpResponse(status=404)
 
 @login_required(redirect_field_name='login')
-def intdur_json(request, user):
+def group_intdur_json(request, user):
 	print(user, request.user)
 	if user == str(request.user):
 		global data
@@ -222,7 +222,7 @@ def intdur_json(request, user):
 	return HttpResponse(status=404)
 
 @login_required(redirect_field_name='login')
-def interv_json(request, user):
+def group_interv_json(request, user):
 	print(user, request.user)
 	if user == str(request.user):
 		global data
@@ -233,7 +233,7 @@ def interv_json(request, user):
 	return HttpResponse(status=404)
 
 @login_required(redirect_field_name='login')
-def volume_json(request, user):
+def group_volume_json(request, user):
 	print(user, request.user)
 	if user == str(request.user):
 		global data
@@ -243,5 +243,26 @@ def volume_json(request, user):
 		return HttpResponse(data_plot)
 	return HttpResponse(status=404)
 
+@login_required(redirect_field_name='login')
+def group_speak_json(request, user):
+	print(user, request.user)
+	if user == str(request.user):
+		global data
+		data_plot = json.loads(data)
+		#print("data plot",data)
+		data_plot = json.dumps(data_plot['treemap_speak'])
+		return HttpResponse(data_plot)
+	return HttpResponse(status=404)
+
+@login_required(redirect_field_name='login')
+def group_summary_json(request, user):
+	print(user, request.user)
+	if user == str(request.user):
+		global data
+		data_plot = json.loads(data)
+		#print("data plot",data)
+		data_plot = json.dumps(data_plot['summary'])
+		return HttpResponse(data_plot)
+	return HttpResponse(status=404)
 
 

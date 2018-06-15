@@ -29,6 +29,7 @@ function lineGraph(data, color, labels){
 }
 
 function barGraph(data, color, labels){
+  console.log("en barGraph  ")
   morris = Morris.Bar({
     element: 'graph',
     data: data,
@@ -37,7 +38,7 @@ function barGraph(data, color, labels){
     labels: labels,
     barColors: color,
     resize: true,
-    redraw: true,
+    redraw: false,
   });
 }
 

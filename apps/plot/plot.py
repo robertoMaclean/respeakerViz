@@ -87,6 +87,10 @@ class Plot(object):
 			fieldnames = ['Emisor','Segundo voz activa']
 			writer_interv = csv.DictWriter(file_interv, fieldnames=fieldnames, delimiter=";")
 			writer_interv.writeheader()
+			file_volume = open(self.__outputPath+'intensidad.csv', 'w', newline="\n")
+			fieldnames = ['Emisor','Intensidad']
+			writer_volume = csv.DictWriter(file_volume, fieldnames=fieldnames, delimiter=";")
+			writer_volume.writeheader()
 		#file.write('Usuario 1;Usuario 2;Cantidad relaciones\n')
 		for row in reader:
 			#self.__usersVolFrame[int(row['direction'])].append((row['amplitude'],row['seconds']))
@@ -103,6 +107,8 @@ class Plot(object):
 						prom = sum(volProm)/len(volProm)
 						usersVolProm[int(row['direction'])][0].append(prom)
 						usersVolProm[int(row['direction'])][1].append(row['seconds'])
+						if(self.__plot_user_speak):
+								writer_volume.writerow({'Emisor':row['direction'],'Intensidad':"{0:.2f}".format(prom)})
 						#self.__volPromInterv[lastPosition].append((prom,row['seconds']))
 						volProm = []
 						interTimes[lastPosition].append(timeActivity)
@@ -128,6 +134,7 @@ class Plot(object):
 		if(self.__plot_user_speak):
 			file.close()
 			file_interv.close()
+			file_volume.close()
 		interTimes[lastPosition].append(timeActivity)
 		for i in range(silence):
 			self.__activityContinuos[lastPosition].pop()

@@ -223,6 +223,14 @@ def FillJsonGroups(groups):
 			'name': 'grupos',
 			'children': []
 		},
+		'treemap_speak': {
+			'name': 'grupos',
+			'children': []
+		},
+		'summary': {
+			'name': 'Grupos',
+			'children': []
+		},
 		'groupsSpeakTime': [],
 		'groupsIntervTime': [],
 		'groupsInterv': [],
@@ -238,29 +246,43 @@ def FillJsonGroups(groups):
 		data['d3']['children'].append(group['d3'])
 		group_name = group['d3']['name']
 		group_speak_time = float(group['usersTime'][0]['y'])+float(group['usersTime'][1]['y'])+float(group['usersTime'][2]['y'])+float(group['usersTime'][3]['y'])
-		data['groupsSpeakTime'].append({'x':group_name,'y':'{0:.2f}'.format(group_speak_time)})
 		data['treemap_intdur']['children'].append({'name':group_name, 'children':[]})
-		data['treemap_intdur']['children'][-1]['children'].append({'name':'Duración Intervención', 'children': []})
 		data['treemap_volume']['children'].append({'name':group_name, 'children':[]})	
-		data['treemap_volume']['children'][-1]['children'].append({'name':'Volumen', 'children': []})
 		data['treemap_interv']['children'].append({'name':group_name, 'children':[]})	
-		data['treemap_interv']['children'][-1]['children'].append({'name':'Intervención', 'children': []})
+		data['treemap_speak']['children'].append({'name':group_name, 'children':[]})
+		data['treemap_speak']['children'].append({'name':group_name, 'children':[]})
+		data['summary']['children'].append({'name':group_name, 'children':[]})
+		data['summary']['children'][-1]['children'].append({'name':'Duración intervenciones', 'children': []})
+		data['summary']['children'][-1]['children'].append({'name':'Intervenciones', 'children': []})
+		data['summary']['children'][-1]['children'].append({'name':'Intensidad intervenciones', 'children': []})
+		data['summary']['children'][-1]['children'].append({'name':'Intensidad', 'children': []})
+		data['summary']['children'][-1]['children'].append({'name':'Duración  habla', 'children': []})
 		user_pos = 1
 		intdur_sum = 0
 		interv_sum = 0
 		induruser_sum = 0
 		volsum = 0
 		for i in range(len(group['usersIntDur'])):
+			data['summary']['children'][-1]['children'][0]['children'].append({'name':group['usersVolAVG'][i]['x'], 'children': []})
+			data['summary']['children'][-1]['children'][1]['children'].append({'name':group['usersVolAVG'][i]['x'], 'children': []})
+			data['summary']['children'][-1]['children'][2]['children'].append({'name':group['usersVolAVG'][i]['x'], 'children': []})
+			data['summary']['children'][-1]['children'][3]['children'].append({'name':group['usersVolAVG'][i]['x'], 'children': []})
 			for intdur in group['usersIntDur'][i]:
 					induruser_sum += float(intdur['y'])
+					data['summary']['children'][-1]['children'][0]['children'][-1]['children'].append({'name':intdur['y']})
+			for intensity in group['usersVol'][i]:
+					data['summary']['children'][-1]['children'][2]['children'][-1]['children'].append({'name':intensity['y']})
 			intdur_sum += induruser_sum
 			interv_sum += len(group['usersIntDur'][i])
-			data['treemap_intdur']['children'][-1]['children'][-1]['children'].append({'name':group_name+group['usersVolAVG'][i]['x']+'Duración: '+'{0:.2f}'.format(induruser_sum), 'size':'{0:.2f}'.format(induruser_sum)})
-			data['treemap_volume']['children'][-1]['children'][-1]['children'].append({'name':group_name+group['usersVolAVG'][i]['x']+'Intensidad: '+group['usersVolAVG'][i]['y'], 'size':'{0:.2f}'.format(float(group['usersVolAVG'][i]['y']))})
-			data['treemap_interv']['children'][-1]['children'][-1]['children'].append({'name':group_name+group['usersVolAVG'][i]['x']+'Intervenciones: '+str(len(group['usersIntDur'][i])), 'size':'{0:.2f}'.format(induruser_sum)})
+			data['treemap_intdur']['children'][-1]['children'].append({'name':group_name+group['usersVolAVG'][i]['x']+'Duración: '+'{0:.2f}'.format(induruser_sum), 'size':'{0:.2f}'.format(induruser_sum)})
+			data['treemap_volume']['children'][-1]['children'].append({'name':group_name+group['usersVolAVG'][i]['x']+'Intensidad: '+group['usersVolAVG'][i]['y'], 'size':'{0:.2f}'.format(float(group['usersVolAVG'][i]['y']))})
+			data['treemap_interv']['children'][-1]['children'].append({'name':group_name+group['usersVolAVG'][i]['x']+'Intervenciones: '+str(len(group['usersIntDur'][i])), 'size':'{0:.2f}'.format(len(group['usersIntDur'][i]))})
+			data['treemap_speak']['children'][-1]['children'].append({'name':group_name+group['usersVolAVG'][i]['x']+'Tiempo habla: '+str(group['usersTime'][i]['y']), 'size':'{0:.2f}'.format(float(group['usersTime'][i]['y']))})
+			data['summary']['children'][-1]['children'][1]['children'][-1]['children'].append({'name': str(len(group['usersIntDur'][i]))})		
 			user_pos += 1
 			volsum += float(group['usersVolAVG'][i]['y'])
 		volavg = volsum / 4
+		data['groupsSpeakTime'].append({'x':group_name,'y':'{0:.2f}'.format(group_speak_time)})
 		data['groupsIntervTime'].append({'x':group_name, 'y':'{0:.2f}'.format(intdur_sum)})
 		data['groupsInterv'].append({'x':group_name, 'y':str(interv_sum)})
 		data['groupsVolume'].append({'x':group_name, 'y':'{0:.2f}'.format(volavg)})

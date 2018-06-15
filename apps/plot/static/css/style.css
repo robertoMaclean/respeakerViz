@@ -229,7 +229,7 @@ path.link {
 
 svg {
   font: 10px sans-serif;
-  text-anchor: left;
+  text-anchor: left ;
 }
 
 @media print {
@@ -245,6 +245,16 @@ svg {
     top: 0;
   }
 }
+
+.node rect {
+  cursor: pointer;
+  fill: #fff;
+  fill-opacity: 0.5;
+  stroke: #3182bd;
+  stroke-width: 1.5px;
+}
+
+
 
 
 

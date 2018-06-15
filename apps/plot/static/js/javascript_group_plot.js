@@ -74,6 +74,28 @@ function click_buttons() {
         });    
     });
 
+    $('#group_speak').on('click', function(){
+        console.log(data);
+        $.ajax({
+            type: "GET",
+            url: '/plot/group_plots/'+user+'/interv.json',
+            success: function(data) {
+                footer =  '<div class="btn-group">'   
+                footer += '<button type="button" id="users" class="btn btn-default">Usuarios</button>'
+                footer += '<button type="button" id="group" class="btn btn-default">Grupo</button>'
+                footer += '</div>'
+                $('.panel-heading').html('Duración habla')
+                $('.panel-footer').html(footer)
+                speak_click()
+                $('#users').click()
+                console.log('success')
+            },
+            error: function(data) {
+                console.log('error')
+            },
+        });    
+    });
+
 	$('#group_volume').on('click', function(){
 		console.log(data);
 		$.ajax({
@@ -95,6 +117,26 @@ function click_buttons() {
             },
         });    
 	});
+
+    $('#summary').on('click', function(){
+        console.log(data);
+        $.ajax({
+            type: "GET",
+            url: '/plot/group_plots/'+user+'/summary.json',
+            success: function(data) {
+                html = '<svg width="960" height="8000"></svg>'
+                $('.panel-body').html(html)
+                $('.panel-heading').html('Resumen')
+                $('.panel-footer').html('')
+                path = 'group_plots/'+user+'/summary.json'
+                treeCollapsible(path)       
+                console.log('success')
+            },
+            error: function(data) {
+                console.log('error')
+            },
+        });    
+    });
 }
 
 function interv_dur_click() {
@@ -103,6 +145,7 @@ function interv_dur_click() {
         $('.panel-body').html(html)
         path = 'group_plots/'+user+'/intdur.json'
         treemap(path)
+        //nodesGroup(path)
     });
 
     $('#group').on('click', function(){
@@ -142,8 +185,25 @@ function volume_click() {
     $('#group').on('click', function(){
         html = '<div id="graph" class="graph"></div>'
         $('.panel-body').html(html)
-        barGraph(data.groupsIntervTime, ['#c9302c'], ['Segundos'])
+        barGraph(data.groupsVolume, ['#c9302c'], ['Segundos'])
         morris.options.xLabelAngle = 45
         morris.setData(data.groupsVolume)
+    });
+}
+
+function speak_click() {
+    $('#users').on('click', function(){
+        html = '<svg width="960" height="600"></svg>'
+        $('.panel-body').html(html)
+        path = 'group_plots/'+user+'/speak.json'
+        treemap(path)
+    });
+
+    $('#group').on('click', function(){
+        html = '<div id="graph" class="graph"></div>'
+        $('.panel-body').html(html)
+        barGraph(data.groupsSpeakTime, ['#c9302c'], ['Duración'])
+        morris.options.xLabelAngle = 45
+        morris.setData(data.groupsSpeakTime)
     });
 }
