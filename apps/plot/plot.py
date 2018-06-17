@@ -15,7 +15,6 @@ class Plot(object):
 
 	def __init__(self, file, outputPath='media/plot/', plot_user_speak= True):
 		self.__file = file
-		self.__outputPath = os.path.abspath(outputPath)
 		self.__activity = [[],[],[],[]] 			#Each user activity (without silence)
 		self.__activityContinuos = [[],[],[],[]]  	#Each user activity (include silence)
 		self.__time = 0                        		#Activity time
@@ -29,9 +28,11 @@ class Plot(object):
 		self.__usersVolFrame = [[],[],[],[]]
 		self.__usersRelations = [0,0,0,0,0,0,0,0,0,0,0,0]	
 		self.__plot_user_speak = plot_user_speak			
-		functions.ensureDir(outputPath)
+		
 		self.ExtractData()
 		if(plot_user_speak):
+			self.__outputPath = os.path.abspath(outputPath)
+			functions.ensureDir(outputPath)
 			self.UsersSpeak()
 		# self.UsersInteraction()
 		self.SpeakTime()
