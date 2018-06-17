@@ -65,6 +65,10 @@ circle {
   color: blue;
 }
 
+.node.text-left text{
+  text-anchor: start;
+}
+
 .link {
   fill: none;
   stroke: black;
@@ -229,7 +233,6 @@ path.link {
 
 svg {
   font: 10px sans-serif;
-  text-anchor: left ;
 }
 
 @media print {
@@ -253,6 +256,13 @@ svg {
   stroke: #3182bd;
   stroke-width: 1.5px;
 }
+
+.tab {
+  display: inline-block;
+  width: 100px;
+}
+
+
 
 
 

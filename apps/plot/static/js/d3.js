@@ -467,7 +467,7 @@ function treeCollapsible(path){
         .data(nodes, function(d) { return d.id || (d.id = ++i); });
     
     var nodeEnter = node.enter().append("svg:g")
-        .attr("class", "node")
+        .attr("class", "text-left node")
         .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
         .style("opacity", 1e-6);
 
@@ -481,7 +481,7 @@ function treeCollapsible(path){
     
     nodeEnter.append("svg:text")
         .attr("dy", 3.5)
-        .attr("dx", 30)
+        .attr("dx", 8)
         .text(function(d) { return d.name; });
     
     // Transition nodes to their new position.

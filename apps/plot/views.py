@@ -201,7 +201,6 @@ def group_plots(request):
 
 @login_required(redirect_field_name='login')
 def group_flare_json(request, user):
-	print(data)
 	if user == str(request.user):
 		global data
 		data_plot = json.loads(data)
@@ -212,7 +211,6 @@ def group_flare_json(request, user):
 
 @login_required(redirect_field_name='login')
 def group_intdur_json(request, user):
-	print(user, request.user)
 	if user == str(request.user):
 		global data
 		data_plot = json.loads(data)
@@ -223,7 +221,6 @@ def group_intdur_json(request, user):
 
 @login_required(redirect_field_name='login')
 def group_interv_json(request, user):
-	print(user, request.user)
 	if user == str(request.user):
 		global data
 		data_plot = json.loads(data)
@@ -234,7 +231,6 @@ def group_interv_json(request, user):
 
 @login_required(redirect_field_name='login')
 def group_volume_json(request, user):
-	print(user, request.user)
 	if user == str(request.user):
 		global data
 		data_plot = json.loads(data)
@@ -245,7 +241,6 @@ def group_volume_json(request, user):
 
 @login_required(redirect_field_name='login')
 def group_speak_json(request, user):
-	print(user, request.user)
 	if user == str(request.user):
 		global data
 		data_plot = json.loads(data)
@@ -256,7 +251,6 @@ def group_speak_json(request, user):
 
 @login_required(redirect_field_name='login')
 def group_summary_json(request, user):
-	print(user, request.user)
 	if user == str(request.user):
 		global data
 		data_plot = json.loads(data)
