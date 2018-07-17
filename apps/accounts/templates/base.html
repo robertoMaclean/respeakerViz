@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% load static %}
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="{% static '/css/style.css' %}"/>
+	<script type="text/javascript" src="{% static '/js/jquery-3.3.1.min.js' %}"></script>
+	{% load bootstrap3 %}
+	{% bootstrap_css%}
+	{% block head %}
+	{% endblock %}
+  <meta charset="utf-8">
+  <title>{% block title %}Respeaker{% endblock %}</title>
+</head>
+<body>
+    {% block content %}
+    {% endblock %}
+    {# Display django.contrib.messages as Bootstrap alerts #}
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3">
+			{% bootstrap_messages %}
+		</div>
+	</div>
+</body>
+</html>

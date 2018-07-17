@@ -6,32 +6,51 @@ function donutGraph(data){
   morrisDonut = Morris.Donut({
     element: 'donut',
     data: data,
-    colors: ['red', 'blue','green','yellow']
+    formatter: function (value, data) { 
+    return value+' %'; 
+    },
+    colors: ['#c9302c', '#337ab7','#5cb85c','#f0ad4e']
   });
 }
 
-function lineGraph(data){
+function lineGraph(data, color, labels){
   morrisLine = Morris.Line({
     element: 'line',
     parseTime: false,
     data: data,
     xkey: 'y',
     ykeys: ['a','b','c','d'],
-    labels: ['Usuario 1', 'Usuario 2', 'Usuario 3', 'Usuario 4'],
+    labels: labels,
+    lineColors: colors,
     resize: true,
     redraw: true,
-    xLabels: 'seconds'
+    xLabels: 'seconds',
   });
 }
 
-function barGraph(data){
+function barGraph(data, color, labels){
+  console.log("en barGraph  ")
   morris = Morris.Bar({
     element: 'graph',
     data: data,
     xkey: 'x',
     ykeys: ['y'],
-    labels: ['Duración']
+    labels: labels,
+    barColors: color,
+    resize: true,
+    redraw: false,
   });
 }
-  
 
+function barGraph2(data, color, labels){
+  morris2 = Morris.Bar({
+    element: 'graph2',
+    data: data,
+    xkey: 'x',
+    ykeys: ['y'],
+    labels: labels,
+    barColors: color
+  });
+}
+
+  

@@ -1,0 +1,17 @@
+cycler==0.10.0
+decorator==4.3.0
+Django==2.0.4
+django-bootstrap3==9.1.0
+django-crispy-forms==1.7.2
+kiwisolver==1.0.1
+matplotlib==2.2.2
+networkx==2.1
+numpy==1.14.2
+optional-django==0.1.0
+psycopg2==2.7.4
+pyparsing==2.2.0
+python-dateutil==2.7.2
+python-nmap==0.6.1
+pytz==2018.4
+simplejson==3.13.2
+six==1.11.0

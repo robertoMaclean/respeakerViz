@@ -1,0 +1,24 @@
+{% extends "base/base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}
+{{ title }}
+{% endblock %}
+{% block content %}
+<div class="col-sm-6 col-sm-offset-3 mt-10">
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			Suba su archivo CSV para generar las visualizaciones
+		</div>
+		<div class="panel-body" id="login-body">
+			<form method="POST" enctype=multipart/form-data>
+				{% csrf_token %}
+				{{ form|crispy}}		
+		</div>	
+		<div class="panel-footer">
+			<input type="submit" class="btn btn-primary" value='{{ title }}'>
+			</form>
+		</div>
+				
+	</div>		
+</div>
+{% endblock content %}

@@ -2,6 +2,14 @@
 	margin-left: 20px;
 }
 
+.mt-10 {
+  margin-top: 10px;
+}
+
+.mt-20 {
+  margin-top: 10px;
+}
+
 .img-responsive {
     margin: 0 auto;
 }
@@ -19,18 +27,244 @@
 }
 
 circle {
-  fill: rgb(31, 119, 180);
+  fill: rgb(31, 115, 180);
   fill-opacity: .25;
   stroke: rgb(31, 119, 180);
   stroke-width: 1px;
 }
 
-.leaf circle {
+.leaf.node circle {
   fill: #ff7f0e;
+  fill-opacity: 1;
+  stroke: none;
+}
+
+.fill-red {
+  fill: #ac2925;
   fill-opacity: 1;
 }
 
-text {
+.fill-green {
+  fill: #5cb85c;
+  fill-opacity: 1;
+}
+
+.fill-yellow {
+  fill: #eea236;
+  fill-opacity: 1;
+}
+
+.fill-blue {
+  fill: #337ab7;
+  fill-opacity: 1;
+}
+
+.node text {
   font: 10px sans-serif;
   text-anchor: middle;
+  color: blue;
 }
+
+.node.text-left text{
+  text-anchor: start;
+}
+
+.link {
+  fill: none;
+  stroke: black;
+  stroke-opacity: .7;
+}
+
+.axis path,
+.axis line {
+  display: none;
+}
+
+.panel-body {
+  overflow-y: auto;  
+}
+
+#login-body ul {
+  list-style-type: none;
+}
+
+.lateral-title {
+  text-align: center;
+  font-size: 20px;
+  background-color: #333;
+  color: white;
+  padding-bottom: 1px;
+  border-radius: 5px;
+  padding-top: 10px;
+}
+
+path.link {
+  fill: none;
+  stroke: #666;
+}
+
+#myTable {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    width: 100%;
+}
+
+#myTable thead {
+    /* head takes the height it requires, 
+    and it's not scaled when table is resized */
+    flex: 0 0 auto;
+    width: calc(100% - 0.7em);
+    background-color: #212529;
+    color: #fff;
+}
+
+#myTable tbody {
+    /* body takes all the remaining available space */
+    flex: 1 1 auto;
+    display: block;
+    overflow-y: scroll;
+    max-height: 400px;
+}
+
+#myTable tbody tr {
+    width: 100%;
+}
+
+#myTable thead, #myTable tbody tr {
+    display: table;
+    table-layout: fixed;
+}
+
+.width-30 {
+  width: 30px;
+}
+
+.margin-bot-10 {
+  margin-bottom: 10px;
+}
+
+.width-140 {
+  width: 140px;
+}
+
+.table-head {
+  padding: none !important;
+}
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+  overflow-y: none;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.legend > span {
+  display: inline-block;
+  margin-right: 25px;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.legend > span:last-child {
+  margin-right: 0;
+}
+
+.legend > span > i {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-right: 7px;
+  margin-top: -3px;
+  vertical-align: middle;
+  border-radius: 1px;
+}
+
+.red {
+  fill: #ac2925;
+}
+
+.green {
+  fill: #5cb85c;
+}
+
+.yellow {
+  fill: #eea236;
+}
+
+.blue {
+  fill: #337ab7;
+}
+
+.fill-opacity-055 {
+  fill-opacity:  0.55;
+}
+
+.back-red {
+  background-color: rgb(201, 48, 44);
+}
+
+.back-green {
+  background-color: rgb(92, 184, 92);
+}
+
+.back-yellow {
+  background-color: rgb(240, 173, 78);
+}
+
+.back-blue {
+  background-color: rgb(51, 122, 183);
+}
+
+svg {
+  font: 10px sans-serif;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print, .print * {
+    visibility: visible;
+  }
+  .print {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
+
+.node rect {
+  cursor: pointer;
+  fill: #fff;
+  fill-opacity: 0.5;
+  stroke: #3182bd;
+  stroke-width: 1.5px;
+}
+
+.tab {
+  display: inline-block;
+  width: 100px;
+}
+
+
+
+
+
+
+
