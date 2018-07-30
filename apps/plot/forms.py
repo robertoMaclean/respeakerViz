@@ -26,8 +26,12 @@ class FileForm(forms.ModelForm):
 
 	def clean_file(self):
 		file = self.cleaned_data.get('file')
+		file.chunks(4)
+		max_size = 10000000
+		print(file.size)
 		if not file.name.endswith('.csv'):
 			raise forms.ValidationError("El archivo no tiene extensión CSV")
-		if file.multiple_chunks():
+		#if file.multiple_chunks():
+		if file.size > max_size:
 			raise forms.ValidationError("El archivo es muy grande (%.2f MB)." % (file.size/(1000*1000),))
 		return file

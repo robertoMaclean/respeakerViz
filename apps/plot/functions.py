@@ -273,7 +273,7 @@ def FillJsonGroups(groups):
 					fin = '{0:.2f}'.format(float(intdur['x'])+float(intdur['y']))
 					data['summary']['children'][-1]['children'][0]['children'][-1]['children'].append({'name':'Inicio: '+intdur['x']+'  Fin: '+fin+'  Duración: '+intdur['y']})
 			for intensity in group['usersVol'][i]:
-					data['summary']['children'][-1]['children'][2]['children'][-1]['children'].append({'name':'Inicio intervención:'+intensity['x']+'  Intensidad'+intensity['y']+' Decibelios'})
+					data['summary']['children'][-1]['children'][2]['children'][-1]['children'].append({'name':'Inicio intervención:'+intensity['x']+'  Intensidad: '+intensity['y']+' Decibelios'})
 			intdur_sum += induruser_sum
 			interv_sum += len(group['usersIntDur'][i])
 			data['treemap_intdur']['children'][-1]['children'].append({'name':group_name+group['usersVolAVG'][i]['x']+'Duración: '+'{0:.2f}'.format(induruser_sum), 'size':'{0:.2f}'.format(induruser_sum)})

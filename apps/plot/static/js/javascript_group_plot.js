@@ -1,5 +1,6 @@
 $( document ).ready(function() {
     click_buttons()
+    $('#users_interv_buble').click()
     //console.log(data)
     //transform_users_time()
     //$('#users_interaction').click()
@@ -13,6 +14,7 @@ function active_nav_li(){
 function click_buttons() {
 	$('#users_interv_buble').on('click', function(){
 		console.log(data);
+        console.log(user)
 		$.ajax({
             type: "GET",
             url: '/plot/group_plots/'+user+'/flare.json',

@@ -16,24 +16,7 @@ function transform_users_time(){
     users_time = [data.usersTime[0]['y']/max, data.usersTime[1]['y']/max, data.usersTime[2]['y']/max, data.usersTime[3]['y']/max]
 }
 function click_buttons(){
-	// $('#users_interaction').on('click', function(){
- //        $.ajax({
- //            type: "GET",
- //            url: '/plot/interactions',
- //            success: function(data) {
- //                footer = '<div>'
- //                footer += '<a type="link" id="download_csv" href="/media/plot/relaciones.csv" class="btn btn-primary">Descargar datos</a>'
- //            	footer += '</div>'
- //                $('.panel-body').html(data)
- //            	$('.panel-heading').html('Interacción entre participantes')
- //            	$('.panel-footer').html(footer)
- //            	console.log('success')
- //            },
- //            error: function(data) {
- //                console.log('error')
- //            },
- //        });
- //    });
+    
 
     $('#users_interv').on('click', function(){
         html = '<div id="graph" class="graph"></div>'
@@ -347,27 +330,16 @@ function click_buttons(){
                 html += '</div>'
                 html += '</div>'
                 html += '</div>'
-                              
-            //       <tbody>
-            //         {% for file in user_files %}
-            //             <tr>
-            //               <td class="width-30"><input type="checkbox" id="checkbox"/></td>
-            //               <td id="name">{{file.name}}</td>
-            //               <td>{{file.created_date}}</td>
-            //               <td><a type="button" class="btn btn-info btn-sm glyphicon glyphicon-eye-open" href="/plot/show_graphs/{{file.file}}"></a>
-            //               <a type="button" id="delete" class="btn btn-danger btn-sm glyphicon glyphicon-remove" "></a></td>
-            //             </tr>
-            //         {% endfor %}                 
-            //       </tbody>
-            //     </table>
-            // </div>'
-
                 footer = "<a type='link' id='download_csv' href='/media/plot/"+user+"relaciones.csv' class='btn btn-primary'>Descargar datos</a>"
                 $('.panel-body').html(html)
                 $('.panel-heading').html('Interacción entre usuarios')
                 $('.panel-footer').html(footer)
                 nodes()
-                swal.close();
+                $('#png').on('click', function(){
+                    console.log("holaa")
+                    addListener()
+                })
+                swal.close()
                 console.log('success')
             },
             error: function(data) {
@@ -415,7 +387,6 @@ function click_buttons(){
         array_concat.sort(function(a, b){return a['x'] - b['x']});  
         barGraph(array_concat, func_times, ['Decibelios'])
         user_vol_frame_buttons()
-        //$('#vol_frame_silence').click()
         legendItem =  '<span><i class="back-red"> </i>Usuario 1</span>'
         legendItem += '<span><i class="back-blue"> </i>Usuario 2</span>'
         legendItem += '<span><i class="back-green"> </i>Usuario 3</span>'
@@ -546,7 +517,6 @@ function click_buttons(){
                 }
 
     	$('#user1').on('click', function(){
-           /*$('.loader').show()*/
            morris.options.barColors = ["#c9302c"]
     	   morris.setData(data.usersIntDur[0])
            $('.panel').show()
@@ -654,5 +624,12 @@ function get_sum(array) {
 function getSum(total, num) {
     return total + num;
 }
+
+
+
+
+
+
+
 
     
