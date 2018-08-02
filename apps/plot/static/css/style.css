@@ -262,7 +262,9 @@ svg {
   width: 100px;
 }
 
-
+.navbar {
+    border-radius: 0px;
+}
 
 
 

@@ -16,70 +16,7 @@ function transform_users_time(){
     users_time = [data.usersTime[0]['y']/max, data.usersTime[1]['y']/max, data.usersTime[2]['y']/max, data.usersTime[3]['y']/max]
 }
 function click_buttons(){
-    
 
-    $('#users_interv').on('click', function(){
-        html = '<div id="graph" class="graph"></div>'
-        html += '<div id="graph2" class="graph"></div>'
-        $('.panel-body').html(html)
-        $('.panel-heading').html('Intensidad promedio de cada intervención')
-        $('.panel-footer').html('')
-
-        contador = [0,0,0,0]
-        func_times = function (row, series, type) {
-            /*console.log("--> "+row.label, series, type);*/            
-            if((contador[0]<data.usersActivity[0].length)&&row.label == String(data.usersActivity[0][contador[0]]['x'])){
-                contador[0] += 1
-                return "#c9302c";
-            } 
-            else if((contador[1]<data.usersActivity[1].length)&&row.label == String(data.usersActivity[1][contador[1]]['x'])){
-                contador[1] += 1
-                return "#337ab7";
-            } 
-            else if((contador[2]<data.usersActivity[2].length)&&row.label == String(data.usersActivity[2][contador[2]]['x'])){
-                contador[2] += 1
-                return "#5cb85c";
-            } 
-            else if((contador[3]<data.usersActivity[3].length)&&row.label == String(data.usersActivity[3][contador[3]]['x'])){
-                contador[3] += 1
-                return "#f0ad4e";
-            } 
-        }
-        /*morris.options.barColors = func_times*/
-        var array_concat = data.usersActivity[0].concat(data.usersActivity[1], data.usersActivity[2], data.usersActivity[3])
-        array_concat.sort(function(a, b){return a['x'] - b['x']});
-        /*morris.setData(array_concat)*/
-        barGraph(array_concat, func_times, ['Segundos'])
-        
-        contador = [0,0,0,0]
-        func_times2 = function (row, series, type) {
-            /*console.log("--> "+row.label, series, type);*/            
-            if((contador[0]<data.usersActivityContinuos[0].length)&&row.label == String(data.usersActivityContinuos[0][contador[0]]['x'])){
-                contador[0] += 1
-                return "#c9302c";
-            } 
-            else if((contador[1]<data.usersActivityContinuos[1].length)&&row.label == String(data.usersActivityContinuos[1][contador[1]]['x'])){
-                contador[1] += 1
-                return "#337ab7";
-            } 
-            else if((contador[2]<data.usersActivityContinuos[2].length)&&row.label == String(data.usersActivityContinuos[2][contador[2]]['x'])){
-                contador[2] += 1
-                return "#5cb85c";
-            } 
-            else if((contador[3]<data.usersActivityContinuos[3].length)&&row.label == String(data.usersActivityContinuos[3][contador[3]]['x'])){
-                contador[3] += 1
-                return "#f0ad4e";
-            } 
-        }
-        /*morris.options.barColors = func_times2*/
-        /*var array_concat = data.usersActivityContinuos[0].concat(data.usersActivityContinuos[1], data.usersActivityContinuos[2], data.usersActivityContinuos[3])
-        array_concat.sort(function(a, b){return a['x'] - b['x']});
-        console.log(array_concat)
-        barGraph2(array_concat, func_times2, ['Segundos'])*/
-        /*morris.setData(array_concat)*/
-        console.log('success')
-    });
-    
     $('#users_speak').on('click', function(){
         swal.showLoading();
         html = '<div class="table-responsive">'
@@ -88,6 +25,7 @@ function click_buttons(){
         html += '</div>' 
         html += '</div>'
         footer = "<a type='link' id='download_csv' href='/media/plot/"+user+"intervenciones.csv' class='btn btn-primary'>Descargar datos</a>"
+        footer += '<button class="btn btn-default" id="btnSave">Descargar imagen</button>'
         $.ajax({
             type: "GET",
             url: '/plot/interv',
@@ -96,6 +34,7 @@ function click_buttons(){
             	$('.panel-body').html(data)
             	$('.panel-heading').html('Intervenciones en el tiempo')
             	$('.panel-footer').html(footer)
+                dowloadPanelBody('usersSpeak')
                 swal.close();
                 console.log('success')
                 //$('.panel').show()
@@ -113,9 +52,10 @@ function click_buttons(){
         swal.showLoading();
         html = '<div id="graph" class="graph"></div>'
         html += '<div id="donut" class="graph"></div>'
+        footer = '<button class="btn btn-default" id="btnSave">Descargar imagen</button>'
         $('.panel-body').html(html)
         $('.panel-heading').html('Tiempo total de habla por participante')
-        $('.panel-footer').html('')
+        $('.panel-footer').html(footer)
         /*var json = JSON.parse(data.data)*/
         /*console.log(json)*/
         console.log(data)
@@ -127,6 +67,7 @@ function click_buttons(){
         }
         barGraph(data.usersTime, colors, ['Segundos'])
         donutGraph(data.usersSpeakTimePercent)
+        dowloadPanelBody('usersTotalTime')
         swal.close();
 
         /*morrisDonut.options.data.forEach(function(label, i){
@@ -148,6 +89,7 @@ function click_buttons(){
     	footer += '<button type="button" id="user3" class="btn btn-success">Usuario 3</button>'
     	footer += '<button type="button" id="user4" class="btn btn-warning">Usuario 4</button>'
         footer += '<button type="button" id="total" class="btn btn-default">Total</button>'
+        footer += '<button class="btn btn-default" id="btnSave">Descargar imagen</button>'
         footer += '</div>'
         html = '<div id="graph" class="graph"></div>' 
         $('.panel-body').html(html)
@@ -156,6 +98,7 @@ function click_buttons(){
         click_buttons_interv_time()
         barGraph(data.usersIntDur[0], '#c9302c', ['Segundos'])
         $("#general").click()
+        dowloadPanelBody('usersIntervInTime')
         swal.close();
         console.log('success')
     	/*$.ajax({
@@ -183,9 +126,10 @@ function click_buttons(){
         swal.showLoading();
         html = '<div id="line" class="graph"></div>'
         html += '<div id="legend" class="legend col-md-offset-3"></div>'
+        footer = '<button class="btn btn-default" id="btnSave">Descargar imagen</button>'
         $('.panel-body').html(html)
         $('.panel-heading').html('Intervenciones a traves del tiempo')
-        $('.panel-footer').html('')
+        $('.panel-footer').html(footer)
         labels = ['Usuario 1', 'Usuario 2', 'Usuario 3', 'Usuario 4']
         colors =  ['#c9302c', '#337ab7','#5cb85c','#f0ad4e']
         lineGraph(data.userIntInTime, colors, labels)
@@ -195,6 +139,7 @@ function click_buttons(){
         legendItem.find('i').css('backgroundColor', morrisLine.options.lineColors[i])
         $('#legend').append(legendItem)
         });
+        dowloadPanelBody('usersIntervAccum')
         swal.close();
         /*$.ajax({
             type: "GET",
@@ -225,6 +170,7 @@ function click_buttons(){
         footer += '<button type="button" id="user3" class="btn btn-success">Usuario 3</button>'
         footer += '<button type="button" id="user4" class="btn btn-warning">Usuario 4</button>'
         footer += '<button type="button" id="total" class="btn btn-defaul">Total</button>'
+        footer += '<button class="btn btn-default" id="btnSave">Descargar imagen</button>'
         footer += '</div>' 
         html = '<div id="graph" class="graph"></div>'
         $('.panel-body').html(html)
@@ -235,6 +181,7 @@ function click_buttons(){
         click_buttons_users_vol()
         barGraph(data.usersVol[0], ['#c9302c'], ['Decibelios'])
         $("#vol_in_time").click()
+        dowloadPanelBody('usersIntensity')
         swal.close();
         console.log('success')
         /*$.ajax({
@@ -266,15 +213,17 @@ function click_buttons(){
             success: function(data) {
                 html = '<div id="legend" class="legend col-md-offset-3"></div>'
                 html += '<svg width="960" height="960"></svg>'
+                footer = '<button class="btn btn-default" id="btnSave">Descargar imagen</button>'
                 $('.panel-body').html(html)
                 $('.panel-heading').html('Agrupación de intervenciones por usuario')
-                $('.panel-footer').html('')
+                $('.panel-footer').html(footer)
                 legendItem =  '<span><i class="back-red"> </i>Usuario 1</span>'
                 legendItem += '<span><i class="back-blue"> </i>Usuario 2</span>'
                 legendItem += '<span><i class="back-green"> </i>Usuario 3</span>'
                 legendItem += '<span><i class="back-yellow"> </i>Usuario 4</span>'   
                 $('#legend').append(legendItem)
                 buble()
+                downloadImg('usersIntervBuble')
                 swal.close();
                 console.log('success')
             },
@@ -289,6 +238,8 @@ function click_buttons(){
         /*$('.panel').hide()*/ 
         /*$('.loader').show()*/
         swal.showLoading();
+        footer = '<button class="btn btn-default" id="btnSave">Descargar imagen</button>'
+
         $.ajax({
             type: "GET",
             url: '/plot/'+user+'/relations',
@@ -296,9 +247,10 @@ function click_buttons(){
                 html = '<svg></svg>'
                 $('.panel-body').html(html)
                 $('.panel-heading').html('Relación entre intervenciones')
-                $('.panel-footer').html('')
+                $('.panel-footer').html(footer)
                 /*var json = JSON.parse(data)*/
                 relations()
+                downloadImg('usersIntervSeq')
                 swal.close();
                 /*console.log(json)*/
                 console.log('success')
@@ -329,16 +281,15 @@ function click_buttons(){
                 html += '<strong>Información!</strong> El tamaño del nodo es proporcional a la duración de habla del participante durante el evento.</div>'
                 html += '</div>'
                 html += '</div>'
+                html += '<div id="img-out"></div>'
                 html += '</div>'
                 footer = "<a type='link' id='download_csv' href='/media/plot/"+user+"relaciones.csv' class='btn btn-primary'>Descargar datos</a>"
+                footer += '<button class="btn btn-default" id="btnSave">Descargar imagen</button>'
                 $('.panel-body').html(html)
                 $('.panel-heading').html('Interacción entre usuarios')
                 $('.panel-footer').html(footer)
+                downloadImg('users_interaction')
                 nodes()
-                $('#png').on('click', function(){
-                    console.log("holaa")
-                    addListener()
-                })
                 swal.close()
                 console.log('success')
             },
@@ -356,6 +307,7 @@ function click_buttons(){
         footer += '<button type="button" id="vol_frame_silence" class="btn">Con silencio</button>'
         footer += '<button type="button" id="vol_frame" class="btn">Sin silencio</button>'
         footer += "<a type='link' id='download_csv' href='/media/plot/"+user+"Intensidad.csv' class='btn btn-primary'>Descargar datos</a>"
+        footer += '<button class="btn btn-default" id="btnSave">Descargar imagen</button>'
         footer += '</div>'
         console.log("click")
         html = '<div id="graph" class="graph"></div>'
@@ -392,6 +344,7 @@ function click_buttons(){
         legendItem += '<span><i class="back-green"> </i>Usuario 3</span>'
         legendItem += '<span><i class="back-yellow"> </i>Usuario 4</span>'   
         $('#legend').append(legendItem)
+        downloadImg('users_interaction')
         swal.close()
         
         /*$('.loader').hide()*/
@@ -421,8 +374,6 @@ function click_buttons(){
         $('.panel-heading').html('Resumen actividad')
         $('.panel-footer').html('')
         swal.close();
-
-
     });
 
     function user_vol_frame_buttons() {
@@ -610,7 +561,7 @@ function click_buttons(){
             morris.options.barColors = func_users
             morris.setData(data.usersVolAVG)
         });
-    }
+    }   
 }
 
 function get_sum(array) {
@@ -625,7 +576,23 @@ function getSum(total, num) {
     return total + num;
 }
 
+function downloadImg(name){
+    $("#btnSave").click(function() {  
+        saveSvgAsPng($("svg")[0], name+".png", {backgroundColor: 'white'});      
+    });
+}
 
+function dowloadPanelBody(name){
+    $("#btnSave").click(function() { 
+        html2canvas($(".panel-body")[0]).then(function(canvas) {
+            var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");  // here is the most important part because if you dont replace you will get a DOM 18 exception.
+            var a = document.createElement('a');
+            a.href = image;
+            a.download = name+'.png';
+            a.click();
+        });
+    });
+}
 
 
 

@@ -10,7 +10,7 @@ $( document ).ready(function() {
       var filename = $(this).closest("tr")   // Finds the closest row <tr> 
                        .find(".name")     // Gets a descendent with class="nr"
                        .text();
-      delete_one(filename)
+      delete_one(filename);
     });
     $("#group-analyze").on("click", function() {
         swal.showLoading();

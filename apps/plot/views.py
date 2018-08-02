@@ -189,7 +189,7 @@ def group_plots(request):
 			f.close()
 		request.session['data_plot_groups'] = json.dumps(functions.FillJsonGroups(data))
 		return HttpResponse(request.session['data_plot_groups'])
-	return render(request, 'plot/group_plot.html', {"data":data})
+	return render(request, 'plot/group_plot.html', {"data":request.session['data_plot_groups']})
 
 @login_required(redirect_field_name='login')
 def group_flare_json(request, user):

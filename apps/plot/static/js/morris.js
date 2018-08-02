@@ -18,6 +18,7 @@ function lineGraph(data, color, labels){
     element: 'line',
     parseTime: false,
     data: data,
+    pointSize: 0,
     xkey: 'y',
     ykeys: ['a','b','c','d'],
     labels: labels,
@@ -29,7 +30,7 @@ function lineGraph(data, color, labels){
 }
 
 function barGraph(data, color, labels){
-  console.log("en barGraph  ")
+  console.log("en barGraph")
   morris = Morris.Bar({
     element: 'graph',
     data: data,
