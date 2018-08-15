@@ -58,7 +58,7 @@ def FillJson(obj, group):
 			time = "{0:.2f}".format(users[interv][-1]-users[interv][0])	
 			start = "{0:.2f}".format(users[interv][0])	
 			data['usersIntDur'][user_num].append({'x':start,'y':time})
-			data['d3']['children'][user_num]['children'].append({"name": str(users[interv][0])+"-"+str(users[interv][-1]), "size":time})
+			data['d3']['children'][user_num]['children'].append({"name": '{0:.2f}'.format(users[interv][-1]-users[interv][0]), "size":time})
 		user_num += 1
 	a=b=c=d=0
 	data['userIntInTime'].append({'y':0,'a':a, 'b':b, 'c':c, 'd':d})	

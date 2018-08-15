@@ -156,7 +156,10 @@ class Plot(object):
 			total_vol = 0
 			for prom, time in x: 
 				total_vol += prom
-			self.__usersVol.append(total_vol/len(x))
+			if(len(x)>0):
+				self.__usersVol.append(total_vol/len(x))
+			else:
+				self.__usersVol.append(0)
 		user = 0
 		vol_array = np.array(usersVol[0][0]+usersVol[1][0]+usersVol[2][0]+usersVol[3][0])
 		rms = np.amax(vol_array)
