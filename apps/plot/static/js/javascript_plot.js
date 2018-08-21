@@ -13,8 +13,13 @@ function active_nav_li(){
 
 function transform_users_time(){
     max = Math.max(data.usersTime[0]['y'], data.usersTime[1]['y'], data.usersTime[2]['y'], data.usersTime[3]['y'])
+    sum = parseFloat(data.usersTime[0]['y']) + parseFloat(data.usersTime[1]['y']) + parseFloat(data.usersTime[2]['y']) + parseFloat(data.usersTime[3]['y'])
+    console.log(sum)
+    console.log(data.usersTime[0]['y'])
     users_time = [data.usersTime[0]['y']/max, data.usersTime[1]['y']/max, data.usersTime[2]['y']/max, data.usersTime[3]['y']/max]
-}
+    users_time_percent = [Math.round((parseFloat(data.usersTime[0]['y'])/sum)*100),Math.round((parseFloat(data.usersTime[1]['y'])/sum)*100),Math.round((parseFloat(data.usersTime[2]['y'])/sum)*100),Math.round((parseFloat(data.usersTime[3]['y'])/sum)*100)]
+    console.log(users_time_percent)
+}   
 function click_buttons(){
 
     $('#users_speak').on('click', function(){
@@ -83,13 +88,17 @@ function click_buttons(){
         /*$('.loader').show()*/ 
         swal.showLoading();
         footer ='<div class="btn-group">'	
-    	footer += '<button type="button" id="general" class="btn">General</button>'
         footer += '<button type="button" id="user1" class="btn btn-danger">Usuario 1</button>'
     	footer += '<button type="button" id="user2" class="btn btn-primary">Usuario 2</button>'
     	footer += '<button type="button" id="user3" class="btn btn-success">Usuario 3</button>'
     	footer += '<button type="button" id="user4" class="btn btn-warning">Usuario 4</button>'
+        footer += '</div>'
+        footer += '<div class="mt-10">'
+        footer +='<div class="btn-group">'
+        footer += '<button type="button" id="general" class="btn btn-default">General</button>'
         footer += '<button type="button" id="total" class="btn btn-default">Total</button>'
         footer += '<button class="btn btn-default" id="btnSave">Descargar imagen</button>'
+        footer += '</div>'
         footer += '</div>'
         html = '<div id="graph" class="graph"></div>' 
         $('.panel-body').html(html)
@@ -164,13 +173,17 @@ function click_buttons(){
         /*$('.loader').show()*/
         swal.showLoading();
         footer ='<div class="btn-group">'
-        footer += '<button type="button" id="vol_in_time" class="btn">General</button>'
         footer += '<button type="button" id="user1" class="btn btn-danger">Usuario 1</button>'
         footer += '<button type="button" id="user2" class="btn btn-primary">Usuario 2</button>'
         footer += '<button type="button" id="user3" class="btn btn-success">Usuario 3</button>'
         footer += '<button type="button" id="user4" class="btn btn-warning">Usuario 4</button>'
-        footer += '<button type="button" id="total" class="btn btn-defaul">Total</button>'
+        footer += '</div>' 
+        footer += '<div class="mt-10">'
+        footer +='<div class="btn-group">'
+        footer += '<button type="button" id="vol_in_time" class="btn btn-default">General</button>'
+        footer += '<button type="button" id="total" class="btn btn-default">Total</button>'
         footer += '<button class="btn btn-default" id="btnSave">Descargar imagen</button>'
+        footer += '</div>' 
         footer += '</div>' 
         html = '<div id="graph" class="graph"></div>'
         $('.panel-body').html(html)
@@ -304,12 +317,13 @@ function click_buttons(){
        /*$('.loader').show()*/
         swal.showLoading();
         footer =  '<div class="btn-group">'
-        footer += '<button type="button" id="vol_frame_silence" class="btn">Con silencio</button>'
-        footer += '<button type="button" id="vol_frame" class="btn">Sin silencio</button>'
+        footer += '<button type="button" id="vol_frame_silence" class="btn btn-default">Con silencio</button>'
+        footer += '<button type="button" id="vol_frame" class="btn btn-default">Sin silencio</button>'
+        footer += '</div>'
+        footer +='<div class="btn-group margin-left-20">'
         footer += "<a type='link' id='download_csv' href='/media/plot/"+user+"Intensidad.csv' class='btn btn-primary'>Descargar datos</a>"
         footer += '<button class="btn btn-default" id="btnSave">Descargar imagen</button>'
         footer += '</div>'
-        console.log("click")
         html = '<div id="graph" class="graph"></div>'
         html += '<div id="legend" class="legend col-md-offset-3"></div>'
         $('.panel-body').html(html)

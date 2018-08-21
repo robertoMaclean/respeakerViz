@@ -45,6 +45,10 @@ def plot(request):
 	return render(request, 'plot/plot.html',{"data":data_plot, "user":request.user})
 
 @login_required(redirect_field_name='login')
+def info(request):	
+	return render(request, 'plot/info.html')
+
+@login_required(redirect_field_name='login')
 def interactions(request):
 	html = '<img class="img-responsive" id="plot_img" src="../media/plot/'+str(request.user)+'users_interaction.png" />'
 	return HttpResponse(html)

@@ -7,7 +7,7 @@ function donutGraph(data){
     element: 'donut',
     data: data,
     formatter: function (value, data) { 
-    return value+' %'; 
+    return Math.round(value)+' %'; 
     },
     colors: ['#c9302c', '#337ab7','#5cb85c','#f0ad4e']
   });

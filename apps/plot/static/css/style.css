@@ -266,6 +266,9 @@ svg {
     border-radius: 0px;
 }
 
-
+#sidebar {
+  position: fixed;
+  width:200px;
+}
 
 

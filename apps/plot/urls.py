@@ -9,6 +9,7 @@ from apps.accounts import views as accounts_views
 urlpatterns = [
     # path('', views.index, name='upload_file'),
     path('', views.save_file, name='save_file'),
+    path('info', views.info, name='info'),
     path('plot/', views.plot, name='plot'),
     path('plot/interactions', views.interactions, name='interactions'),
     path('plot/interv', views.interv, name='interv'),
