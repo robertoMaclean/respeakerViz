@@ -195,7 +195,12 @@ function nodes(){
   node.append("text")
       .attr("x", 12)
       .attr("dy", function(d) {return -40})
-      .text(function(d) { return d.name; });
+      .text(function(d) {
+        if(d.name == "Usuario 1") return d.name+' ('+users_time_percent[0] + '%)'; 
+        else if(d.name == "Usuario 2") return d.name+' ('+users_time_percent[1] + '%)'; 
+        else if(d.name == "Usuario 3") return d.name+' ('+users_time_percent[2] + '%)'; 
+        else return d.name+' ('+users_time_percent[3] + '%)'; 
+      });
 
   // add the curvy lines
   function tick() {

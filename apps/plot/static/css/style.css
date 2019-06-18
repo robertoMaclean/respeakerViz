@@ -262,9 +262,13 @@ svg {
   width: 100px;
 }
 
+.navbar {
+    border-radius: 0px;
+}
 
-
-
-
+#sidebar {
+  position: fixed;
+  width:200px;
+}
 
 

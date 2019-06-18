@@ -4,7 +4,6 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-import networkx as nx
 from io import StringIO
 import os
 import apps.plot.functions as functions
@@ -28,10 +27,9 @@ class Plot(object):
 		self.__usersVolFrame = [[],[],[],[]]
 		self.__usersRelations = [0,0,0,0,0,0,0,0,0,0,0,0]	
 		self.__plot_user_speak = plot_user_speak			
-		
+		self.__outputPath = os.path.abspath(outputPath)
 		self.ExtractData()
 		if(plot_user_speak):
-			self.__outputPath = os.path.abspath(outputPath)
 			functions.ensureDir(outputPath)
 			self.UsersSpeak()
 		# self.UsersInteraction()
@@ -95,43 +93,44 @@ class Plot(object):
 		#file.write('Usuario 1;Usuario 2;Cantidad relaciones\n')
 		for row in reader:
 			#self.__usersVolFrame[int(row['direction'])].append((row['amplitude'],row['seconds']))
-			usersVol[int(row['direction'])][0].append(float(row['amplitude']))
-			usersVol[int(row['direction'])][1].append(row['seconds'])
-			if int(row['speak']):
-				if(self.__plot_user_speak):
-					writer_interv.writerow({'Emisor':row['direction'],'Segundo voz activa':row['seconds']})
-				#print("direccion:", str(row['direction']))
-				if int(row['direction']) != lastPosition:
-					self.__userStartInt[0].append(int(row['direction'])+1)
-					self.__userStartInt[1].append(float(row['seconds']))
-					if lastPosition != -1:
-						prom = sum(volProm)/len(volProm)
-						usersVolProm[int(row['direction'])][0].append(prom)
-						usersVolProm[int(row['direction'])][1].append(row['seconds'])
-						if(self.__plot_user_speak):
-								writer_volume.writerow({'Emisor':row['direction'],'Intensidad':"{0:.2f}".format(prom)})
-						#self.__volPromInterv[lastPosition].append((prom,row['seconds']))
-						volProm = []
-						interTimes[lastPosition].append(timeActivity)
-						#self.FindUsersInteraction(lastPosition+1, int(row['direction'])+1, file)
-						if(self.__plot_user_speak):
-							self.FindUsersInteraction(lastPosition+1, int(row['direction'])+1, file)
-						for i in range(silence):
-							self.__activityContinuos[lastPosition].pop()
-					else:
-						for i in range(silence):
-							self.__activityContinuos[0].pop()
-					#self.__volPromInterv[lastPosition].append("{0:.2f}".format(sum(volProm)/len(volProm)))			
-					timeActivity = []														
-				self.__activity[int(row['direction'])].append(float(row['seconds']))
-				volProm.append(float(row['amplitude']))							
-				timeActivity.append(float(row['seconds']))
-				lastPosition = int(row['direction'])
-				silence = 0
-			else:
-				silence += 1
-			self.__activityContinuos[int(row['direction'])].append(float(row['seconds']))	
-			self.__time = row['seconds']
+			if row['seconds'] != None and row['amplitude'] != None:
+				usersVol[int(row['direction'])][0].append(float(row['amplitude']))
+				usersVol[int(row['direction'])][1].append(row['seconds'])
+				if int(row['speak']):
+					if(self.__plot_user_speak):
+						writer_interv.writerow({'Emisor':row['direction'],'Segundo voz activa':row['seconds']})
+					#print("direccion:", str(row['direction']))
+					if int(row['direction']) != lastPosition:
+						self.__userStartInt[0].append(int(row['direction'])+1)
+						self.__userStartInt[1].append(float(row['seconds']))
+						if lastPosition != -1:
+							prom = sum(volProm)/len(volProm)
+							usersVolProm[int(row['direction'])][0].append(prom)
+							usersVolProm[int(row['direction'])][1].append(row['seconds'])
+							if(self.__plot_user_speak):
+									writer_volume.writerow({'Emisor':row['direction'],'Intensidad':"{0:.2f}".format(prom)})
+							#self.__volPromInterv[lastPosition].append((prom,row['seconds']))
+							volProm = []
+							interTimes[lastPosition].append(timeActivity)
+							#self.FindUsersInteraction(lastPosition+1, int(row['direction'])+1, file)
+							if(self.__plot_user_speak):
+								self.FindUsersInteraction(lastPosition+1, int(row['direction'])+1, file)
+							for i in range(silence):
+								self.__activityContinuos[lastPosition].pop()
+						else:
+							for i in range(silence):
+								self.__activityContinuos[0].pop()
+						#self.__volPromInterv[lastPosition].append("{0:.2f}".format(sum(volProm)/len(volProm)))			
+						timeActivity = []														
+					self.__activity[int(row['direction'])].append(float(row['seconds']))
+					volProm.append(float(row['amplitude']))							
+					timeActivity.append(float(row['seconds']))
+					lastPosition = int(row['direction'])
+					silence = 0
+				else:
+					silence += 1
+				self.__activityContinuos[int(row['direction'])].append(float(row['seconds']))	
+				self.__time = row['seconds']
 		if(self.__plot_user_speak):
 			file.close()
 			file_interv.close()
@@ -157,7 +156,10 @@ class Plot(object):
 			total_vol = 0
 			for prom, time in x: 
 				total_vol += prom
-			self.__usersVol.append(total_vol/len(x))
+			if(len(x)>0):
+				self.__usersVol.append(total_vol/len(x))
+			else:
+				self.__usersVol.append(0)
 		user = 0
 		vol_array = np.array(usersVol[0][0]+usersVol[1][0]+usersVol[2][0]+usersVol[3][0])
 		rms = np.amax(vol_array)
@@ -182,19 +184,21 @@ class Plot(object):
 			sep = int(float(self.__time)/12)
 		plt.xticks(np.arange(0, float(self.__time)+1, sep))
 		plt.yticks([1],["Voz activa"])
-		plt.vlines(self.__activity[0], 0, 1, label='Usuario 1', color='red')
-		plt.vlines(self.__activity[1], 0, 1, label='Usuario 2', color='blue')
-		plt.vlines(self.__activity[2], 0, 1, label='Usuario 3', color='green')
-		plt.vlines(self.__activity[3], 0, 1, label='Usuario 4', color='orange')
+		width = 70/float(self.__time)
+		print(width)
+		plt.vlines(self.__activity[0], 0, 1, label='Usuario 1', linewidth=width, color='red')
+		plt.vlines(self.__activity[1], 0, 1, label='Usuario 2', linewidth=width, color='blue')
+		plt.vlines(self.__activity[2], 0, 1, label='Usuario 3', linewidth=width, color='green')
+		plt.vlines(self.__activity[3], 0, 1, label='Usuario 4', linewidth=width, color='orange')
 		plt.xlabel("tiempo (segundos)") 
 		plt.title("Activación de voz con silencios")
 		plt.subplot(2,1,2)
 		plt.xticks(np.arange(0, float(self.__time)+1, sep))
 		plt.yticks([1],["Voz activa"])
-		plt.vlines(self.__activityContinuos[0], 0, 1, label='Usuario 1', color='red')
-		plt.vlines(self.__activityContinuos[1], 0, 1, label='Usuario 2', color='blue')
-		plt.vlines(self.__activityContinuos[2], 0, 1, label='Usuario 3', color='green')
-		plt.vlines(self.__activityContinuos[3], 0, 1, label='Usuario 4', color='orange')
+		plt.vlines(self.__activityContinuos[0], 0, 1, label='Usuario 1', linewidth=width, color='red')
+		plt.vlines(self.__activityContinuos[1], 0, 1, label='Usuario 2', linewidth=width, color='blue')
+		plt.vlines(self.__activityContinuos[2], 0, 1, label='Usuario 3', linewidth=width, color='green')
+		plt.vlines(self.__activityContinuos[3], 0, 1, label='Usuario 4', linewidth=width, color='orange')
 		plt.xlabel("tiempo (segundos)") 
 		plt.title("Activación de voz sin silencios")		
 		leg = plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.5), fancybox=False, shadow=False, 
@@ -268,25 +272,6 @@ class Plot(object):
 		elif pos1==4 and pos2 == 3:
 			writer.writerow({'Emisor':str(pos1),'Receptor':str(pos2),'Interacciones':str(self.__usersRelations[11]+1)})
 			self.__usersRelations[11] += 1
-
-	# def UsersInteraction(self):
-	# 	node_speak = []
-	# 	pix_max = 1500
-	# 	pix_min = 500
-	# 	func_max = []
-	# 	func_min = []
-	# 	maximo = max([len(self.__activity[0]),len(self.__activity[1]),len(self.__activity[2]),len(self.__activity[3])])
-	# 	for i in range(0, len(self.__activity)):
-	# 		node_speak.append(len(self.__activity[i]))
-	# 		func_max.append(int((float(len(self.__activity[i]))/maximo)*(pix_max-pix_min)+pix_min))
-
-	# 	edgelist = [(1,2),(1,3),(1,4),(2,3),(2,4),(3,4)]
-	# 	G=nx.Graph(edgelist)
-	# 	pos=nx.circular_layout(G)
-	# 	nx.draw(G,pos,node_color='#A0CBE2',node_size=func_max, edge_color=self.__relations,width=4,edge_cmap=plt.cm.Blues,with_labels=True)
-	# 	#plt.show()
-	# 	plt.savefig(self.__outputPath+'users_interaction.png')
-	# 	plt.close()
 
 	def SpeakTime(self):
 		suma = len(self.__activity[0])+len(self.__activity[1])+len(self.__activity[2])+len(self.__activity[3])

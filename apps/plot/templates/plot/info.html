@@ -1,0 +1,112 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block header %}
+{% endblock %}
+{% block content %}
+<div class="col-sm-2 mt-10">
+	<div id="sidebar" class="list-group">   
+	      <a href="#intro" class="list-group-item list-group-item-info">Introducción</a>
+	      <a href="#req" class="list-group-item list-group-item-info">Requisitos</a>
+	      <a href="#install" class="list-group-item list-group-item-info">Instalación</a>
+	      <a href="#use" class="list-group-item list-group-item-info">Uso</a>
+	</div>
+</div>
+<div class="col-sm-8 mt-10">
+	<h1>Manual de uso</h1>
+	<section>
+	<div class="panel panel-success">
+	  <div class="panel-heading" id="intro">Introducción</div>
+	  <div class="panel-body">En los entornos de trabajo colaborativo se generan varias interacciones entre los participantes, esto produce gran cantidad de datos, los que pueden ser capturados para análizar como se desarrolla el comportamiento entre los integrantes implicados en la actividad. Así surge la idea de aprovechar los datos que se generan durante actividades colaborativas, específicamente los datos de audio, ya que la comunicación oral representa la forma de expresión más efectiva a la hora de comunicar un mensaje. Para realizar esto, hacemos uso del dispositivo <a href="https://www.seeedstudio.com/ReSpeaker-4-Mic-Array-for-Raspberry-Pi-p-2941.html" target="_blank">Respeaker</a> el cual nos permite detectar la activación y dirección de arribo de la voz. Con este dispositivo extraemos los datos que se generan durante actividades colaborativas, los que son almacenados en un archivo y finalmente nos permitira generar visualizaciones sobre la actividad que se ha desarrollado.</div>
+	</div>
+	</section>
+	<section>
+	<div class="panel panel-success">
+	  <div class="panel-heading" id="req">Requisitos</div>
+	  <div class="panel-body">
+	    <ul>  		
+	    <li>
+	      Raspberry Pi modelo b+ o superior (<a href="https://es.aliexpress.com/w/wholesale-raspberry-pi.html" target="_blank">ver</a>)
+	    </li>
+	    <li>
+	      Respeaker 4-mic array (<a href="https://www.seeedstudio.com/ReSpeaker-4-Mic-Array-for-Raspberry-Pi-p-2941.html" target="_blank">ver</a>)
+	    </li>
+	    <li>
+	     Cargador 5V 2.1A 
+	    </li>
+	    <li>
+	     Grove - Button (<a href="http://wiki.seeedstudio.com/Grove-Button/" target="_blank">ver</a>)
+	    </li>
+	    <li>
+	     Tarjeta microSD mínimo 8 GB con lector (<a href="https://es.aliexpress.com/wholesale?catId=0&initiative_id=SB_20180820041902&SearchText=micro+sd+8gb" target="_blank">ver</a>)
+	    </li>
+	  	</ul>
+	  </div>
+	</div>
+	</section>
+	<section>
+	<div class="panel panel-success">
+	  <div class="panel-heading" id="install">Instalación</div>
+	  <div class="panel-body">
+  		<div class="panel panel-info">
+		  <div class="panel-heading">Descargar Imagen</div>
+		  <div class="panel-body">Descargamos la imagen que trae todo el entorno preparado para poder capturar los datos, desde el siguiente enlace <a type="link" id="download_csv" href="/media/iso/raspbianRespeaker.img" class="btn btn-success btn-sm glyphicon glyphicon-download-alt"></a></div>
+		</div>
+		<div class="panel panel-info">
+		  <div class="panel-heading">Escribir imagen</div>
+		  <div class="panel-body">Descargamos <a type="link" id="download_csv" href="https://etcher.io/" target="_blank">Etcher</a> según nuestro sistema operativo e instalamos. Una vez finalizada la instalación insertamos la microSD en el equipo y ejecutamos el programa. Presionamos "Select image" y seleccionamos la imagen que hemos descargado. Luego, presionamos "Select drive" y seleccionamos la tarjeta microSD. Finalmente, pulsamos el boton "Flash!" y esperamos hasta que el programa finalice el proceso de escritura en la tarjeta.</div>
+		</div>
+		<div class="panel panel-info">
+		  <div class="panel-heading">Conectar componentes</div>
+		  <div class="panel-body">Conectamos el Respeaker a la Raspberry Pi, insertamos la microSD y conectamos el Grove Button al puerto GPIO-12 del Respeaker, cuya ubicación se observa en la siguiente imagen:
+		  <div class="mt-10">
+		  	<img src="/static/images/respeakergpio12.PNG" alt="GPIO-12">
+		  </div>
+		  Finalmente, conectamos el cargador a la Raspberry Pi.
+		  </div>
+		</div>
+	  </div>
+	</div>
+	</section>
+	<section>
+	<div class="panel panel-success">
+	  <div class="panel-heading" id="use">Uso</div>
+	  <div class="panel-body">
+	  	<div class="panel panel-info">
+		  <div class="panel-heading">Capturar datos</div>
+		  <div class="panel-body">Para iniciar la captura presionamos el botón que hemos conectado al Respeaker y para detenerla lo volvemos a presionar. Al hacer esto cambiará el patrón de los LEDs del Respeaker, lo que indica que el dispositivo se encuentra procesando los datos, debemos esperar hasta que se detengan los LEDs.</div>
+		</div>
+		<div class="panel panel-info">
+		  <div class="panel-heading">Extraer datos</div>
+		  <div class="panel-body">Necesitamos extraer el archivo con los datos de la captura para poder generar las visualizaciones en la aplicación web. Para hacer esto accedemos a la Raspberry Pi directamente o mediante SSH o FTP. Una vez dentro del sistema, nos ubicamos en la ruta <i><b>/home/pi/audioProject/files/</b></i> allí se podrán observar carpetas con nombres de fechas que corresponden al momento en que se realizó la grabación. Para identificar el archivo debemos observar que el nombre corresponda a la hora de la grabación y además nos fijamos en que su extensión sea CSV. Si nos hemos conectado de manera directa o por SSH, insertamos una unidad de almacenamiento en la Raspberry y copiamos el archivo. En caso de conectarnos por FTP, copiamos el archivo a nuestro computador. A continuación, se observa una demostración de la extracción de datos mediante FTP con el software winSCP.
+		  <div class="mt-10">
+		  	<img src="/static/images/extractcsv.gif" alt="Extraer CSV">
+		  </div> 	
+		  <div class="panel panel-primary mt-10">
+			<div class="panel-heading">Software útil</div>
+			<div class="panel-body">
+				<ul>
+					<li>
+						<a href="https://winscp.net/eng/download.php" target="_blank">winSCP</a>
+					</li>
+					<li>
+						<a href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html" target="_blank">putty</a>
+					</li>
+
+				</ul>
+			</div>
+		  </div>
+		  </div>
+		</div>
+		<div class="panel panel-info">
+		  <div class="panel-heading">Subir archivo</div>
+		  <div class="panel-body">El último paso es subir el archivo CSV que hemos extraido. Mediante la barra de navegación accedemos a "Subir archivo" donde nos aparecera un formulario que nos exige el nombre y el archivo correspondiente al grupo que hemos grabado. A continuación, se observa una demostración de como subir un archivo.
+	  	  <div class="mt-10">
+		  	<img src="/static/images/uploadcsv.gif" alt="Subir CSV">
+		  </div> 	
+		  </div>
+		</div>
+	</div>
+	</div>
+	</section>
+</div>
+{% endblock %}

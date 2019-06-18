@@ -38,12 +38,15 @@ from django.views.decorators.csrf import csrf_exempt
 # 			messages.error(request,'No ha seleccionado ningun archivo')
 # 			return redirect(reverse("upload_file"))
 # 	return render(request, 'plot/index.html')
-data = []
 
 @login_required(redirect_field_name='login')
 def plot(request):	
 	data_plot = request.session['data_plot']
 	return render(request, 'plot/plot.html',{"data":data_plot, "user":request.user})
+
+@login_required(redirect_field_name='login')
+def info(request):	
+	return render(request, 'plot/info.html')
 
 @login_required(redirect_field_name='login')
 def interactions(request):
@@ -89,11 +92,9 @@ def donut_graph(request):
 
 @login_required(redirect_field_name='login')
 def flare_json(request, user):
-	print(user, request.user)
 	if user == str(request.user):
 		data_plot = request.session['data_plot']
 		data = json.loads(data_plot)
-		#print("data plot",data)
 		data = json.dumps(data['d3'])
 		return HttpResponse(data)
 	return HttpResponse(status=404)
@@ -119,7 +120,6 @@ def relations(request, user):
 	if user == str(request.user):
 		data_plot = request.session['data_plot']
 		data = json.loads(data_plot)
-		#print("data plot",data)
 		data = json.dumps(data['usersRelation'])
 		return HttpResponse(data)
 	return HttpResponse(status=404)
@@ -136,7 +136,6 @@ def save_file(request):
 	title = 'Generar'
 	if request.method == 'POST':
 		form = FileForm(request.POST, request.FILES, request=request)
-		print(request.POST["name"])
 		# print(form.is_valid())
 		if form.is_valid():
 			csv_file = request.FILES["file"]
@@ -179,32 +178,28 @@ def delete_files(request, name):
 
 @login_required(redirect_field_name='login')
 def group_plots(request):
+	data = []
 	if request.method == 'POST':
 		groups = []
 		groups = request.POST.getlist('groups[]')
 		files = []
-
 		for group in groups:
 			query = UserFile.objects.get(user=request.user, name=group)
 			files.append((query.file.path, group))
-			#files.append(query[0]['file'])
-		global data
-		data = []
 		for file, group in files:
 			f = open(file, 'r')
 			plt = ploter.Plot(f, plot_user_speak=False)
 			data.append(functions.FillJson(plt, group))
 			f.close()
-		data = json.dumps(functions.FillJsonGroups(data))
-		return HttpResponse(data)
-	return render(request, 'plot/group_plot.html', {"data":data})
+		request.session['data_plot_groups'] = json.dumps(functions.FillJsonGroups(data))
+		return HttpResponse(request.session['data_plot_groups'])
+	return render(request, 'plot/group_plot.html', {"data":request.session['data_plot_groups']})
 
 @login_required(redirect_field_name='login')
 def group_flare_json(request, user):
 	if user == str(request.user):
-		global data
+		data = request.session['data_plot_groups']
 		data_plot = json.loads(data)
-		#print("data plot",data)
 		data_plot = json.dumps(data_plot['d3'])
 		return HttpResponse(data_plot)
 	return HttpResponse(status=404)
@@ -212,9 +207,8 @@ def group_flare_json(request, user):
 @login_required(redirect_field_name='login')
 def group_intdur_json(request, user):
 	if user == str(request.user):
-		global data
+		data = request.session['data_plot_groups']
 		data_plot = json.loads(data)
-		#print("data plot",data)
 		data_plot = json.dumps(data_plot['treemap_intdur'])
 		return HttpResponse(data_plot)
 	return HttpResponse(status=404)
@@ -222,9 +216,8 @@ def group_intdur_json(request, user):
 @login_required(redirect_field_name='login')
 def group_interv_json(request, user):
 	if user == str(request.user):
-		global data
+		data = request.session['data_plot_groups']
 		data_plot = json.loads(data)
-		#print("data plot",data)
 		data_plot = json.dumps(data_plot['treemap_interv'])
 		return HttpResponse(data_plot)
 	return HttpResponse(status=404)
@@ -232,9 +225,8 @@ def group_interv_json(request, user):
 @login_required(redirect_field_name='login')
 def group_volume_json(request, user):
 	if user == str(request.user):
-		global data
+		data = request.session['data_plot_groups']
 		data_plot = json.loads(data)
-		#print("data plot",data)
 		data_plot = json.dumps(data_plot['treemap_volume'])
 		return HttpResponse(data_plot)
 	return HttpResponse(status=404)
@@ -242,9 +234,8 @@ def group_volume_json(request, user):
 @login_required(redirect_field_name='login')
 def group_speak_json(request, user):
 	if user == str(request.user):
-		global data
+		data = request.session['data_plot_groups']
 		data_plot = json.loads(data)
-		#print("data plot",data)
 		data_plot = json.dumps(data_plot['treemap_speak'])
 		return HttpResponse(data_plot)
 	return HttpResponse(status=404)
@@ -252,9 +243,8 @@ def group_speak_json(request, user):
 @login_required(redirect_field_name='login')
 def group_summary_json(request, user):
 	if user == str(request.user):
-		global data
+		data = request.session['data_plot_groups']
 		data_plot = json.loads(data)
-		#print("data plot",data)
 		data_plot = json.dumps(data_plot['summary'])
 		return HttpResponse(data_plot)
 	return HttpResponse(status=404)

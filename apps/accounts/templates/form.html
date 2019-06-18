@@ -13,13 +13,19 @@
 			<form method="POST">
 				{% csrf_token %}
 				{{ form|crispy}}
-				<div class="form-group">
+	
 					<input type="submit" class="btn btn-primary" value='{{ title }}'>
+		
 					{% if title == 'Ingresar' %}	
-						<span>o</span>
-						<a href="/accounts/register" role="button" class="btn btn-primary">Registrarse</a>
+					<div class="mt-10">
+						<a href="/accounts/register">Registrarse</a>
+					</div>
 					{% endif %}
-				</div>	
+					{% if title == 'Registrarse' %}	
+					<div class="mt-10">
+						<a href="/accounts/login">Ingresar</a>
+					</div>
+					{% endif %}
 			</form>
 		</div>	
 	</div>		

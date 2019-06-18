@@ -70,7 +70,7 @@ total_speak_time += '<td>'+String(total_speak.toFixed(2))+'</td>'
 
 total_int_dur = parseFloat(get_sum(data.usersIntDur[0]))+parseFloat(get_sum(data.usersIntDur[1]))+parseFloat(get_sum(data.usersIntDur[2]))+parseFloat(get_sum(data.usersIntDur[3]))
 total_int_dur_time = '<th class="table-head">Duración intervenciones</th>'
-total_int_dur_time += '<td>'+String(total_int_dur)+'</td>'
+total_int_dur_time += '<td>'+String(total_int_dur.toFixed(2))+'</td>'
 
 total_int = parseInt(data.usersIntDur[0].length)+parseInt(data.usersIntDur[1].length)+parseInt(data.usersIntDur[2].length)+parseInt(data.usersIntDur[3].length)
 total_intervention = '<th class="table-head">Intervenciones</th>'
