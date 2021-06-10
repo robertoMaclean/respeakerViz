@@ -1,6 +1,6 @@
 cycler==0.10.0
 decorator==4.3.0
-Django==2.0.12
+Django==2.2.24
 django-bootstrap3==9.1.0
 django-crispy-forms==1.7.2
 kiwisolver==1.0.1
